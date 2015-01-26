@@ -4,6 +4,7 @@ auto-save-list/
 cache/
 desktop/
 snippets/
+lisp/
 
 ede-projects.el
 neil
