@@ -1,0 +1,11 @@
+elpa/
+jdee-2.4.1/
+auto-save-list/
+cache/
+desktop/
+snippets/
+
+ede-projects.el
+neil
+*.dat
+*.elc
