@@ -21,7 +21,6 @@
             (flyspell-prog-mode)
             (flycheck-mode)             ; flymake is depreciated
             (whitespace-mode)
-            (fci-mode)
             (subword-mode)
 
             ;; (define-key ac-mode-map (kbd "<backtab>") 'auto-complete)
@@ -86,10 +85,8 @@
     (if whitespace-mode
         (progn
           (whitespace-mode 0)
-          (fci-mode 0)
           (message "Whitespace mode off"))
       (whitespace-mode 1)
-      (fci-mode 1)
       (message "Whitespace mode on"))
     (return-from toggle-whitespace-mode))
 

@@ -12,18 +12,18 @@
 
 (defvar *my-path-list*
   '("/opt/"
-	"/opt/local/bin"
-	"/opt/local/sbin"
-	"/opt/X11/bin"
-	"/usr/local/bin"
-	"/usr/local/sbin"
-	"/usr/texbin"
-	"/usr/bin"
-	"/usr/sbin"
-	"/bin"
-	"/sbin"
-	"/Users/matt/Library/Haskell/bin"        ; for hdevtools
-	))
+    "/opt/local/bin"
+    "/opt/local/sbin"
+    "/opt/X11/bin"
+    "/usr/local/bin"
+    "/usr/local/sbin"
+    "/usr/texbin"
+    "/usr/bin"
+    "/usr/sbin"
+    "/bin"
+    "/sbin"
+    "/Users/matt/Library/Haskell/bin"        ; for hdevtools
+    ))
 
 ;; set PATHs for Unix-based systems
 ;; (setenv "PATH" (concat (getenv "PATH") ":/usr/texbin"))
@@ -59,7 +59,7 @@
 ;; (add-to-list 'package-archives
 ;;              '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives
-			 '("melpa" . "http://melpa.milkbox.net/packages/") t)
+             '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (setq package-archive-enable-alist '(("melpa" deft magit)))
 (package-initialize)
 
@@ -73,12 +73,11 @@
   (message "%s" "Installing required packages...")
   (package-refresh-contents)
   (dolist (pkg matt/packages)
-	(when (not (package-installed-p pkg))
-	  (package-install pkg))))
+    (when (not (package-installed-p pkg))
+      (package-install pkg))))
 
 (require 'use-package)                  ; also provides bind-key
 (require 'saveplace)
-(require 'ffap)
 (require 'uniquify)
 (require 'ansi-color)
 (require 'recentf)
@@ -86,7 +85,7 @@
 ;; Personalisations and globals
 ;;==============================================================================
 (setq user-full-name "Matthew Chan"
-	  user-mail-address "matt@themattchan.com")
+      user-mail-address "matt@themattchan.com")
 (defconst *is-a-mac* (eq system-type 'darwin))
 (defconst *is-linux* (member system-type '(gnu gnu/linux gnu/kfreebsd)))
 

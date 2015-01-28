@@ -35,6 +35,8 @@
             ;;     (fci-mode 0)))
           )
 
+;; defadvice auto-fill-mode fci-mode
+
 ;; LaTeX and AUCTeX
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 

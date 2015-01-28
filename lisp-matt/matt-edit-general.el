@@ -46,6 +46,9 @@
  default-sendmail-coding-system 'utf-8-unix
  default-terminal-coding-system 'utf-8-unix
 
+ ;; DEFAULT C-x C-f directory
+ default-directory "~/Dropbox"
+
  ;; flyspell
  flyspell-issue-welcome-flag nil
  ispell-list-command "list"
@@ -88,7 +91,6 @@
 ;; load before auto-complete, so TAB expands snippet before completing
 ;;(require 'yasnippet)
 (yas-global-mode 1)
-(setq yas-snippet-dirs '("~/.emacs.d/snippets/"))
 (setq yas-prompt-functions '(yas-ido-prompt yas-dropdown-prompt))
 
 ;;------------------------------------------------------------------------------

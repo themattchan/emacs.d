@@ -22,11 +22,16 @@
   (inf-haskell-mode 1)                  ; repl
   (setq indent-tabs-mode nil)
   (flycheck-select-checker 'haskell-hdevtools)
-  (liquid-tip-init 'ascii))
+  ;;(liquid-tip-init 'ascii)
+  )
 
 (add-hook 'haskell-mode-hook 'matt/haskell-hooks)
 (add-hook 'literate-haskell-mode-hook 'matt/haskell-hooks)
-  
+(add-hook 'literate-haskell-mode-hook
+          (lambda ()
+            ;; so we can actually see our writings
+            (setq haskell-literate-comment-face nil)))
+
 (defun newline-and-indent-relative ()
   (interactive)
   (newline)
