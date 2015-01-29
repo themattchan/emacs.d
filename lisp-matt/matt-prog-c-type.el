@@ -25,11 +25,13 @@
   ;;(setq-local tab-stop-list (number-sequence 8 120 8))
   )
 
-
+( file-name-extension "foo.s")
 (add-hook 'asm-mode-hook
           (lambda ()
             (auto-complete-mode 0)
-            (setq-local asm-comment-char ?\!)
+            ;; for SPARC asm
+            (when (string-equal "s" (file-name-extension (buffer-name))
+                                (setq-local asm-comment-char ?\!)))
             (setq-local tab-width 8)
             (setq-local tab-stop-list (number-sequence 8 120 8))
             (setq-local indent-tabs-mode t)))
