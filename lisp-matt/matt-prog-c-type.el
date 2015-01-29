@@ -1,5 +1,5 @@
 ;; C family common customizations
-;; ------------------------------
+;;------------------------------------------------------------------------
 ;;
 ;; cc-mode hooks in order:
 ;; 1. c-initialization-hook, init cc mode once per session (i.e. emacs startup)
@@ -9,6 +9,7 @@
 ;;
 ;; View syntactic context (to find the setting to set for c-set-offset): C-c C-s
 ;;
+
 (defun matt/c-indent ()
   ;; use setq-local, its supposedly more hygienic
   ;; set correct backspace behaviour.
@@ -25,18 +26,12 @@
   ;;(setq-local tab-stop-list (number-sequence 8 120 8))
   )
 
-(add-hook 'asm-mode-hook
-          (lambda ()
-            (auto-complete-mode 0)
-            ;; for SPARC asm
-            (when (string-equal "s" (file-name-extension (buffer-name))
-                                (setq-local asm-comment-char ?\!)))
-            (setq-local tab-width 8)
-            (setq-local tab-stop-list (number-sequence 8 120 8))
-            (setq-local indent-tabs-mode t)))
-
+;;------------------------------------------------------------------------------
+;; c-initialization-hook, run once on cc-mode init
 ;; (add-hook 'c-initialization-hook )
 
+;;------------------------------------------------------------------------------
+;; c-mode-common-hook, run before lang hooks
 (add-hook 'c-mode-common-hook
           (lambda ()
             (add-to-list 'ac-sources 'ac-source-c-headers)
@@ -57,10 +52,24 @@
             (subword-mode 1)
             (electric-pair-mode 1)))
 
+;;------------------------------------------------------------------------------
+;; Assembly
+(add-hook 'asm-mode-hook
+          (lambda ()
+            (auto-complete-mode 0)
+            ;; for SPARC asm
+            (when (string-equal "s" (file-name-extension (buffer-name))
+                                (setq-local asm-comment-char ?\!)))
+            (setq-local tab-width 8)
+            (setq-local tab-stop-list (number-sequence 8 120 8))
+            (setq-local indent-tabs-mode t)))
+
+;;------------------------------------------------------------------------------
 ;; C
 (autoload 'ac-c-headers "ac-c-headers")
 (add-hook 'c-mode-hook (lambda () (matt/c-indent)))
 
+;;------------------------------------------------------------------------------
 ;; C++
 (add-hook 'c++-mode-hook
           (lambda ()
@@ -70,6 +79,7 @@
             ;; don't indent curly for inline method def
             (c-set-offset 'inline-open 0)))
 
+;;------------------------------------------------------------------------------
 ;; Java
 (autoload 'jtags-mode "jtags" "Toggle jtags mode." t)
 
