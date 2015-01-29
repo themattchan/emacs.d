@@ -46,9 +46,6 @@
  default-sendmail-coding-system 'utf-8-unix
  default-terminal-coding-system 'utf-8-unix
 
- ;; DEFAULT C-x C-f directory
- default-directory "~/Dropbox"
-
  ;; flyspell
  flyspell-issue-welcome-flag nil
  ispell-list-command "list"
