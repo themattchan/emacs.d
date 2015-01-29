@@ -38,7 +38,11 @@
 
 (add-hook 'c-mode-common-hook
           (lambda ()
+            (add-to-list 'ac-sources 'ac-source-c-headers)
+            (add-to-list 'ac-sources 'ac-source-c-header-symbols t)
+
             (matt/c-indent)
+
             (add-to-list 'c-cleanup-list 'comment-close-slash)
             (setq c-default-style '((c-mode    . "linux")
                                     (c++-mode  . "stroustrup")
@@ -54,21 +58,16 @@
 
 ;; C
 (autoload 'ac-c-headers "ac-c-headers")
-(add-hook 'c-mode-hook
-          (lambda ()
-            (matt/c-indent)
-            (add-to-list 'ac-sources 'ac-source-c-headers)
-            (add-to-list 'ac-sources 'ac-source-c-header-symbols t)))
+(add-hook 'c-mode-hook (lambda () (matt/c-indent)))
 
 ;; C++
 (add-hook 'c++-mode-hook
           (lambda ()
             (matt/c-indent)
-            (add-to-list 'ac-sources 'ac-source-c-headers)
-            (add-to-list 'ac-sources 'ac-source-c-header-symbols t)
-            (c-set-offset 'substatement-open 0) ; don't indent curly for if...
-            (c-set-offset 'inline-open 0)       ; don't indent curly for method def
-            ))
+            ;; don't indent curly for if...
+            (c-set-offset 'substatement-open 0)
+            ;; don't indent curly for inline method def
+            (c-set-offset 'inline-open 0)))
 
 ;; Java
 (autoload 'jtags-mode "jtags" "Toggle jtags mode." t)
