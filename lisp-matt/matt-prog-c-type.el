@@ -25,7 +25,6 @@
   ;;(setq-local tab-stop-list (number-sequence 8 120 8))
   )
 
-( file-name-extension "foo.s")
 (add-hook 'asm-mode-hook
           (lambda ()
             (auto-complete-mode 0)
