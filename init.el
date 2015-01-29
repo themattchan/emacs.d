@@ -47,7 +47,7 @@
 
 ;; set file paths before anything else
 ;; set default search path
-(setq default-directory "~/Dropbox" )
+(setq default-directory "~/Dropbox/" )
 
 ;; set load path for extra packages
 (add-to-list 'load-path "~/.emacs.d/lisp-matt/")

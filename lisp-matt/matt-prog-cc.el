@@ -18,12 +18,13 @@
 
   ;; c-type lang specifics. want 4-space width tab tabs
   (setq-local c-basic-offset 4)
+  (setq-local tab-width 4)
   ;; (setq-local c-indent-level 4)
 
-  (setq-local c-indent-tabs-mode t)           ; tabs please
+  ;;(setq-local c-indent-tabs-mode t)           ; tabs please
   (setq-local c-tab-always-indent t)          ; t for tabs, nil for spaces
   ;;(setq indent-tabs-mode t)
-  (setq-local tab-width 4)
+
   ;;(setq-local tab-stop-list (number-sequence 8 120 8))
   )
 
@@ -41,17 +42,33 @@
             (matt/c-indent)
 
             (add-to-list 'c-cleanup-list 'comment-close-slash)
+
             (setq c-default-style '((c-mode    . "linux")
                                     (c++-mode  . "stroustrup")
                                     (java-mode . "java")
                                     (awk-mode  . "awk")
                                     (other     . "free-group-style")))
+
             ;; (setq show-paren-style 'expression) ; highlight blocks
             (c-toggle-electric-state 1)
-            (c-toggle-auto-newline 1)
+            (c-toggle-auto-newline 0)
+
             ;; subword editing and movement to deal with CamelCase
             (subword-mode 1)
-            (electric-pair-mode 1)))
+
+            ;; changed my mind, this is annoying as hell
+            (electric-pair-mode 0)
+
+            ;; Do real-time syntax highlighting, not the delayed stuff.
+            (setq font-lock-support-mode 'jit-lock-mode)
+            ;;(setq lazy-lock-defer-contextually t)
+            ;;(setq lazy-lock-defer-time 0)
+
+            ;; Left-align all hash defines
+            (setq c-electric-pound-behavior '(alignleft))
+
+            ;; Don't force indentation of labels to be 1.
+            (setq c-label-minimum-indentation 0)))
 
 ;;------------------------------------------------------------------------------
 ;; Assembly
@@ -59,8 +76,8 @@
           (lambda ()
             (auto-complete-mode 0)
             ;; for SPARC asm
-            (when (string-equal "s" (file-name-extension (buffer-name))
-                                (setq-local asm-comment-char ?\!)))
+            (when (string-equal "s" (file-name-extension (buffer-name)))
+              (setq-local asm-comment-char ?\!))
             (setq-local tab-width 8)
             (setq-local tab-stop-list (number-sequence 8 120 8))
             (setq-local indent-tabs-mode t)))
@@ -75,6 +92,7 @@
 (add-hook 'c++-mode-hook
           (lambda ()
             (matt/c-indent)
+            (c-set-offset 'statement-case-open 0)
             ;; don't indent curly for if...
             (c-set-offset 'substatement-open 0)
             ;; don't indent curly for inline method def
