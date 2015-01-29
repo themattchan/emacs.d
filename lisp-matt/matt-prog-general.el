@@ -106,6 +106,8 @@
     (whitespace-mode 1)
     (message "Highlighting all whitespace")))
 
+(global-set-key (kbd "C-x t w") 'toggle-whitespace-mode)
+
 ;;------------------------------------------------------------------------------
 ;; column width
 ;; ring of line lengths
@@ -115,7 +117,7 @@
 
 ;; rotate through line lengths
 (defun toggle-line-length ()
-  "change from 80 to 100 chars and v.v."
+  "Change from 80 to 100 chars and v.v."
   (interactive)
   (let ((next-line-len (ring-ref line-lens
                                  (+ 1 (ring-ref line-lens fill-column)))))
@@ -124,6 +126,8 @@
       (setq whitespace-line-column next-line-len)
       (whitespace-mode 0)
       (whitespace-mode 1))))
+
+(global-set-key (kbd "C-x t l") 'toggle-line-length)
 
 ;;------------------------------------------------------------------------------
 ;; auto guess tabs or spaces

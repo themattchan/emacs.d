@@ -6,26 +6,23 @@
 ;; 2. c-mode-common-hook, run immediately before loading language hook
 ;; 3. then language hooks:
 ;;    c, c++, objc, java, idl, pike, awk
-
+;;
+;; View syntactic context (to find the setting to set for c-set-offset): C-c C-s
+;;
 (defun matt/c-indent ()
-  ;; set correct backspace behaviour
-  (setq c-backspace-function 'backward-delete-char)
+  ;; use setq-local, its supposedly more hygienic
+  ;; set correct backspace behaviour.
+  (setq-local c-backspace-function 'backward-delete-char)
 
   ;; c-type lang specifics. want 4-space width tab tabs
-  (setq c-basic-offset 4)
+  (setq-local c-basic-offset 4)
   ;; (setq-local c-indent-level 4)
 
-  (setq c-indent-tabs-mode t)           ; tabs please
-  (setq c-tab-always-indent t)          ; t for tabs, nil for spaces
+  (setq-local c-indent-tabs-mode t)           ; tabs please
+  (setq-local c-tab-always-indent t)          ; t for tabs, nil for spaces
   ;;(setq indent-tabs-mode t)
-  (setq tab-width 4)
+  (setq-local tab-width 4)
   ;;(setq-local tab-stop-list (number-sequence 8 120 8))
-
-  ;; don't indent curly braces. gnu style is madness.
-  ;; (c-set-offset 'statement-case-open 0)
-  ;; (c-set-offset 'substatement-open 0)
-  ;; (c-set-offset 'comment-intro 0)
-  ;; (c-set-offset 'brace-list-intro 0)
   )
 
 
@@ -68,7 +65,10 @@
           (lambda ()
             (matt/c-indent)
             (add-to-list 'ac-sources 'ac-source-c-headers)
-            (add-to-list 'ac-sources 'ac-source-c-header-symbols t)))
+            (add-to-list 'ac-sources 'ac-source-c-header-symbols t)
+            (c-set-offset 'substatement-open 0) ; don't indent curly for if...
+            (c-set-offset 'inline-open 0)       ; don't indent curly for method def
+            ))
 
 ;; Java
 (autoload 'jtags-mode "jtags" "Toggle jtags mode." t)

@@ -10,18 +10,44 @@
 
 ;; only one theme at a time
 (defadvice load-theme
-  (before theme-dont-propagate activate)
+    (before theme-dont-propagate activate)
   (mapc #'disable-theme custom-enabled-themes))
 
 (defun matt/load-theme (theme)
   (if (window-system)
-    (load-theme theme)))
+      (load-theme theme)))
 
 ;; expand filled paragraph to a line
 (defun unfill-paragraph ()
   (interactive)
   (let ((fill-column (point-max)))
     (fill-paragraph nil)))
+
+(defun backward-delete-whitespace-to-column ()
+  "delete back to the previous column of whitespace, or as much whitespace as possible,
+or just one char if that's not possible"
+  (interactive)
+  (if indent-tabs-mode
+      (call-interactively 'backward-delete-char-untabify)
+    (let ((movement (% (current-column) tab-width))
+          (p (point)))
+      (when (= movement 0) (setq movement tab-width))
+      (save-match-data
+        (if (string-match "\\w*\\(\\s-+\\)$" (buffer-substring-no-properties (- p movement) p))
+            (backward-delete-char-untabify (- (match-end 1) (match-beginning 1)))
+          (call-interactively 'backward-delete-char-untabify))))))
+
+;; (defun do-marked-files (fun)
+;;   (dolist (file (dired-get-marked-files))
+;;     (find-file file)
+;;     (fun)
+;;     (save-buffer)
+;;     (kill-buffer nil)))
+
+;; (defun tabify-project (dir)
+;;   (let ((code-files ))
+;;  (find-file-noselect
+;; (directory-files "~/Dropbox/cse100/pa1/PA1/" nil "*.[c\|hpp]")
 
 ;; Yuck CRLF.
 ;; Function for converting from DOS to UNIX line ends
@@ -40,10 +66,10 @@
 
 ;; auto create nonexistent dirs
 (defun my-create-non-existent-directory ()
-      (let ((parent-directory (file-name-directory buffer-file-name)))
-        (when (and (not (file-exists-p parent-directory))
-                   (y-or-n-p (format "Directory `%s' does not exist! Create it?" parent-directory)))
-          (make-directory parent-directory t))))
+  (let ((parent-directory (file-name-directory buffer-file-name)))
+    (when (and (not (file-exists-p parent-directory))
+               (y-or-n-p (format "Directory `%s' does not exist! Create it?" parent-directory)))
+      (make-directory parent-directory t))))
 (add-to-list 'find-file-not-found-functions #'my-create-non-existent-directory)
 
 ;; M-x google!
