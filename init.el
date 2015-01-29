@@ -100,7 +100,7 @@
 ;; general interface settings
 (require 'matt-keybindings)           ; Fix Emacs annoyances, add power
 (require 'matt-interface)             ; Fix Emacs annoyances, add power
-(require 'matt-edit-general)          ; Tabs, fill, undo, ispell, UTF-8, backups
+(require 'matt-edit-all)              ; Tabs, fill, undo, ispell, UTF-8, backups
 (require 'matt-buffer-clean)          ; mostly depreciated
 (require 'matt-themes)                ; mostly depreciated
 
@@ -109,11 +109,11 @@
 (require 'matt-writing)                 ; Text: Markdown, LaTeX, Org-mode
 
 ;;; programming
-(require 'matt-prog-general)            ; Settings for all programming modes
+(require 'matt-prog-all)                ; Settings for all programming modes
 (require 'matt-prog-functional)         ; Settings for all functional langs
 (require 'matt-prog-lisp)               ; Lisp family: Common Lisp, Scheme, Racket, Clojure
 (require 'matt-prog-ml)                 ; ML family: Haskell, Ocaml
-(require 'matt-prog-c-type)             ; C family: C, C++, Java
+(require 'matt-prog-cc)                 ; C family: C, C++, Java
 (require 'matt-prog-other)              ; Scala, Python, web stuff
 
 ;; misc
