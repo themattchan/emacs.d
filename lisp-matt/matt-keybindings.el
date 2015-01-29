@@ -28,7 +28,8 @@
 
 (bind-key "C-;" 'comment-or-uncomment-region)
 (bind-key "M-/" 'hippie-expand) ; replace default expand command
-(bind-key "<backtab>" 'hippie-expand) ; rebind said command to shift-tab
+;; backtab is now yasnippet complete snippet
+;;(bind-key "<backtab>" 'hippie-expand) ; rebind said command to shift-tab
 
 ;; Transpose stuff with M-t
 (unbind-key "M-t") ;; which used to be transpose-words

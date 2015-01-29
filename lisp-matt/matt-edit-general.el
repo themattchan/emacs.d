@@ -93,6 +93,11 @@
 (yas-global-mode 1)
 (setq yas-prompt-functions '(yas-ido-prompt yas-dropdown-prompt))
 
+;; use shift-tab for yasnippet completion so it doesn't conflict w/ ac-mode
+(define-key yas-minor-mode-map (kbd "<tab>") nil)
+(define-key yas-minor-mode-map (kbd "TAB") nil)
+(define-key yas-minor-mode-map (kbd "<backtab>") 'yas-expand)
+
 ;;------------------------------------------------------------------------------
 ;; auto-complete mode
 (require 'auto-complete)
