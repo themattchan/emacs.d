@@ -24,9 +24,8 @@
 ;; Load stuff
 (eval-when-compile (require 'cl))
 (autoload 'saveplace "save last loc in file")
-(autoload 'ffap "Finding Files and URLs at Point")
 (autoload 'uniquify "unique buffer titles")
-(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+
 ;; dired jump to current file dir (C-x C-j)
 (autoload 'dired-x "dired-x")
 

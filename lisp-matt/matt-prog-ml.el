@@ -22,15 +22,20 @@
   (inf-haskell-mode 1)                  ; repl
   (setq indent-tabs-mode nil)
   (flycheck-select-checker 'haskell-hdevtools)
-  ;;(liquid-tip-init 'ascii)
+  (liquid-tip-init 'ascii)
   )
+(eval-after-load 'flycheck
+  '(add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
+
+(add-hook 'flycheck-after-syntax-check-hook
+          (lambda () (liquid-tip-update 'flycheck)))
 
 (add-hook 'haskell-mode-hook 'matt/haskell-hooks)
 (add-hook 'literate-haskell-mode-hook 'matt/haskell-hooks)
 (add-hook 'literate-haskell-mode-hook
           (lambda ()
             ;; so we can actually see our writings
-            (setq haskell-literate-comment-face nil)))
+            (setq haskell-literate-comment-face 'default)))
 
 (defun newline-and-indent-relative ()
   (interactive)
@@ -78,7 +83,7 @@
 
 (with-eval-after-load 'merlin
   ;; Disable Merlin's own error checking
-  (setq merlin-error-after-save nil)
+  ;;  (setq merlin-error-after-save nil)
   ;; Enable Flycheck checker
   (flycheck-ocaml-setup))
 

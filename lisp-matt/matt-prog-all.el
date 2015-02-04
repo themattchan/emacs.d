@@ -41,9 +41,11 @@
 
 ;;------------------------------------------------------------------------------
 ;; flycheck
-(eval-after-load 'flycheck
-  '(add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
-
+;; (set-face-attribute 'flycheck-error nil
+;;                     :foreground "red"
+;;                     :background "pink"
+;;                     ;:underline "Red1"
+;;                     )
 ;;------------------------------------------------------------------------------
 ;; no auto-indent
 (defvar whitespace-langs

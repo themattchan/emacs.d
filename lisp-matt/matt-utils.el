@@ -22,6 +22,7 @@
 ;;   :init
 ;;   (progn
 ;;     (setq multi-term-program "/bin/zsh")))
+(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
 ;; tramp mode
 (setq tramp-default-method "scpx")

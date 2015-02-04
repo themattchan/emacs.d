@@ -115,10 +115,10 @@
 ;; easier split pane navigation
 (if (window-system)
     (progn
-      (bind-key "M-S-<left>" 'windmove-left)   ; move to left window
-      (bind-key "M-S-<right>" 'windmove-right) ; move to right window
-      (bind-key "M-S-<up>" 'windmove-up)       ; move to upper window
-      (bind-key "M-S-<down>" 'windmove-down)
+      (bind-key "s-S-<left>" 'windmove-left)   ; move to left window
+      (bind-key "s-S-<right>" 'windmove-right) ; move to right window
+      (bind-key "s-S-<up>" 'windmove-up)       ; move to upper window
+      (bind-key "s-S-<down>" 'windmove-down)
       (bind-key "s-<left>" 'previous-buffer) ; move to prev buffer
       (bind-key "s-<right>" 'next-buffer))   ; move to next buffer
   (progn                             ;; terminal doesn't like the meta key
@@ -135,7 +135,7 @@
      nil 'fullscreen
      (when (not (frame-parameter nil 'fullscreen)) 'fullboth))))
 
-(if *is-linux* (bind-key "<f11>" 'toggle-fullscreen-linux))
+(when *is-linux* (bind-key "<f11>" 'toggle-fullscreen-linux))
 
 ;; cua rectangle selection is good.
 (cua-selection-mode 1)
