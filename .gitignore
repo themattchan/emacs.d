@@ -5,6 +5,7 @@ cache/
 desktop/
 snippets/
 lisp/
+eshell/
 
 ede-projects.el
 neil
