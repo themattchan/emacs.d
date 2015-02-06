@@ -44,29 +44,25 @@
 
 (eval-after-load 'flycheck
   (lambda ()
+    (setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages)
+    (setq flycheck-highlighting-mode 'sexps)
+    (setq flycheck-display-errors-delay 0)
     ;; colours at http://raebear.net/comp/emacscolors.html
-     (set-face-attribute 'flycheck-error nil
-                         :foreground "red"
-                         :background "pink"
-                         :underline "red"
-                         )
-     (set-face-attribute 'flycheck-warning nil
-                         :foreground "black"
-                         :background "cornsilk"
-                         :underline "maroon"
-                         )
+    (set-face-attribute 'flycheck-error nil
+                        :foreground "red"
+                        :background "pink"
+                        :underline "red"
+                        )
+    (set-face-attribute 'flycheck-warning nil
+                        :foreground "black"
+                        :background "cornsilk"
+                        :underline "maroon"
+                        )
      (set-face-attribute 'flycheck-info nil
                          :foreground "blue4"
                          :background "LightBlue1"
                          :underline "ForestGreen"
                          )))
-
-(eval-after-load 'flycheck
-  '(custom-set-variables
-    ;; use pos-tip
-    '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)
-    '(flycheck-highlighting-mode 'sexps)
-    '(flycheck-display-errors-delay 0)))
 
 ;;------------------------------------------------------------------------------
 ;; No auto-indent
