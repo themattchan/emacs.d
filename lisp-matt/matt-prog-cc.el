@@ -64,7 +64,7 @@
             ;;(setq lazy-lock-defer-contextually t)
             ;;(setq lazy-lock-defer-time 0)
 
-            ;; Left-align all hash defines
+            ;; Left-align all pound defines
             (setq c-electric-pound-behavior '(alignleft))
 
             ;; Don't force indentation of labels to be 1.

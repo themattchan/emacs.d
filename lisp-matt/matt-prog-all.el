@@ -41,13 +41,31 @@
 
 ;;------------------------------------------------------------------------------
 ;; flycheck
-;; (set-face-attribute 'flycheck-error nil
-;;                     :foreground "red"
-;;                     :background "pink"
-;;                     ;:underline "Red1"
-;;                     )
+
+(eval-after-load 'flycheck
+  (lambda ()
+    ;; colours at http://raebear.net/comp/emacscolors.html
+     (set-face-attribute 'flycheck-error nil
+                         :foreground "red"
+                         :background "pink"
+                         :underline "red"
+                         )
+     (set-face-attribute 'flycheck-warning nil
+                         :foreground "white"
+                         :background "orange"
+                         :underline "maroon"
+                         )
+     (set-face-attribute 'flycheck-info nil
+                         :foreground "blue4"
+                         :background "SkyBlue1"
+                         )
+
+     (setq flycheck-highlighting-mode 'sexps) ; highlight the expression
+     (setq flycheck-display-errors-delay 0)   ; show message immediately
+     ))
+
 ;;------------------------------------------------------------------------------
-;; no auto-indent
+;; No auto-indent
 (defvar whitespace-langs
   '(python-mode
     yaml-mode
