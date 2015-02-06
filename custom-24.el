@@ -43,8 +43,12 @@
  '(fancy-battery-show-percentage t)
  '(fci-rule-color "#343d46")
  '(fci-rule-width 5)
+ '(flycheck-completion-system (quote ido))
+ '(flycheck-display-errors-delay 0)
+ '(flycheck-display-errors-function (quote flycheck-display-error-messages))
  '(flycheck-haskell-hdevtools-executable "~/Library/Haskell/bin/hdevtools")
  '(flycheck-haskell-liquid-executable "~/Library/Haskell/bin/liquid")
+ '(flycheck-highlighting-mode (quote sexps))
  '(flyspell-issue-message-flag t)
  '(geiser-active-implementations (quote (racket scheme)))
  '(geiser-default-implementation (quote racket))
@@ -109,7 +113,7 @@
  '(magit-diff-use-overlays nil)
  '(magit-use-overlays nil)
  '(org-startup-indented t)
- '(org-startup-truncated nil t)
+ '(org-startup-truncated nil)
  '(pos-tip-background-color "#073642")
  '(pos-tip-foreground-color "#93a1a1")
  '(quack-default-program "mit-scheme")
@@ -118,7 +122,7 @@
  '(quack-programs
    (quote
     ("mit-scheme-x86-64" "bigloo" "csi" "csi -hygienic" "gosh" "gracket" "gsi" "gsi ~~/syntax-case.scm -" "guile" "kawa" "mit-scheme" "racket" "racket -il typed/racket" "rs" "scheme" "scheme48" "scsh" "sisc" "stklos" "sxi")))
- '(reftex-plug-into-AUCTeX t t)
+ '(reftex-plug-into-AUCTeX t)
  '(scheme-mit-dialect t)
  '(send-mail-function (quote mailclient-send-it))
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#eee8d5" 0.2))
@@ -159,6 +163,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(flycheck-error ((t (:background "pink" :foreground "red" :underline (:color "Red1" :style wave)))))
  '(haskell-default-face ((t (:inherit default))))
  '(haskell-keyword-face ((t (:inherit font-lock-keyword-face))))
  '(hl-line ((t (:inherit highlight :box nil)))))

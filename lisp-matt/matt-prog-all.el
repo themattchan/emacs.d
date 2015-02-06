@@ -51,18 +51,22 @@
                          :underline "red"
                          )
      (set-face-attribute 'flycheck-warning nil
-                         :foreground "white"
-                         :background "orange"
+                         :foreground "black"
+                         :background "cornsilk"
                          :underline "maroon"
                          )
      (set-face-attribute 'flycheck-info nil
                          :foreground "blue4"
-                         :background "SkyBlue1"
-                         )
+                         :background "LightBlue1"
+                         :underline "ForestGreen"
+                         )))
 
-     (setq flycheck-highlighting-mode 'sexps) ; highlight the expression
-     (setq flycheck-display-errors-delay 0)   ; show message immediately
-     ))
+(eval-after-load 'flycheck
+  '(custom-set-variables
+    ;; use pos-tip
+    '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)
+    '(flycheck-highlighting-mode 'sexps)
+    '(flycheck-display-errors-delay 0)))
 
 ;;------------------------------------------------------------------------------
 ;; No auto-indent
