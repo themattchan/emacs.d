@@ -44,38 +44,39 @@
 
 (eval-after-load 'flycheck
   (lambda ()
-    (setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages)
-    (setq flycheck-highlighting-mode 'sexps)
-    (setq flycheck-display-errors-delay 0)
+    ;; pos-tip on click
+    ;;(setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages)
+    (setq flycheck-highlighting-mode 'sexps) ; highlight expression
+    (setq flycheck-display-errors-delay 0)   ; no delay
+
     ;; colours at http://raebear.net/comp/emacscolors.html
     (set-face-attribute 'flycheck-error nil
                         :foreground "red"
                         :background "pink"
-                        :underline "red"
-                        )
+                        :underline "red")
+
     (set-face-attribute 'flycheck-warning nil
                         :foreground "black"
                         :background "cornsilk"
-                        :underline "maroon"
-                        )
-     (set-face-attribute 'flycheck-info nil
-                         :foreground "blue4"
-                         :background "LightBlue1"
-                         :underline "ForestGreen"
-                         )))
+                        :underline "maroon")
+
+    (set-face-attribute 'flycheck-info nil
+                        :foreground "blue4"
+                        :background "LightBlue1"
+                        :underline "ForestGreen")
+    ))
 
 ;;------------------------------------------------------------------------------
 ;; No auto-indent
-(defvar whitespace-langs
-  '(python-mode
-    yaml-mode
-    haskell-mode
-    literate-haskell-mode))
-(dolist (mode whitespace-langs)
-  (add-hook (intern (format "%s-hook" mode))
-            (lambda ()
-              (electric-indent-mode -1)
-              (electric-pair-mode -1))))
+(let ((whitespace-langs '(python-mode
+                          yaml-mode
+                          haskell-mode
+                          literate-haskell-mode)))
+  (dolist (mode whitespace-langs)
+    (add-hook (intern (format "%s-hook" mode))
+              (lambda ()
+                (electric-indent-mode -1)
+                (electric-pair-mode -1)))))
 
 ;;------------------------------------------------------------------------------
 ;; whitespace-mode
