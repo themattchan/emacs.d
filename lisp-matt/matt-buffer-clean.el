@@ -52,13 +52,4 @@ You can disable clean-buffer-list by (cancel-timer clean-buffer-list-timer).")
                     "*RE-Builder*"
                     "*vc-change-log*"))))
 
-;; Invoking with M-x is easier
-(defun close-all-buffers ()
-  (interactive)
-  (mapc 'kill-buffer (buffer-list)))
-
-(defun close-all-except-current-buffer ()
-  (interactive)
-  (mapc 'kill-buffer (cdr (buffer-list (current-buffer)))))
-
 (provide 'matt-buffer-clean)

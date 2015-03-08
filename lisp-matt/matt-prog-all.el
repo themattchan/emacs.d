@@ -8,8 +8,10 @@
 
 ;; highlights, line numbers, etc, common to all programming modes
 (add-hook 'prog-mode-hook 'ac-ispell-ac-setup)
+
 ;;(autoload 'rainbow-delimiters "rainbow-delimiters" nil t)
 ;;(add-hook 'prog-mode-hook 'rainbow-delimiters-autoloads)
+
 (add-hook 'prog-mode-hook
           (lambda()
             ;;(matt/load-theme 'adwaita)
@@ -45,9 +47,11 @@
 (eval-after-load 'flycheck
   (lambda ()
     ;; pos-tip on click
-    ;;(setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages)
+    (setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages)
     (setq flycheck-highlighting-mode 'sexps) ; highlight expression
     (setq flycheck-display-errors-delay 0)   ; no delay
+
+    '(add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode)
 
     ;; colours at http://raebear.net/comp/emacscolors.html
     (set-face-attribute 'flycheck-error nil
@@ -142,11 +146,10 @@
   (interactive)
   (let ((next-line-len (ring-ref line-lens
                                  (+ 1 (ring-ref line-lens fill-column)))))
-    (progn
       (set-fill-column next-line-len)
       (setq whitespace-line-column next-line-len)
       (whitespace-mode 0)
-      (whitespace-mode 1))))
+      (whitespace-mode 1)))
 
 (global-set-key (kbd "C-x t l") 'toggle-line-length)
 

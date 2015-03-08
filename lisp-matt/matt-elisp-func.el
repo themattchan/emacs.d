@@ -37,6 +37,15 @@ or just one char if that's not possible"
             (backward-delete-char-untabify (- (match-end 1) (match-beginning 1)))
           (call-interactively 'backward-delete-char-untabify))))))
 
+;; Invoking with M-x is easier
+(defun close-all-buffers ()
+  (interactive)
+  (mapc 'kill-buffer (buffer-list)))
+
+(defun close-all-except-current-buffer ()
+  (interactive)
+  (mapc 'kill-buffer (cdr (buffer-list (current-buffer)))))
+
 ;; (defun do-marked-files (fun)
 ;;   (dolist (file (dired-get-marked-files))
 ;;     (find-file file)

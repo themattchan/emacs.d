@@ -88,6 +88,10 @@
 ;; (icicle-mode t)
 
 ;;------------------------------------------------------------------------------
+;; winner-mode
+(winner-mode 1)
+
+;;------------------------------------------------------------------------------
 ;; Recent files
 (autoload 'recentf "recentf")
 (recentf-mode 1)
@@ -110,14 +114,16 @@
  ;;inhibit-startup-echo-area-message "matt"
  ;;initial-buffer-choice                    ; Open to some file
  menu-prompting nil
- confirm-kill-emacs 'y-or-n-p           ; Ask before exit - takes a while to load, y'know?
+ confirm-kill-emacs 'y-or-n-p ; Ask before exit - takes a while to load, y'know?
 
  ;;frame-title-format '(buffer-file-name "%f" "%b") ; Full file path in title
- display-warning-minimum-level 'error            ; Turn off annoying warning messages
- disabled-command-function nil                   ; Don't second-guess advanced commands
+ display-warning-minimum-level 'error   ; Turn off annoying warning messages
+ disabled-command-function nil          ; Don't second-guess advanced commands
 
  ;; mode line customizations
  display-battery-mode t
+ battery-mode-line-format " [%L: %b%p%%]" ; %t for time
+
  line-number-mode t
  column-number-mode t
 
@@ -138,7 +144,7 @@
  ibuffer-default-sorting-mode 'filename/process
 
  ;; font lock
- font-lock-use-fonts '(or (mono) (grayscale))    ; Maximal syntax hilighting
+ font-lock-use-fonts '(or (mono) (grayscale))    ; Maximal syntax highlighting
  font-lock-use-colors '(color)
  font-lock-maximum-decoration t
  font-lock-maximum-size nil
@@ -234,6 +240,8 @@
     (auto-fill-mode             . ""  )
     (flyspell-mode              . ""  )
     (flycheck-mode              . ""  )
+    (subword-mode               . ""  )
+    (yas-minor-mode             . ""  )
 
     ;; Major modes
     (lisp-interaction-mode      . "λeval" )

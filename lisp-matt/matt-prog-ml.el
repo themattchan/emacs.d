@@ -4,11 +4,12 @@
 ;; Haskell
 
 ;; liquidHaskell
-(require 'flycheck-sandbox-hdevtools)
-(require 'flycheck-liquid)
+;;(require 'flycheck-sandbox-hdevtools)
+;;(require 'flycheck-liquid)
 (require 'liquid-tip)
 
-(eval-after-load 'flycheck '(require 'hdevtools))
+;;(eval-after-load 'flycheck '(require 'liquid-hdevtools))
+;;(eval-after-load 'flycheck '(require 'hdevtools))
 
 ;; (add-hook 'haskell-mode-hook
 ;;    (lambda () (define-key haskell-mode-map (kbd "C-c .")
@@ -21,21 +22,23 @@
   (interactive-haskell-mode 1)          ; cabal repl
   (inf-haskell-mode 1)                  ; repl
   (setq indent-tabs-mode nil)
-  (flycheck-select-checker 'haskell-hdevtools)
-  (liquid-tip-init 'ascii)
+;;  (flycheck-select-checker 'haskell-liquid)
+  (liquid-tip-mode 1)
+  (electric-indent-mode 0)
   )
+
 (eval-after-load 'flycheck
   '(add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
 
-(add-hook 'flycheck-after-syntax-check-hook
-          (lambda () (liquid-tip-update 'flycheck)))
+;; (add-hook 'flycheck-after-syntax-check-hook
+;;           (lambda () (liquid-tip-update 'flycheck)))
 
+;;(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 (add-hook 'haskell-mode-hook 'matt/haskell-hooks)
 (add-hook 'literate-haskell-mode-hook 'matt/haskell-hooks)
-(add-hook 'literate-haskell-mode-hook
-          (lambda ()
-            ;; so we can actually see our writings
-            (setq haskell-literate-comment-face 'default)))
+
+;; so we can actually see our writings
+(setq haskell-literate-comment-face 'default)
 
 (defun newline-and-indent-relative ()
   (interactive)

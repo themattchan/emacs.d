@@ -100,7 +100,7 @@
 (require 'matt-keybindings)         ; Fix emacs annoyances, add power
 (require 'matt-interface)           ; Fix Emacs annoyances, add power
 (require 'matt-edit-all)            ; Tabs, fill, undo, ispell, UTF-8, backups
-(require 'matt-buffer-clean)        ; Mostly depreciated
+;;(require 'matt-buffer-clean)        ; Mostly depreciated
 (require 'matt-themes)              ; Mostly depreciated
 
 ;; Hooks for editing

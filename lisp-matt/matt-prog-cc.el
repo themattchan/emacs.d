@@ -23,7 +23,7 @@
 
   ;;(setq-local c-indent-tabs-mode t)           ; tabs please
   (setq-local c-tab-always-indent t)          ; t for tabs, nil for spaces
-  ;;(setq indent-tabs-mode t)
+  (setq-local indent-tabs-mode t)
 
   ;;(setq-local tab-stop-list (number-sequence 8 120 8))
   )
@@ -110,5 +110,6 @@
 
 (add-hook 'java-mode-hook 'matt/java-hooks)
 (add-hook 'java-mode-hook 'matt/c-indent)
+(add-hook 'java-mode-hook (lambda ()  (c-set-offset 'substatement-open 0)))
 
 (provide 'matt-prog-cc)

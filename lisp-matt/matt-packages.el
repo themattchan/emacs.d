@@ -58,4 +58,5 @@
   (loop for pkg in matt/packages
         when (not (package-installed-p pkg)) do (return nil)
         finally (return t)))
+
 (provide 'matt-packages)
