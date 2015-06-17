@@ -174,18 +174,25 @@
 ;; Fonts (face) customization
 (autoload 'faces "faces")
 ;; default font size is 14pt on carbon emacs
-(when (and (window-system) *is-a-mac*)
-  (set-face-attribute 'default nil
-                      :font "Monaco"    ; andale mono
-                      :height 120
-                      :weight 'normal
-                      :width 'normal))
+(when (window-system)
+  (cond
+   (*is-a-mac*
+    (set-face-attribute 'default nil
+                        :font "Monaco"
+                        :height 120    ; default font size is 12pt on carbon emacs
+                        :weight 'normal
+                        :width 'normal))
 
-(when (and (window-system) *is-linux*)
-  (set-face-attribute 'default nil
-                      :font "Monospace-10"
-                      :height 100
-                      :width 'normal))
+   (*is-linux*
+    (set-face-attribute 'default nil
+                        :font "Monospace-10"
+                        :height 100
+                        :width 'normal))
+
+   (*is-windows*
+    (set-face-attribute 'default nil
+                        :font "Lucida Console 10" ; Consolas is also good
+                        :weight 'normal))))
 
 ;;------------------------------------------------------------------------------
 ;; No popups and dialogues. They crash carbon emacs.
