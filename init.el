@@ -11,6 +11,7 @@
       user-mail-address "matt@themattchan.com")
 (defconst *is-a-mac* (eq system-type 'darwin))
 (defconst *is-linux* (member system-type '(gnu gnu/linux gnu/kfreebsd)))
+(defconst *is-windows* (member system-type '(ms-dos windows-nt cygwin)))
 
 ;;==============================================================================
 ;; Setup paths
