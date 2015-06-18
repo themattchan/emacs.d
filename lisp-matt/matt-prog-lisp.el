@@ -1,6 +1,8 @@
 ;;==============================================================================
 ;;                                   (Lisp)
 ;;==============================================================================
+(provide 'matt-prog-lisp)
+
 ;; (defvar lisp-power-map (make-keymap))
 ;; (define-minor-mode lisp-power-mode "Fix keybindings; add power."
 ;;   :lighter " (power)"
@@ -71,5 +73,3 @@
 
 ;; Clojure
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
-
-(provide 'matt-prog-lisp)

@@ -1,6 +1,7 @@
 ;;==============================================================================
 ;; C family common customizations
 ;;==============================================================================
+(provide 'matt-prog-cc)
 ;;
 ;; cc-mode hooks in order:
 ;; 1. c-initialization-hook, init cc mode once per session (i.e. emacs startup)
@@ -111,5 +112,3 @@
 (add-hook 'java-mode-hook 'matt/java-hooks)
 (add-hook 'java-mode-hook 'matt/c-indent)
 (add-hook 'java-mode-hook (lambda ()  (c-set-offset 'substatement-open 0)))
-
-(provide 'matt-prog-cc)

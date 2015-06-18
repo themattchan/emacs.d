@@ -1,6 +1,8 @@
 ;;==============================================================================
 ;;                               Haskell and ML
 ;;==============================================================================
+(provide 'matt-prog-ml)
+
 ;; Haskell
 
 ;; liquidHaskell
@@ -96,5 +98,3 @@
   (flycheck-ocaml-setup))
 
 (add-hook 'tuareg-mode-hook #'merlin-mode)
-
-(provide 'matt-prog-ml)

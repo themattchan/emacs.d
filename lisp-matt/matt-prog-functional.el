@@ -1,3 +1,5 @@
+(provide 'matt-prog-functional)
+
 ;; no tabs in functional langs
 (defvar functional-langs
   '(tuareg-mode
@@ -31,9 +33,7 @@
 
 ;; Proof General and Coq
 ;; TODO: autoload
-(if *is-a-mac*
+(if *is-mac*
     (setq coq-prog-name "/opt/local/bin/coqtop"))
 (load "~/.emacs.d/lisp/ProofGeneral-4.3beta/generic/proof-site.el")
 (setq coq-default-undo-limit 10000)
-
-(provide 'matt-prog-functional)

@@ -60,7 +60,7 @@
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 (add-hook 'LaTeX-mode-hook (setq reftex-plug-into-AUCTeX t))
 ;; breaks dwim or some shit on Arch
-(when *is-a-mac*  (eval-after-load "LaTeX-mode" (require 'auto-complete-auctex)))
+(when *is-mac*  (eval-after-load "LaTeX-mode" (require 'auto-complete-auctex)))
 (autoload 'ac-math "ac-math")
 (defun ac-latex-mode-setup ()         ; add ac-sources to default ac-sources
   (setq ac-sources

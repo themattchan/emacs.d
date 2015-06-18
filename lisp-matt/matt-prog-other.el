@@ -1,3 +1,5 @@
+(provide 'matt-prog-other)
+
 ;; Scala
 ;; scala2-mode handles tabs to 2 spaces by default
 (add-to-list 'auto-mode-alist '("\.scala" . scala-mode) '("\.sbt\'" . scala-mode))
@@ -35,5 +37,3 @@
 ;;              (css-mode "<style +type=\"text/css\"[^>]*>" "</style>")))
 ;;      (setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
 ;;      (multi-web-global-mode 1))))
-
-(provide 'matt-prog-other)

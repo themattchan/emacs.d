@@ -1,6 +1,7 @@
 ;;==============================================================================
 ;;  KEYBINDINGS
 ;;==============================================================================
+(provide 'matt-keybindings)
 
 ;; WARNING:
 ;; uses bind-key, provided by use-package. Make sure you require it before loading!
@@ -156,7 +157,3 @@
 ;; Don't need this anymore, use rectangle-mode
 ;; cua rectangle selection is good.
 ;; (cua-selection-mode 1)
-
-
-
-(provide 'matt-keybindings)

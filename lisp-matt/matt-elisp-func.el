@@ -111,7 +111,7 @@ With a prefix ARG always prompt for command to use."
   (when buffer-file-name
     (shell-command (concat
                     (cond
-                     ((and (not arg) *is-a-mac*) "open")
+                     ((and (not arg) *is-mac*) "open")
                      ((and (not arg) *is-linux*) "xdg-open")
                      (t (read-shell-command "Open current file with: ")))
                     " "

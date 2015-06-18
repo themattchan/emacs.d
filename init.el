@@ -7,10 +7,13 @@
 ;;==============================================================================
 ;; Personalisations and globals
 ;;==============================================================================
-(setq user-full-name "Matthew Chan"
-      user-mail-address "matt@themattchan.com")
-(defconst *is-a-mac* (eq system-type 'darwin))
-(defconst *is-linux* (member system-type '(gnu gnu/linux gnu/kfreebsd)))
+
+(setq user-full-name      "Matthew Chan"
+      user-mail-address   "matt@themattchan.com")
+
+
+(defconst *is-mac*     (eq system-type 'darwin))
+(defconst *is-linux*   (member system-type '(gnu gnu/linux gnu/kfreebsd)))
 (defconst *is-windows* (member system-type '(ms-dos windows-nt cygwin)))
 
 ;;==============================================================================
@@ -31,26 +34,26 @@
     "/usr/sbin"
     "/bin"
     "/sbin"
-    "/Users/matt/Library/Haskell/bin"        ; for hdevtools
+    "/Users/matt/Library/Haskell/bin"        ; for hdevtools, ghc-mod
     ))
 
-;; set PATHs for Unix-based systems
+;; Set PATHs for Unix-based systems
 (setenv "PATH" (mapconcat #'identity *my-path-list* ":"))
 (setq exec-path (append exec-path *my-path-list*))
 
-(when *is-a-mac* (setq path-to-ctags "/opt/local/bin/ctags"))
+(when *is-mac* (setq path-to-ctags "/opt/local/bin/ctags"))
 
 ;; Set PYTHONPATH, because we don't load .bashrc
 ;;(setenv "PYTHONPATH" "/usr/local/lib/python2.7/site-packages:")
 
-;; show stack trace on error
+;; Show stack trace on error
 ;; (setq debug-on-error t)
 
-;; set file paths before anything else
-;; set default search path
+;; Set file paths before anything else
+;; default search path
 (setq default-directory "~/Dropbox/" )
 
-;; set load path for extra packages
+;; load path for extra packages
 (add-to-list 'load-path "~/.emacs.d/lisp-matt/")
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
@@ -59,20 +62,22 @@
 
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 
+;; customize.el settings location
+(setq custom-file "~/.emacs.d/custom-24.el")
+(load custom-file)
+
 ;;==============================================================================
 ;; And packages
 ;;==============================================================================
+
 (require 'package)
+
 ;; (add-to-list 'package-archives
 ;;              '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (setq package-archive-enable-alist '(("melpa" deft magit)))
 (package-initialize)
-
-;; M-x customize-* settings location
-(setq custom-file "~/.emacs.d/custom-24.el")
-(load custom-file)
 
 ;; Required packages. Never leave home without them.
 (require 'matt-packages)
@@ -84,7 +89,7 @@
       (package-install pkg))))
 
 (require 'use-package)                  ; also provides bind-key
-(require 'saveplace)
+(require 'saveplace)                    ; what is this stuff...
 (require 'uniquify)
 (require 'ansi-color)
 (require 'recentf)
@@ -92,7 +97,7 @@
 ;;==============================================================================
 ;; Now load my configs
 ;;==============================================================================
-(setq load-prefer-newer t)          ; Load latest bytecode
+(setq load-prefer-newer t)           ; Load latest bytecode
 
 (let ((matt-configs
        '(;; Emacs Lisp functions
@@ -114,7 +119,7 @@
          matt-prog-functional        ; Settings for all functional langs
          matt-prog-lisp              ; Lisp family: CL, Scheme, Racket, Clojure
          matt-prog-ml                ; ML family: Haskell, OCaml
-         matt-prog-cc                ; C family: C, C++, Java, (and Asm)
+         matt-prog-cc                ; C family: C, C++, Java, (and ASM)
          matt-prog-other             ; Other langs: Scala, Python, web stuff
 
          ;; Misc

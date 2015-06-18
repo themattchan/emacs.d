@@ -1,6 +1,8 @@
 ;;==============================================================================
 ;; STARTUP, UI, AND GENERAL SETTINGS
 ;;==============================================================================
+(provide 'matt-interface)
+
 ;;------------------------------------------------------------------------------
 ;; Mac open new files in the existing frame
 (setq ns-pop-up-frames nil)
@@ -183,7 +185,7 @@
 ;; default font size is 14pt on carbon emacs
 (when (window-system)
   (cond
-   (*is-a-mac*
+   (*is-mac*
     (set-face-attribute 'default nil
                         :font "Monaco"
                         :height 120    ; default font size is 12pt on carbon emacs
@@ -295,5 +297,3 @@ want to use in the modeline *in lieu of* the original.")
                (setq mode-name mode-str)))))
 (add-hook 'init-hook 'clean-mode-line)
 (add-hook 'after-change-major-mode-hook 'clean-mode-line)
-
-(provide 'matt-interface)

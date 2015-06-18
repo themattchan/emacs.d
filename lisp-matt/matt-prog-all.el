@@ -1,6 +1,7 @@
 ;;==============================================================================
 ;; PROGRAMMING MODES
 ;;==============================================================================
+(provide 'matt-prog-all)
 
 ;; highlight 80+ char overflows in programming modes
 (autoload 'whitespace-mode "whitespace" "whitespace-mode" t nil)
@@ -210,5 +211,3 @@
 (global-set-key (kbd "C-@") 'ecb-goto-window-sources)
 (global-set-key (kbd "C-#") 'ecb-goto-window-methods)
 (global-set-key (kbd "C-$") 'ecb-goto-window-compilation)
-
-(provide 'matt-prog-all)

@@ -63,7 +63,7 @@
 
 ;;------------------------------------------------------------------------------
 ;; flyspell - aspell is better
-(if *is-a-mac*
+(if *is-mac*
     (setq-default ispell-program-name "/opt/local/bin/aspell")
   (setq-default ispell-program-name "/usr/bin/aspell"))
 

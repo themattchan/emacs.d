@@ -1,6 +1,8 @@
 ;;==============================================================================
 ;; BUFFER SAVING AND CLEANUP
 ;;==============================================================================
+(provide 'matt-buffer-clean)
+
 ;; (desktop-save-mode 1) ;;save & autoload buffers
 ;; (setq desktop-dirname             "~/.emacs.d/desktop/"
 ;;       desktop-path                '("~/.emacs.d/desktop")
@@ -52,5 +54,3 @@ You can disable clean-buffer-list by (cancel-timer clean-buffer-list-timer).")
                     "*RE-Builder*"
                     "*vc-change-log*"))
      ))
-
-(provide 'matt-buffer-clean)
