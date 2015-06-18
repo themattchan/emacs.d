@@ -18,10 +18,10 @@
             (electric-indent-mode 1)    ; auto indent
             (linum-mode 1)
             (show-paren-mode 1)
-            (hl-line-mode 1)
+            (hl-line-mode 1)            ; highlight current line
             (auto-fill-mode 1)
             (flyspell-prog-mode)
-            (flycheck-mode)             ; flymake is depreciated
+            (flycheck-mode)             ; flymake is deprecated
             (whitespace-mode)
             (subword-mode)
 
@@ -51,7 +51,7 @@
     (setq flycheck-highlighting-mode 'sexps) ; highlight expression
     (setq flycheck-display-errors-delay 0)   ; no delay
 
-    '(add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode)
+    (add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode)
 
     ;; colours at http://raebear.net/comp/emacscolors.html
     (set-face-attribute 'flycheck-error nil

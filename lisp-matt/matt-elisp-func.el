@@ -1,27 +1,37 @@
 ;;==============================================================================
 ;; FUNCTIONS
 ;;==============================================================================
-(defun matt/recompile-settings ()
-  (interactive)
-  (byte-recompile-file "~/.emacs.d/init.el" 0)
-  (byte-recompile-file "~/.emacs.d/custom-24.el" 0)
-  (byte-recompile-directory "~/.emacs.d/lisp-matt" 0)
-  (load-file "~/.emacs.d/init.elc"))
 
-;; only one theme at a time
+;; only one theme at a time, auto disable prev loaded theme
 (defadvice load-theme
     (before theme-dont-propagate activate)
   (mapc #'disable-theme custom-enabled-themes))
 
-(defun matt/load-theme (theme)
-  (if (window-system)
-      (load-theme theme)))
+
 
 ;; expand filled paragraph to a line
 (defun unfill-paragraph ()
   (interactive)
   (let ((fill-column (point-max)))
     (fill-paragraph nil)))
+
+
+;;------------------------------------------------------------------------------
+;; uniquify lines
+;; http://emacswiki.org/emacs/DuplicateLines
+(defun uniquify-region-lines (beg end)
+  "Remove duplicate adjacent lines in region."
+  (interactive "*r")
+  (save-excursion
+    (goto-char beg)
+    (while (re-search-forward "^\\(.*\n\\)\\1+" end t)
+      (replace-match "\\1"))))
+
+(defun uniquify-buffer-lines ()
+  "Remove duplicate adjacent lines in the current buffer."
+  (interactive)
+  (uniquify-region-lines (point-min) (point-max)))
+
 
 (defun backward-delete-whitespace-to-column ()
   "delete back to the previous column of whitespace, or as much whitespace as possible,

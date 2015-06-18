@@ -50,6 +50,7 @@ You can disable clean-buffer-list by (cancel-timer clean-buffer-list-timer).")
                     "*Finder Category*"
                     "*Finder-package*"
                     "*RE-Builder*"
-                    "*vc-change-log*"))))
+                    "*vc-change-log*"))
+     ))
 
 (provide 'matt-buffer-clean)

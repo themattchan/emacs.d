@@ -13,7 +13,7 @@
 ;; Kill UI cruft
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-;; want menu bar only in guis
+;; Want menu bar only in GUIs
 (cond ((not window-system)
        (menu-bar-mode -1)))
 
@@ -33,7 +33,11 @@
 ;; Smart mode line
 (autoload 'smart-mode-line "sml")
 (sml/setup)
-
+'(:eval (if (use-region-p)
+    (format "%d"
+      (count-words-region (point) (mark)))
+  (format "%d"
+    (count-words-region (point-min) (point-max)))))
 ;; show battery
 ;; (add-hook 'after-init-hook #'fancy-battery-mode)
 ;; (fancy-battery-mode)
@@ -127,6 +131,9 @@
  line-number-mode t
  column-number-mode t
 
+
+ ;; square cursor
+ cursor-type 'box
  ;; scrolling does not move cursor
  scroll-preserve-screen-position t
  ;; use wheel
@@ -221,6 +228,10 @@
 (defalias 'sb 'sr-speedbar-toggle)
 (defalias 'rs 'replace-string)
 (defalias 'rex 'replace-regexp)
+
+;;------------------------------------------------------------------------------
+;; Moe-theme
+(require 'moe-theme)
 
 ;;------------------------------------------------------------------------------
 ;; Unclutter mode line

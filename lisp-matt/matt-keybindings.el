@@ -7,8 +7,8 @@
 ;; to bind to a mode map, do (bind-key <key> <func> &<map>)
 ;; likewise, to unbind a key from a map, (unbind-key <key> &<map>)
 
-;; fix modifier keys on Mac GUI
-;; carbon emacs. Assume control is caps
+;; Fix modifier keys on Mac GUI
+;; Carbon Emacs. Assume Control is Caps
 (setq
  ns-command-modifier 'meta              ; L command -> M
  ns-option-modifier 'super              ; L option -> super
@@ -21,25 +21,35 @@
  ns-right-option-modifier 'hyper        ; R option -> hyper
  )
 
+
 ;; type brackets in pairs with Super and right hands's home-row
 ;; (bind-key "s-j" (lambda () (interactive) (insert "()" (backward-char 1))))
 ;; (bind-key "s-k" (lambda () (interactive) (insert "[]" (backward-char 1))))
 ;; (bind-key "s-l" (lambda () (interactive) (insert "{}" (backward-char 1))))
 
+
 (bind-key "C-;" 'comment-or-uncomment-region)
+
+
 (bind-key "M-/" 'hippie-expand) ; replace default expand command
 ;; backtab is now yasnippet complete snippet
 ;;(bind-key "<backtab>" 'hippie-expand) ; rebind said command to shift-tab
 
+
 ;; Transpose stuff with M-t
+;; Put cursor in between <item1> | <item2>
+;; C-t is transpose-char
 (unbind-key "M-t") ;; which used to be transpose-words
 (bind-key "M-t M-l" 'transpose-lines)
 ;; (bind-key "M-t M-w" 'transpose-words)
 (bind-key "M-t M-t" 'transpose-words)
 (bind-key "M-t M-s" 'transpose-sexps)
 
+
+;; Alignment
 (bind-key "C-x a r" 'align-regexp)
 (bind-key "M-{" 'align)
+
 
 ;; Navigation
 ;; backwards then forwards
@@ -58,6 +68,7 @@
 (bind-key "M-[" 'backward-paragraph)
 (bind-key "M-]" 'forward-paragraph)
 
+
 ;; Cut copy paste (there is no delete)
 ;; -----------------------------------
 ;; DEL backspace
@@ -68,14 +79,19 @@
 ;; M-w copy selection
 ;; C-y yank (paste)
 ;; M-y rotate kill ring
+
+
 ;; also alias to C-Y
 ;; (bind-key "C-y" 'yank)
 ;; (bind-key "C-Y" 'yank-pop)
+
+
 ;; ;; M-Y rotate kill ring forwards
 (defun yank-pop-forwards (arg)
       (interactive "p")
       (yank-pop (- arg)))
 (bind-key "M-Y" 'yank-pop-forwards)
+
 ;; undo/redo
 ;; C-/ undo, C-? (C-shift-/) redo
 ;; (bind-key "C-x u" 'undo)
@@ -100,10 +116,10 @@
 ;;              (lambda () (interactive) (kill-buffer (current-buffer))))
 
 ;; cycle through split-panes
-(bind-key "C-c n"
-                (lambda () (interactive) (select-window (next-window))))
-(bind-key "C-c p"
-                (lambda () (interactive) (select-window (previous-window))))
+(bind-key "C-c n" (lambda () (interactive) (select-window (next-window))))
+(bind-key "C-c p" (lambda () (interactive) (select-window (previous-window))))
+
+
 ;; cycle through frames (on the terminal, these fill the screen like tabs)
 ;; C-x 5 2 make new frame
 ;; C-x 5 b open buffer in new frame
@@ -115,17 +131,17 @@
 ;; easier split pane navigation
 (if (window-system)
     (progn
-      (bind-key "s-S-<left>" 'windmove-left)   ; move to left window
-      (bind-key "s-S-<right>" 'windmove-right) ; move to right window
-      (bind-key "s-S-<up>" 'windmove-up)       ; move to upper window
-      (bind-key "s-S-<down>" 'windmove-down)
-      (bind-key "s-<left>" 'previous-buffer) ; move to prev buffer
-      (bind-key "s-<right>" 'next-buffer))   ; move to next buffer
-  (progn                             ;; terminal doesn't like the meta key
-    (bind-key "C-c <left>"  'windmove-left)
-    (bind-key "C-c <right>" 'windmove-right)
-    (bind-key "C-c <up>"    'windmove-up)
-    (bind-key "C-c <down>"  'windmove-down)))
+      (bind-key "s-S-<left>"    'windmove-left)     ; move to left window
+      (bind-key "s-S-<right>"   'windmove-right)    ; move to right window
+      (bind-key "s-S-<up>"      'windmove-up)       ; move to upper window
+      (bind-key "s-S-<down>"    'windmove-down)
+      (bind-key "s-<left>"      'previous-buffer)   ; move to prev buffer
+      (bind-key "s-<right>"     'next-buffer))      ; move to next buffer
+  (progn ;; terminal doesn't like the meta key
+    (bind-key "C-c <left>"      'windmove-left)
+    (bind-key "C-c <right>"     'windmove-right)
+    (bind-key "C-c <up>"        'windmove-up)
+    (bind-key "C-c <down>"      'windmove-down)))
 
 (defun toggle-fullscreen-linux ()
   "Toggle full screen on X11"
@@ -137,6 +153,10 @@
 
 (when *is-linux* (bind-key "<f11>" 'toggle-fullscreen-linux))
 
+;; Don't need this anymore, use rectangle-mode
 ;; cua rectangle selection is good.
-(cua-selection-mode 1)
+;; (cua-selection-mode 1)
+
+
+
 (provide 'matt-keybindings)

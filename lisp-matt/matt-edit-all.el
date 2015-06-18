@@ -42,7 +42,7 @@
  buffer-file-coding-system 'utf-8-unix
  default-file-name-coding-system 'utf-8-unix
  default-keyboard-coding-system 'utf-8-unix
- default-process-coding-system '(utf-8-unix . utf-8-unix)
+ default-process-coding-system '(utf-8-unix .   utf-8-unix)
  default-sendmail-coding-system 'utf-8-unix
  default-terminal-coding-system 'utf-8-unix
 
@@ -104,10 +104,10 @@
   ;; list of all sources for reference
   '(;; ac-source-abbrev
     ;; ac-source-dictionary
-    ;; ac-source-eclim
+    ac-source-eclim
     ;; ac-source-features
     ;; ac-source-files-in-current-dir
-    ;; ac-source-functions
+    ac-source-functions
     ;; ac-source-gtags
     ;; ac-source-imenu
     ;; ac-source-ispell
@@ -186,5 +186,6 @@
 (eval-after-load "auto-complete"
   '(progn
      (ac-ispell-setup)))
+
 
 (provide 'matt-edit-all)

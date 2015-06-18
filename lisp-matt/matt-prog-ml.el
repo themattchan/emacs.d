@@ -17,6 +17,11 @@
 
 ;;(add-hook 'haskell-mode-hook (local-set-key (kbd "RET") 'newline-and-indent-relative))
 
+;; ghc-mod
+(autoload 'ghc-init "ghc" nil t)
+(autoload 'ghc-debug "ghc" nil t)
+(add-hook 'haskell-mode-hook (lambda () (ghc-init)))
+
 (defun matt/haskell-hooks ()
   (haskell-indentation-mode 1)
   (interactive-haskell-mode 1)          ; cabal repl
