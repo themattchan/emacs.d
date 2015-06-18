@@ -94,30 +94,34 @@
 ;;==============================================================================
 (setq load-prefer-newer t)          ; Load latest bytecode
 
-;; Emacs Lisp functions
-(require 'matt-elisp-func)          ; Require first! Functions get used later
+(let ((matt-configs
+       '(;; Emacs Lisp functions
+         matt-elisp-func             ; Require first! Functions get used later
 
-;; General interface settings
-(require 'matt-keybindings)         ; Fix emacs annoyances, add power
-(require 'matt-interface)           ; Fix Emacs annoyances, add power
-(require 'matt-edit-all)            ; Tabs, fill, undo, ispell, UTF-8, backups
-;;(require 'matt-buffer-clean)        ; Mostly deprecated
-(require 'matt-themes)              ; Mostly deprecated
+         ;; General interface settings
+         matt-keybindings            ; Fix Emacs annoyances, add power
+         matt-interface              ; Fix Emacs annoyances, add power
+         matt-edit-all               ; Tabs, fill, undo, ispell, UTF-8, backups
+         matt-themes                 ; Mostly deprecated
 
-;; Hooks for editing
-;;; Text documents
-(require 'matt-documents)           ; Text: Markdown, LaTeX, Org-mode
-(require 'matt-html)                ; Web markup: HTML, CSS
+         ;; Hooks for editing
+         ;; Text documents
+         matt-documents              ; Text: Markdown, LaTeX, Org-mode
+         matt-html                   ; Web markup: HTML, CSS
 
-;;; Programming
-(require 'matt-prog-all)            ; Settings for all programming modes
-(require 'matt-prog-functional)     ; Settings for all functional langs
-(require 'matt-prog-lisp)           ; Lisp family: CL, Scheme, Racket, Clojure
-(require 'matt-prog-ml)             ; ML family: Haskell, OCaml
-(require 'matt-prog-cc)             ; C family: C, C++, Java, (and Asm)
-(require 'matt-prog-other)          ; Other langs: Scala, Python, web stuff
+         ;; Programming
+         matt-prog-all               ; Settings for all programming modes
+         matt-prog-functional        ; Settings for all functional langs
+         matt-prog-lisp              ; Lisp family: CL, Scheme, Racket, Clojure
+         matt-prog-ml                ; ML family: Haskell, OCaml
+         matt-prog-cc                ; C family: C, C++, Java, (and Asm)
+         matt-prog-other             ; Other langs: Scala, Python, web stuff
 
-;; Misc
-(require 'matt-utils)               ; System utilities: terminal, dired...
+         ;; Misc
+         matt-utils                  ; System utilities: terminal, dired...
+         )))
+
+  (dolist (config matt-configs)
+    (require config)))
 
 ;;(message "%s" (emacs-init-time))
