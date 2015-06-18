@@ -101,12 +101,13 @@
 (require 'matt-keybindings)         ; Fix emacs annoyances, add power
 (require 'matt-interface)           ; Fix Emacs annoyances, add power
 (require 'matt-edit-all)            ; Tabs, fill, undo, ispell, UTF-8, backups
-;;(require 'matt-buffer-clean)        ; Mostly depreciated
-(require 'matt-themes)              ; Mostly depreciated
+;;(require 'matt-buffer-clean)        ; Mostly deprecated
+(require 'matt-themes)              ; Mostly deprecated
 
 ;; Hooks for editing
 ;;; Text documents
-(require 'matt-writing)             ; Text: Markdown, LaTeX, Org-mode
+(require 'matt-documents)           ; Text: Markdown, LaTeX, Org-mode
+(require 'matt-html)                ; Web markup: HTML, CSS
 
 ;;; Programming
 (require 'matt-prog-all)            ; Settings for all programming modes
