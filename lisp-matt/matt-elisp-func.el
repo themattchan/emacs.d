@@ -39,7 +39,7 @@ or just one char if that's not possible"
   (interactive)
   (if indent-tabs-mode
       (call-interactively 'backward-delete-char-untabify)
-    (let ((movement (% (current-column) tab-width))
+    (let ((movement (% (current-column) txab-width))
           (p (point)))
       (when (= movement 0) (setq movement tab-width))
       (save-match-data

@@ -4,6 +4,13 @@
 ;;==============================================================================
 ;;==============================================================================
 
+(defun matt/recompile-settings ()
+  (interactive)
+  (byte-recompile-file "~/.emacs.d/init.el" 0)
+  (byte-recompile-file "~/.emacs.d/custom-24.el" 0)
+  (byte-recompile-directory "~/.emacs.d/lisp-matt" 0)
+  (load-file "~/.emacs.d/init.elc"))
+
 ;;==============================================================================
 ;; Personalisations and globals
 ;;==============================================================================
@@ -127,6 +134,7 @@
          )))
 
   (dolist (config matt-configs)
-    (require config)))
+    (require config)
+    (message "+ Loaded %s" config)))
 
-;;(message "%s" (emacs-init-time))
+;; (message "Emacs started in %s." (emacs-init-time))
