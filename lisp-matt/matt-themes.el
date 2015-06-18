@@ -1,6 +1,7 @@
 ;;==============================================================================
 ;; Themes
 ;;==============================================================================
+(provide 'matt-themes)
 
 (defvar matt/themes '(monokai spacegray))
 
@@ -9,5 +10,3 @@
       ;; default theme on terminals
       (load-theme 'monokai t)           ; wombat
       (set-background-color "black")))
-
-(provide 'matt-themes)

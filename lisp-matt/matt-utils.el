@@ -1,3 +1,5 @@
+(provide 'matt-utils)
+
 ;; dired
 ;; hide the -al stuff, toggle with ( and )
 (require 'dired-details+)
@@ -27,5 +29,3 @@
 ;; tramp mode
 (setq tramp-default-method "scpx")
 (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
-
-(provide 'matt-utils)

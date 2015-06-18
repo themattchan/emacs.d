@@ -1,7 +1,9 @@
+(provide 'matt-packages)
+
+;; EXPORTED 6/6/15
+;; Don't know what half of this shit is...
 (defvar matt/packages
-  ;; Don't know what half of this shit is...
-  '(;; EXPORTED 6/6/15
-    ac-c-headers
+  '(ac-c-headers
     ac-cider
     ac-etags
     ac-geiser
@@ -208,7 +210,6 @@
 
 (defun matt/packages-installed-p ()
   (loop for pkg in matt/packages
-        when (not (package-installed-p pkg)) do (return nil)
+        when (not (package-installed-p pkg))
+        do (return nil)
         finally (return t)))
-
-(provide 'matt-packages)
