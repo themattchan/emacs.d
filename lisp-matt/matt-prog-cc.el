@@ -51,8 +51,10 @@
                                     (other     . "free-group-style")))
 
             ;; (setq show-paren-style 'expression) ; highlight blocks
+
+            ;; use /law
             (c-toggle-electric-state 1)
-            (c-toggle-auto-newline 0)
+            ;;(c-toggle-auto-newline 0)
 
             ;; subword editing and movement to deal with CamelCase
             (subword-mode 1)
@@ -104,10 +106,29 @@
 (autoload 'jtags-mode "jtags" "Toggle jtags mode." t)
 
 (defun matt/java-hooks ()
-  "Treat Java 1.5 @-style annotations as comments."
+  ;; Treat Java 1.5 @-style annotations as comments.
   (setq c-comment-start-regexp "(@|/(/|[*][*]?))")
   (modify-syntax-entry ?@ "< b" java-mode-syntax-table)
-  (jtags-mode))
+
+  (jtags-mode)
+
+  ;; Don't newline open curly
+  (setq c-hanging-braces-alist
+        (append '((defun-open after)
+                  (defun-close before after)
+                  (class-open after)
+                  (class-close before after)
+                  (namespace-open after)
+                  (inline-open after)
+                  (inline-close before after)
+                  (block-open after)
+                  (block-close . c-snug-do-while)
+                  (extern-lang-open after)
+                  (extern-lang-close after)
+                  (statement-case-open after)
+                  (substatement-open after))
+                'c-hanging-braces-alist)))
+
 
 (add-hook 'java-mode-hook 'matt/java-hooks)
 (add-hook 'java-mode-hook 'matt/c-indent)

@@ -14,11 +14,11 @@
 (add-hook 'text-mode-hook 'ac-ispell-ac-setup)
 (add-hook 'text-mode-hook
           (lambda ()
-            ;;(matt/load-theme 'soft-stone)
             (linum-mode 0)
             (visual-line-mode 1)
             (flyspell-mode 1)
-            (pandoc-mode 1)              ; (turn-on-pandoc)
+            ;;(pandoc-mode 1)
+            ;(turn-on-pandoc)
             (setq
              ;; tabs to spaces in text mode
              indent-tabs-mode nil
@@ -96,7 +96,7 @@
                              'check-parens
                              nil t))))))
 
-(add-hook 'markdown-mode-hook 'turn-on-pandoc)
+;(add-hook 'markdown-mode-hook 'turn-on-pandoc)
 
 ;;------------------------------------------------------------------------------
 ;; Org-mode

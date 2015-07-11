@@ -35,11 +35,11 @@
 ;; Smart mode line
 (autoload 'smart-mode-line "sml")
 (sml/setup)
-'(:eval (if (use-region-p)
-    (format "%d"
-      (count-words-region (point) (mark)))
-  (format "%d"
-    (count-words-region (point-min) (point-max)))))
+;; '(:eval (if (use-region-p)
+;;     (format "%d"
+;;       (count-words-region (point) (mark)))
+;;   (format "%d"
+;;     (count-words-region (point-min) (point-max)))))
 ;; show battery
 ;; (add-hook 'after-init-hook #'fancy-battery-mode)
 ;; (fancy-battery-mode)
@@ -55,37 +55,93 @@
 ;; isearch buffer switching
 (icomplete-mode 1)
 
-;; helm
-;;(helm-mode 1)
+;; helm-mode
+;; From Bryans's config
+;; https://github.com/bryangarza/dot-emacs/blob/master/bryan/bryan-helm.el
+(use-package helm
+  :init
+  (progn
+    (require 'helm-config)
+    (when (executable-find "curl")
+      (setq helm-google-suggest-use-curl-p t))
+    (setq
+     helm-candidate-number-limit           100
+     helm-autoresize-max-height            40 ; it is %.
+     helm-scroll-amount                    8
+     helm-split-window-in-side-p           t
+     helm-move-to-line-cycle-in-source     t
+     helm-ff-search-library-in-sexp        t
+     helm-ff-file-name-history-use-recentf t
+     helm-M-x-fuzzy-match                  t
+     helm-quick-update                     t
+     helm-bookmark-show-location           t
+     helm-buffers-fuzzy-matching           t
+     helm-apropos-fuzzy-match              t
+     helm-recentf-fuzzy-match              t
+     helm-locate-fuzzy-match               t
+     helm-file-cache-fuzzy-match           t
+     helm-semantic-fuzzy-match             t
+     helm-imenu-fuzzy-match                t
+     helm-lisp-fuzzy-completion            t)
 
-;; ido
-(autoload 'ido "ido")
-;(autoload 'flx-ido "flx-ido")
-(ido-mode 'both)
-(ido-everywhere 1)
-;(flx-ido-mode 1)
+    (helm-mode)
+    (add-to-list 'helm-sources-using-default-as-input 'helm-source-man-pages)
+    (ido-mode -1) ; just in case
+    (helm-autoresize-mode t)
 
-(setq
- ido-save-directory-list-file "~/.emacs.d/cache/ido.last"
+    (global-unset-key (kbd "C-x c"))
+    (bind-keys
+     :map helm-map
+     ("<tab>" . helm-execute-persistent-action) ; rebind tab to run persistent action
+     ("C-i"   . helm-execute-persistent-action) ; make TAB works in terminal
+     ("C-z"   . helm-select-action))            ; list actions using C-z
+    (bind-key "C-c C-l" 'helm-comint-input-ring shell-mode-map)
+    (bind-key "C-c C-l" 'helm-minibuffer-history minibuffer-local-map))
 
- ido-ignore-buffers ;; ignore these guys
- '("\\` " "^\*Mess" "^\*Back" ".*Completion" "^\*Ido" "^\*trace"
-   "^\*compilation" "^\*GTAGS" "^session\.*" "^\*")
- ido-work-directory-list '("~/" "~/Desktop" "~/Documents" "~src")
- ido-case-fold  t                    ; be case-insensitive
+  :bind
+  (("C-c h"     . helm-command-prefix)
+   ("M-x"       . helm-M-x)
+   ("s-m"       . helm-man-woman)
+   ("M-y"       . helm-show-kill-ring)
+   ("C-x b"     . helm-mini)
+   ("C-x C-f"   . helm-find-files)
+   ("s-f"       . helm-find-files)
+   ("s-b"       . helm-mini)
+   ("C-h SPC"   . helm-all-mark-rings)
+   ("C-c h M-:" . helm-eval-expression-with-eldoc)
+   ("C-c h o"   . helm-occur)
+   ("s-F"       . helm-occur)))
 
- ido-enable-last-directory-history t ; remember last used dirs
- ido-max-work-directory-list 30      ; should be enough
- ido-max-work-file-list      50      ; remember many
- ido-use-filename-at-point nil       ; don't use filename at point (annoying)
- ido-use-url-at-point nil            ; don't use url at point (annoying)
 
- ido-enable-flex-matching nil        ; don't try to be too smart
- ido-max-prospects 8                 ; don't spam my minibuffer
- ido-confirm-unique-completion t     ; wait for RET, even with unique completion
- ido-use-virtual-buffers t
- ido-use-faces nil
- )
+;; DEPRECATE
+;; ;; ido
+;; (autoload 'ido "ido")
+;; ;(autoload 'flx-ido "flx-ido")
+;; (ido-mode 'both)
+;; (ido-everywhere 1)
+;; ;(flx-ido-mode 1)
+
+;; (setq
+;;  ido-save-directory-list-file "~/.emacs.d/cache/ido.last"
+
+;;  ido-ignore-buffers ;; ignore these guys
+;;  '("\\` " "^\*Mess" "^\*Back" ".*Completion" "^\*Ido" "^\*trace"
+;;    "^\*compilation" "^\*GTAGS" "^session\.*" "^\*")
+;;  ido-work-directory-list '("~/" "~/Desktop" "~/Documents" "~src")
+;;  ido-case-fold  t                    ; be case-insensitive
+
+;;  ido-enable-last-directory-history t ; remember last used dirs
+;;  ido-max-work-directory-list 30      ; should be enough
+;;  ido-max-work-file-list      50      ; remember many
+;;  ido-use-filename-at-point nil       ; don't use filename at point (annoying)
+;;  ido-use-url-at-point nil            ; don't use url at point (annoying)
+
+;;  ido-enable-flex-matching nil        ; don't try to be too smart
+;;  ido-max-prospects 8                 ; don't spam my minibuffer
+;;  ido-confirm-unique-completion t     ; wait for RET, even with unique completion
+;;  ido-use-virtual-buffers t
+;;  ido-use-faces nil
+;;  )
 
 ;; when using ido, the confirmation is rather annoying...
  (setq confirm-nonexistent-file-or-buffer nil)
@@ -128,7 +184,7 @@
 
  ;; mode line customizations
  display-battery-mode t
- battery-mode-line-format " [%L: %b%p%%]" ; %t for time
+ battery-mode-line-format " [%L: %b%p%%] " ; %t for time
 
  line-number-mode t
  column-number-mode t
