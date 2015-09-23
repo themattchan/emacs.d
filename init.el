@@ -119,7 +119,7 @@
          ;; Hooks for editing
          ;; Text documents
          matt-documents              ; Text: Markdown, LaTeX, Org-mode
-         matt-html                   ; Web markup: HTML, CSS
+         matt-web                   ; Web markup: HTML, CSS
 
          ;; Programming
          matt-prog-all               ; Settings for all programming modes

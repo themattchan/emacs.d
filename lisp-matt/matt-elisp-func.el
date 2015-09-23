@@ -47,26 +47,38 @@ or just one char if that's not possible"
             (backward-delete-char-untabify (- (match-end 1) (match-beginning 1)))
           (call-interactively 'backward-delete-char-untabify))))))
 
-;; Invoking with M-x is easier
-(defun close-all-buffers ()
+(defun kill-all-buffers ()
   (interactive)
   (mapc 'kill-buffer (buffer-list)))
 
-(defun close-all-except-current-buffer ()
+(defun kill-all-except-current-buffer ()
   (interactive)
   (mapc 'kill-buffer (cdr (buffer-list (current-buffer)))))
 
-;; (defun do-marked-files (fun)
-;;   (dolist (file (dired-get-marked-files))
-;;     (find-file file)
-;;     (fun)
-;;     (save-buffer)
-;;     (kill-buffer nil)))
+(defun do-files (files)
+  (lambda (fun)
+    (dolist (file files) ; path to file
+      (unwind-protect
+          (progn
+            (find-file file)
+            (funcall fun)
+            (save-buffer))
+        (kill-buffer nil)))))
 
-;; (defun tabify-project (dir)
-;;   (let ((code-files ))
-;;  (find-file-noselect
-;; (directory-files "~/Dropbox/cse100/pa1/PA1/" nil "*.[c\|hpp]")
+(defun indent-file ()
+  (indent-region (point-min) (point-max)))
+
+(defun tabify-file ()
+  (tabify (point-min) (point-max)))
+
+(defun do-marked-files (fun)
+  ((do-files (dired-get-marked-files))
+   fun))
+
+(defun tabify-marked-files ()
+  (interactive)
+  (do-marked-files #'tabify-file))
+
 
 ;; Yuck CRLF.
 ;; Function for converting from DOS to UNIX line ends

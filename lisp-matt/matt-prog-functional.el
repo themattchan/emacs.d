@@ -5,6 +5,7 @@
   '(tuareg-mode
     haskell-mode
     literate-haskell-mode
+    elm-mode
     scala-mode
     scala2-mode))
 
@@ -17,7 +18,8 @@
     clojure-mode))
 
 (defun matt/functional-programming ()
-  (setq indent-tabs-mode nil))
+  (setq indent-tabs-mode nil)
+  (setq tab-width 2))
 
 (dolist (mode functional-langs)
   (add-hook (intern (format "%s-hook" mode))

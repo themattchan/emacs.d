@@ -22,7 +22,7 @@
             (hl-line-mode 1)            ; highlight current line
             (auto-fill-mode 1)
             (flyspell-prog-mode)
-            (flycheck-mode)             ; flymake is deprecated
+            (flycheck-mode)
             (whitespace-mode)
             (subword-mode)
 
@@ -49,8 +49,8 @@
   (lambda ()
     ;; pos-tip on click
     (setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages)
-    (setq flycheck-highlighting-mode 'sexps) ; highlight expression
-    (setq flycheck-display-errors-delay 0)   ; no delay
+    (setq flycheck-highlighting-mode 'symbols) ; 'lines is faster than 'sexps
+    (setq flycheck-display-errors-delay 2)   ; seconds
 
     (add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode)
 
@@ -66,8 +66,9 @@
                         :underline "maroon")
 
     (set-face-attribute 'flycheck-info nil
-                        :foreground "blue4"
-                        :background "LightBlue1"
+                        ;; info highlights are annoying as hell
+                        ;; :foreground "blue4"
+                        ;; :background "LightBlue1"
                         :underline "ForestGreen")
     ))
 

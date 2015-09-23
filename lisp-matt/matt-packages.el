@@ -92,8 +92,6 @@
     git-annex
     git-auto-commit-mode
     git-blame
-    git-commit-mode
-    git-rebase-mode
     gitconfig
     go-mode
     goto-chg
