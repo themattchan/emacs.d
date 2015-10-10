@@ -65,9 +65,9 @@
 (setq scheme-program-name "mit-scheme")
 ;;(eval-after-load "geiser" '(require quack))
 
-(autoload 'ac-geiser "ac-geiser")
-(add-hook 'geiser-mode-hook 'ac-geiser-setup)
-(add-hook 'geiser-repl-mode-hook 'ac-geiser-setup)
+;; (autoload 'ac-geiser "ac-geiser")
+;; (add-hook 'geiser-mode-hook 'ac-geiser-setup)
+;; (add-hook 'geiser-repl-mode-hook 'ac-geiser-setup)
 
 (add-to-list 'auto-mode-alist '("\\.rkt\\'" . racket-mode))
 

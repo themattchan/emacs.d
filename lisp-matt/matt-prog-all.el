@@ -8,7 +8,7 @@
 ;; (add-hook 'prog-mode-hook 'whitespace-mode)
 
 ;; highlights, line numbers, etc, common to all programming modes
-(add-hook 'prog-mode-hook 'ac-ispell-ac-setup)
+;;(add-hook 'prog-mode-hook 'ac-ispell-ac-setup)
 
 ;;(autoload 'rainbow-delimiters "rainbow-delimiters" nil t)
 ;;(add-hook 'prog-mode-hook 'rainbow-delimiters-autoloads)

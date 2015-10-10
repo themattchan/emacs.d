@@ -4,6 +4,7 @@
 (provide 'matt-themes)
 
 (defvar matt/themes '(monokai spacegray))
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/emacs-theme-darktooth/")
 
 (if (not (window-system))
     (progn

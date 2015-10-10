@@ -157,3 +157,8 @@
 ;; Don't need this anymore, use rectangle-mode
 ;; cua rectangle selection is good.
 ;; (cua-selection-mode 1)
+
+
+;; magit
+
+(bind-key "C-x C-g" 'magit-status)

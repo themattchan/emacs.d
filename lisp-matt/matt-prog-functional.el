@@ -7,7 +7,8 @@
     literate-haskell-mode
     elm-mode
     scala-mode
-    scala2-mode))
+    scala2-mode
+    erlang-mode))
 
 (defvar lisp-modes
   '(lisp-mode

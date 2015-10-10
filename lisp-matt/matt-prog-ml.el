@@ -23,6 +23,7 @@
 (autoload 'ghc-init "ghc" nil t)
 (autoload 'ghc-debug "ghc" nil t)
 (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
+(eval-after-load 'company-mode '(add-to-list 'company-backends 'company-ghc))
 
 (defun matt/haskell-hooks ()
   (haskell-indentation-mode 1)
@@ -56,7 +57,7 @@
                       (current-column))))
 
 (custom-set-variables
- '(haskell-process-type 'ghci)
+ '(haskell-process-type 'stack-ghci)
  '(haskell-process-suggest-remove-import-lines t)
  '(haskell-process-auto-import-loaded-modules t)
  '(haskell-process-log t))
@@ -82,6 +83,7 @@
 (eval-after-load 'haskell-cabal
   '(progn
      (bind-key "C-c C-c" 'haskell-compile haskell-cabal-mode-map)))
+(setq haskell-interactive-popup-error nil)
 
 ;; OCaml
 (setq auto-mode-alist (cons '("\\.ml\\w?" . tuareg-mode) auto-mode-alist))

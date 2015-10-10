@@ -60,15 +60,16 @@
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 (add-hook 'LaTeX-mode-hook (setq reftex-plug-into-AUCTeX t))
 ;; breaks dwim or some shit on Arch
-(when *is-mac*  (eval-after-load "LaTeX-mode" (require 'auto-complete-auctex)))
-(autoload 'ac-math "ac-math")
-(defun ac-latex-mode-setup ()         ; add ac-sources to default ac-sources
-  (setq ac-sources
-     (append '(ac-source-math-unicode ac-source-math-latex ac-source-latex-commands)
-               ac-sources)))
-(add-hook 'latex-mode-hook 'ac-latex-mode-setup)
-(ac-flyspell-workaround)
+;(when *is-mac*  (eval-after-load "LaTeX-mode" (require 'auto-complete-auctex)))
+;; (autoload 'ac-math "ac-math")
+;; (defun ac-latex-mode-setup ()         ; add ac-sources to default ac-sources
+;;   (setq ac-sources
+;;      (append '(ac-source-math-unicode ac-source-math-latex ac-source-latex-commands)
+;;                ac-sources)))
+;; (add-hook 'latex-mode-hook 'ac-latex-mode-setup)
+;; (ac-flyspell-workaround)
 
+(add-hook 'LaTeX-mode-hook 'company-auctex-init)
 ;; (setq LaTeX-section-hook
 ;;       '(LaTeX-section-heading
 ;;         LaTeX-section-title

@@ -181,11 +181,16 @@
 (add-to-list 'ac-modes 'geiser-repl-mode)
 (add-to-list 'ac-modes 'LaTeX-mode)
 
-(global-auto-complete-mode t)           ; turn it on
+;(global-auto-complete-mode t)           ; turn it on
 
-(eval-after-load "auto-complete"
-  '(progn
-     (ac-ispell-setup)))
+;; (eval-after-load "auto-complete"
+;;   '(progn
+;;      (ac-ispell-setup)))
 
+;;------------------------------------------------------------------------------
+;; company mode
+
+(add-hook 'after-init-hook 'global-company-mode)
+;(eval-after-load 'company-mode (lambda () (add-to-list 'company-backends 'company-ghc)))
 
 (provide 'matt-edit-all)

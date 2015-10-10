@@ -37,8 +37,8 @@
 ;; c-mode-common-hook, run before lang hooks
 (add-hook 'c-mode-common-hook
           (lambda ()
-            (add-to-list 'ac-sources 'ac-source-c-headers)
-            (add-to-list 'ac-sources 'ac-source-c-header-symbols t)
+            ;; (add-to-list 'ac-sources 'ac-source-c-headers)
+            ;; (add-to-list 'ac-sources 'ac-source-c-header-symbols t)
 
             (matt/c-indent)
 
@@ -87,7 +87,7 @@
 
 ;;------------------------------------------------------------------------------
 ;; C
-(autoload 'ac-c-headers "ac-c-headers")
+;(autoload 'ac-c-headers "ac-c-headers")
 (add-hook 'c-mode-hook (lambda () (matt/c-indent)))
 
 ;;------------------------------------------------------------------------------
@@ -104,6 +104,18 @@
 ;;------------------------------------------------------------------------------
 ;; Java
 (autoload 'jtags-mode "jtags" "Toggle jtags mode." t)
+(require 'eclim)
+(require 'eclimd)
+(defvar eclimd-port nil
+  "The active eclimd port number")
+
+(custom-set-variables
+  '(eclim-eclipse-dirs '("/Applications/eclipse"))
+  '(eclim-executable "/Applications/eclipse/eclim"))
+
+;; add the emacs-eclim source
+;; (require 'ac-emacs-eclim-source)
+;; (ac-emacs-eclim-config)
 
 (defun matt/java-hooks ()
   ;; Treat Java 1.5 @-style annotations as comments.
@@ -111,6 +123,8 @@
   (modify-syntax-entry ?@ "< b" java-mode-syntax-table)
 
   (jtags-mode)
+  (eclim-mode)
+  (setq eclim-auto-save t)
 
   ;; Don't newline open curly
   (setq c-hanging-braces-alist
