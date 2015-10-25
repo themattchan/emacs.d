@@ -92,7 +92,8 @@
   (package-refresh-contents)
   (dolist (pkg matt/packages)
     (when (not (package-installed-p pkg))
-      (package-install pkg))))
+      (ignore-errors
+		(package-install pkg)))))
 
 (require 'use-package)                  ; also provides bind-key
 (require 'saveplace)                    ; what is this stuff...
