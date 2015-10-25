@@ -8,7 +8,7 @@
 ;; liquidHaskell
 ;;(require 'flycheck-sandbox-hdevtools)
 ;;(require 'flycheck-liquid)
-(require 'liquid-tip)
+;;(require 'liquid-tip)
 
 ;;(eval-after-load 'flycheck '(require 'liquid-hdevtools))
 ;;(eval-after-load 'flycheck '(require 'hdevtools))

@@ -104,10 +104,10 @@
 ;;------------------------------------------------------------------------------
 ;; Java
 (autoload 'jtags-mode "jtags" "Toggle jtags mode." t)
-(require 'eclim)
-(require 'eclimd)
-(defvar eclimd-port nil
-  "The active eclimd port number")
+;(require 'eclim)
+;(require 'eclimd)
+;(defvar eclimd-port nil
+ ; "The active eclimd port number")
 
 (custom-set-variables
   '(eclim-eclipse-dirs '("/Applications/eclipse"))
