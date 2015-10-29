@@ -59,8 +59,10 @@
 (add-hook 'reftex-mode-hook 'imenu-add-menubar-index)
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 (add-hook 'LaTeX-mode-hook (setq reftex-plug-into-AUCTeX t))
+
+;; Auto-complete mode
 ;; breaks dwim or some shit on Arch
-;(when *is-mac*  (eval-after-load "LaTeX-mode" (require 'auto-complete-auctex)))
+;; (when *is-mac*  (eval-after-load "LaTeX-mode" (require 'auto-complete-auctex)))
 ;; (autoload 'ac-math "ac-math")
 ;; (defun ac-latex-mode-setup ()         ; add ac-sources to default ac-sources
 ;;   (setq ac-sources
@@ -68,6 +70,13 @@
 ;;                ac-sources)))
 ;; (add-hook 'latex-mode-hook 'ac-latex-mode-setup)
 ;; (ac-flyspell-workaround)
+
+(add-hook 'LaTeX-mode-hook (lambda ()
+  (push
+    '("Latexmk" "latexmk -pdf %(mode) %s" TeX-run-TeX nil t
+      :help "Run Latexmk on file")
+    TeX-command-list)))
+
 
 (add-hook 'LaTeX-mode-hook 'company-auctex-init)
 ;; (setq LaTeX-section-hook
@@ -112,6 +121,7 @@
 
 ;; graphviz
 (add-to-list 'auto-mode-alist '("\\.gv\\'" . graphviz-dot-mode))
+(add-to-list 'auto-mode-alist '("\\.dot\\'" . graphviz-dot-mode))
 
 ;; open info files in the interactive browser
 (add-to-list 'auto-mode-alist '("\\.info\\'" . info-mode))

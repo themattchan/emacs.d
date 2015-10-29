@@ -2,6 +2,7 @@
 ;; C family common customizations
 ;;==============================================================================
 (provide 'matt-prog-cc)
+
 ;;
 ;; cc-mode hooks in order:
 ;; 1. c-initialization-hook, init cc mode once per session (i.e. emacs startup)
@@ -106,8 +107,9 @@
 (autoload 'jtags-mode "jtags" "Toggle jtags mode." t)
 ;(require 'eclim)
 ;(require 'eclimd)
-;(defvar eclimd-port nil
- ; "The active eclimd port number")
+
+;; (defvar eclimd-port nil
+;;   "The active eclimd port number")
 
 (custom-set-variables
   '(eclim-eclipse-dirs '("/Applications/eclipse"))
@@ -116,15 +118,15 @@
 ;; add the emacs-eclim source
 ;; (require 'ac-emacs-eclim-source)
 ;; (ac-emacs-eclim-config)
-
+;
 (defun matt/java-hooks ()
   ;; Treat Java 1.5 @-style annotations as comments.
   (setq c-comment-start-regexp "(@|/(/|[*][*]?))")
   (modify-syntax-entry ?@ "< b" java-mode-syntax-table)
 
   (jtags-mode)
-  (eclim-mode)
-  (setq eclim-auto-save t)
+ ; (eclim-mode)
+;  (setq eclim-auto-save t)
 
   ;; Don't newline open curly
   (setq c-hanging-braces-alist
