@@ -41,6 +41,7 @@
 ;; Put cursor in between <item1> | <item2>
 ;; C-t is transpose-char
 (unbind-key "M-t") ;; which used to be transpose-words
+(bind-key "M-t M-c" 'transpose-char)
 (bind-key "M-t M-l" 'transpose-lines)
 ;; (bind-key "M-t M-w" 'transpose-words)
 (bind-key "M-t M-t" 'transpose-words)
