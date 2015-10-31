@@ -3,7 +3,7 @@ jdee-2.4.1/
 auto-save-list/
 cache/
 desktop/
-snippets/
+#snippets/
 lisp/
 eshell/
 
