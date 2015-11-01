@@ -42,6 +42,7 @@
     "/bin"
     "/sbin"
     "/Users/matt/Library/Haskell/bin"        ; for hdevtools, ghc-mod
+    "/Users/matt/.local/bin"                 ; for liquidhaskell
     ))
 
 ;; Set PATHs for Unix-based systems
@@ -93,7 +94,7 @@
   (dolist (pkg matt/packages)
     (when (not (package-installed-p pkg))
       (ignore-errors
-		(package-install pkg)))))
+        (package-install pkg)))))
 
 (require 'use-package)                  ; also provides bind-key
 (require 'saveplace)                    ; what is this stuff...

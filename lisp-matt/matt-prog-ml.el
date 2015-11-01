@@ -86,7 +86,10 @@
 (setq haskell-interactive-popup-error nil)
 
 ;; OCaml
-(setq auto-mode-alist (cons '("\\.ml\\w?" . tuareg-mode) auto-mode-alist))
+(add-to-list 'auto-mode-alist '("\\.ml\\w?" . tuareg-mode))
+(add-to-list 'auto-mode-alist '("\\.mll\\'" . sml-lex-mode))
+(add-to-list 'auto-mode-alist '("\\.mly\\'" . sml-yacc-mode))
+
 (autoload 'tuareg-mode "tuareg" "Major mode for editing Caml code" t)
 (autoload 'camldebug "camldebug" "Run the Caml debugger" t)
 (add-hook 'tuareg-mode-hook
