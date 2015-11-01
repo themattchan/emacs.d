@@ -3,6 +3,9 @@
 ;; no tabs in functional langs
 (defvar functional-langs
   '(tuareg-mode
+    sml-lex-modesml-mode
+    sml-yacc-mode
+    sml-mode
     haskell-mode
     literate-haskell-mode
     elm-mode
@@ -38,5 +41,10 @@
 ;; TODO: autoload
 (if *is-mac*
     (setq coq-prog-name "/opt/local/bin/coqtop"))
-(load "~/.emacs.d/lisp/ProofGeneral-4.3beta/generic/proof-site.el")
+
 (setq coq-default-undo-limit 10000)
+(setq proof-general-directory "~/.emacs.d/lisp/ProofGeneral-4.3beta")
+
+(if (file-accessible-directory-p proof-general-directory)
+    (load (concat (file-name-as-directory proof-general-directory)
+                  "generic/proof-site.el")))
