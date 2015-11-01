@@ -3,7 +3,7 @@
 ;; no tabs in functional langs
 (defvar functional-langs
   '(tuareg-mode
-    sml-lex-modesml-mode
+    sml-lex-mode
     sml-yacc-mode
     sml-mode
     haskell-mode
