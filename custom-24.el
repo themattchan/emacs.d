@@ -81,7 +81,7 @@
  '(haskell-process-auto-import-loaded-modules t)
  '(haskell-process-log t)
  '(haskell-process-suggest-remove-import-lines t)
- '(haskell-process-type (quote ghci))
+ '(haskell-process-type (quote stack-ghci))
  '(highlight-changes-colors (quote ("#d33682" "#6c71c4")))
  '(highlight-symbol-colors
    (--map
@@ -111,6 +111,9 @@
  '(liquid-tip-mode nil t)
  '(magit-diff-use-overlays nil)
  '(magit-use-overlays nil)
+ '(neo-hidden-regexp-list
+   (quote
+    ("^\\." "\\.pyc$" "~$" "^#.*#$" "\\.elc$" "\\.class$")))
  '(org-startup-indented t)
  '(org-startup-truncated nil t)
  '(pos-tip-background-color "#073642")

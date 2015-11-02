@@ -163,3 +163,6 @@
 ;; magit
 
 (bind-key "C-x C-g" 'magit-status)
+
+;; neotree
+(bind-key "<f8>" 'neotree-toggle)
