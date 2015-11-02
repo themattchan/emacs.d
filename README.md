@@ -60,8 +60,7 @@ Here's a list of my keybindings:
     ```
 - align-regexp  `C-x a r`
 
-- Transpose `M-t M-<thing>`
-    - where `<thing>` is
+- Transpose `M-t M-<thing>` where `<thing>` is
     - `c` for character
     - `t` for words
     - `l` for line
