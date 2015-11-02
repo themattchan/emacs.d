@@ -7,6 +7,7 @@ desktop/
 lisp/
 eshell/
 
+private.el
 ede-projects.el
 neil
 *.dat
