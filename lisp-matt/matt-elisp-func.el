@@ -1,6 +1,12 @@
-;;==============================================================================
-;; FUNCTIONS
-;;==============================================================================
+;;; matt-elisp-func.el --- Emacs Lisp functions.
+
+;;; Copyright (c) 2013-2015 Matthew Chan
+;;; Author: Matthew Chan <matt@parametri.city>
+;;; URL: http://github.com/themattchan/emacs.d
+
+;;; Commentary:
+
+;;; Code:
 
 ;; only one theme at a time, auto disable prev loaded theme
 (defadvice load-theme
@@ -130,3 +136,4 @@ With a prefix ARG always prompt for command to use."
                     (shell-quote-argument buffer-file-name)))))
 
 (provide 'matt-elisp-func)
+;;; matt-elisp-func.el ends here

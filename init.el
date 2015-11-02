@@ -1,8 +1,12 @@
-;;==============================================================================
-;;==============================================================================
-;;                               matt's init.el
-;;==============================================================================
-;;==============================================================================
+;;; init.el --- Top-level initialisation.
+
+;;; Copyright (c) 2013-2015 Matthew Chan
+;;; Author: Matthew Chan <matt@parametri.city>
+;;; URL: http://github.com/themattchan/emacs.d
+
+;;; Commentary:
+
+;;; Code:
 
 (defun matt/recompile-settings ()
   (interactive)
@@ -114,24 +118,24 @@
          ;; General interface settings
          matt-keybindings            ; Fix Emacs annoyances, add power
          matt-interface              ; Fix Emacs annoyances, add power
-         matt-edit-all               ; Tabs, fill, undo, ispell, UTF-8, backups
+         matt-edit-global               ; Tabs, fill, undo, ispell, UTF-8, backups
          matt-themes                 ; Mostly deprecated
 
          ;; Hooks for editing
          ;; Text documents
          matt-documents              ; Text: Markdown, LaTeX, Org-mode
-         matt-web                   ; Web markup: HTML, CSS
+         matt-web                    ; Web markup: HTML, CSS
 
          ;; Programming
-         matt-prog-all               ; Settings for all programming modes
-         matt-prog-functional        ; Settings for all functional langs
-         matt-prog-lisp              ; Lisp family: CL, Scheme, Racket, Clojure
-         matt-prog-ml                ; ML family: Haskell, OCaml
-         matt-prog-cc                ; C family: C, C++, Java, (and ASM)
-         matt-prog-other             ; Other langs: Scala, Python, web stuff
+         matt-prog-global             ; Settings for all programming modes
+         matt-prog-functional         ; Settings for all functional langs
+         matt-prog-lisp               ; Lisp family: CL, Scheme, Racket, Clojure
+         matt-prog-ml                 ; ML family: Haskell, OCaml
+         matt-prog-cc                 ; C family: C, C++, Java, (and ASM)
+         matt-prog-other              ; Other langs: Scala, Python, web stuff
 
          ;; Misc
-         matt-utils                  ; System utilities: terminal, dired...
+         matt-utils                     ; System utilities: terminal, dired...
          )))
 
   (dolist (config matt-configs)
@@ -139,3 +143,5 @@
     (message "+ Loaded %s" config)))
 
 ;; (message "Emacs started in %s." (emacs-init-time))
+
+;;; init.el ends here

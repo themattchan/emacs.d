@@ -1,7 +1,12 @@
-;;==============================================================================
-;; BUFFER SAVING AND CLEANUP
-;;==============================================================================
-(provide 'matt-buffer-clean)
+;;; matt-buffer-clean.el --- Buffer saving and cleanup.
+
+;;; Copyright (c) 2013-2015 Matthew Chan
+;;; Author: Matthew Chan <matt@parametri.city>
+;;; URL: http://github.com/themattchan/emacs.d
+
+;;; Commentary:
+
+;;; Code:
 
 ;; (desktop-save-mode 1) ;;save & autoload buffers
 ;; (setq desktop-dirname             "~/.emacs.d/desktop/"
@@ -54,3 +59,6 @@ You can disable clean-buffer-list by (cancel-timer clean-buffer-list-timer).")
                     "*RE-Builder*"
                     "*vc-change-log*"))
      ))
+
+(provide 'matt-buffer-clean)
+;;; matt-buffer-clean.el ends here

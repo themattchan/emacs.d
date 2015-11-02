@@ -1,4 +1,13 @@
-(provide 'matt-prog-other)
+;;; matt-prog-other.el --- Settings for miscellaneous programming languages.
+
+;;; Copyright (c) 2013-2015 Matthew Chan
+;;; Author: Matthew Chan <matt@parametri.city>
+;;; URL: http://github.com/themattchan/emacs.d
+
+;;; Commentary:
+
+;;; Code:
+
 
 ;; Scala
 ;; scala2-mode handles tabs to 2 spaces by default
@@ -27,23 +36,5 @@
                           ;;python-indent-offset 2
                           )))
 
-;; javascript
-(add-to-list 'auto-mode-alist '("\.js" . js2-mode))
-
-;; a sane html mode that indents embedded crap properly
-(autoload 'web-mode "web-mode" "" t)
-(add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
-
-;; THIS IS GARBAGE
-;; multi-web-mode (html + js + css)
-;; (autoload 'multi-web-mode "multi-web-mode" "" t)
-;; (eval-after-load "multi-web-mode"
-;;   (lambda ()
-;;     (progn
-;;      (setq mweb-default-major-mode 'html-mode)
-;;      (setq mweb-tags
-;;            '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
-;;              (js2-mode  "<script +\\(type=\"text/javascript\"\\|language=\"javascript\"\\)[^>]*>" "</script>")
-;;              (css-mode "<style +type=\"text/css\"[^>]*>" "</style>")))
-;;      (setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
-;;      (multi-web-global-mode 1))))
+(provide 'matt-prog-other)
+;;; matt-prog-other.el ends here

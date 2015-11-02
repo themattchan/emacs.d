@@ -1,12 +1,17 @@
-;;==============================================================================
-;;  KEYBINDINGS
-;;==============================================================================
-(provide 'matt-keybindings)
+;;; matt-keybindings.el --- Keybindings.
+
+;;; Copyright (c) 2013-2015 Matthew Chan
+;;; Author: Matthew Chan <matt@parametri.city>
+;;; URL: http://github.com/themattchan/emacs.d
+
+;;; Commentary:
 
 ;; WARNING:
 ;; uses bind-key, provided by use-package. Make sure you require it before loading!
 ;; to bind to a mode map, do (bind-key <key> <func> &<map>)
 ;; likewise, to unbind a key from a map, (unbind-key <key> &<map>)
+
+;;; Code:
 
 ;; Fix modifier keys on Mac GUI
 ;; Carbon Emacs. Assume Control is Caps
@@ -60,7 +65,7 @@
 ;; M-b M-f by word
 ;; C-M-b C-M-f by sexpr
 ;; C-a C-e by line, laterally
-;; C-p C-f by line, vertically
+;; C-n C-p by line, vertically
 ;; M-a M-e by sentence
 ;; M-[ M-] by paragraph
 ;; (M-{ and M-} is a pain in the ass)
@@ -88,8 +93,8 @@
 ;; (bind-key "C-Y" 'yank-pop)
 
 
-;; ;; M-Y rotate kill ring forwards
 (defun yank-pop-forwards (arg)
+  "Rotate kill-ring forwards."
       (interactive "p")
       (yank-pop (- arg)))
 (bind-key "M-Y" 'yank-pop-forwards)
@@ -146,13 +151,14 @@
     (bind-key "C-c <down>"      'windmove-down)))
 
 (defun toggle-fullscreen-linux ()
-  "Toggle full screen on X11"
+  "Toggle full screen on X11."
   (interactive)
   (when (eq window-system 'x)
     (set-frame-parameter
      nil 'fullscreen
      (when (not (frame-parameter nil 'fullscreen)) 'fullboth))))
 
+;; TODO: require import globals
 (when *is-linux* (bind-key "<f11>" 'toggle-fullscreen-linux))
 
 ;; Don't need this anymore, use rectangle-mode
@@ -166,3 +172,6 @@
 
 ;; neotree
 (bind-key "<f8>" 'neotree-toggle)
+
+(provide 'matt-keybindings)
+;;; matt-keybindings.el ends here

@@ -1,7 +1,17 @@
-;;==============================================================================
-;; HTML + CSS + JS
-;;==============================================================================
-(provide 'matt-web)
+;;; matt-web.el --- Settings for editing web stuff.
+
+;;; Copyright (c) 2013-2015 Matthew Chan
+;;; Author: Matthew Chan <matt@parametri.city>
+;;; URL: http://github.com/themattchan/emacs.d
+
+;;; Commentary:
+
+;;; Code:
+
+
+(autoload 'web-mode "web-mode" "" t)
+(add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
+
 
 (add-to-list 'auto-mode-alist '("\\.scala.html\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
@@ -25,3 +35,6 @@
 (setq js2-bounce-indent-p t)
 (setq js2-auto-indent-p nil)
 (setq js2-basic-offset 2)
+
+(provide 'matt-web)
+;;; matt-web.el ends here

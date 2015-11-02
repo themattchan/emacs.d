@@ -1,4 +1,12 @@
-(provide 'matt-prog-functional)
+;;; matt-prog-functional.el --- Global settings for functional programming languages.
+
+;;; Copyright (c) 2013-2015 Matthew Chan
+;;; Author: Matthew Chan <matt@parametri.city>
+;;; URL: http://github.com/themattchan/emacs.d
+
+;;; Commentary:
+
+;;; Code:
 
 ;; no tabs in functional langs
 (defvar functional-langs
@@ -47,3 +55,6 @@
 (if (file-accessible-directory-p proof-general-directory)
     (load (concat (file-name-as-directory proof-general-directory)
                   "generic/proof-site.el")))
+
+(provide 'matt-prog-functional)
+;;; matt-prog-functional.el ends here

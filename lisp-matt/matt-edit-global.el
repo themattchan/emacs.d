@@ -1,6 +1,12 @@
-;;==============================================================================
-;;                      DEFAULTS FOR EDITING EVERYTHING
-;;==============================================================================
+;;; matt-edit-global.el ---  Defaults for editing everything.
+
+;;; Copyright (c) 2013-2015 Matthew Chan
+;;; Author: Matthew Chan <matt@parametri.city>
+;;; URL: http://github.com/themattchan/emacs.d
+
+;;; Commentary:
+
+;;; Code:
 
 (setq-default
  ;; Backups
@@ -193,4 +199,5 @@
 (add-hook 'after-init-hook 'global-company-mode)
 ;(eval-after-load 'company-mode (lambda () (add-to-list 'company-backends 'company-ghc)))
 
-(provide 'matt-edit-all)
+(provide 'matt-edit-global)
+;;; matt-edit-global.el ends here

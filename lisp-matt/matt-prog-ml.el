@@ -1,7 +1,14 @@
-;;==============================================================================
-;;                               Haskell and ML
-;;==============================================================================
-(provide 'matt-prog-ml)
+;;; matt-prog-ml.el --- Settings for the ML family.
+
+;;; Copyright (c) 2013-2015 Matthew Chan
+;;; Author: Matthew Chan <matt@parametri.city>
+;;; URL: http://github.com/themattchan/emacs.d
+
+;;; Commentary:
+
+;; Including Haskell, SML, OCaml
+
+;;; Code:
 
 ;; Haskell
 
@@ -103,3 +110,6 @@
   (flycheck-ocaml-setup))
 
 (add-hook 'tuareg-mode-hook #'merlin-mode)
+
+(provide 'matt-prog-ml)
+;;; matt-prog-ml.el ends here

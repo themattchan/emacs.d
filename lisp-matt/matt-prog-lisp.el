@@ -1,7 +1,14 @@
-;;==============================================================================
-;;                                   (Lisp)
-;;==============================================================================
-(provide 'matt-prog-lisp)
+;;; matt-prog-lisp.el --- Settings for the Lisp family.
+
+;;; Copyright (c) 2013-2015 Matthew Chan
+;;; Author: Matthew Chan <matt@parametri.city>
+;;; URL: http://github.com/themattchan/emacs.d
+
+;;; Commentary:
+
+;; Including Common Lisp, MIT Scheme, Racket, Clojure
+
+;;; Code:
 
 ;; (defvar lisp-power-map (make-keymap))
 ;; (define-minor-mode lisp-power-mode "Fix keybindings; add power."
@@ -73,3 +80,6 @@
 
 ;; Clojure
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+
+(provide 'matt-prog-lisp)
+;;; matt-prog-lisp.el ends here

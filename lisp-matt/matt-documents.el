@@ -1,7 +1,13 @@
-;;==============================================================================
-;; WRITING & DOCUMENT MODES
-;;==============================================================================
-(provide 'matt-documents)
+;;; matt-documents.el --- Writing & document modes.
+
+;;; Copyright (c) 2013-2015 Matthew Chan
+;;; Author: Matthew Chan <matt@parametri.city>
+;;; URL: http://github.com/themattchan/emacs.d
+
+;;; Commentary:
+
+;;; Code:
+
 
 ;;------------------------------------------------------------------------------
 ;; General text mode
@@ -125,3 +131,6 @@
 
 ;; open info files in the interactive browser
 (add-to-list 'auto-mode-alist '("\\.info\\'" . info-mode))
+
+(provide 'matt-documents)
+matt-documents.el ends here

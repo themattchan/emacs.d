@@ -1,7 +1,12 @@
-;;==============================================================================
-;; STARTUP, UI, AND GENERAL SETTINGS
-;;==============================================================================
-(provide 'matt-interface)
+;;; matt-interface.el --- Startup, UI, and general settings.
+
+;;; Copyright (c) 2013-2015 Matthew Chan
+;;; Author: Matthew Chan <matt@parametri.city>
+;;; URL: http://github.com/themattchan/emacs.d
+
+;;; Commentary:
+
+;;; Code:
 
 ;;------------------------------------------------------------------------------
 ;; Mac open new files in the existing frame
@@ -353,3 +358,6 @@ want to use in the modeline *in lieu of* the original.")
                (setq mode-name mode-str)))))
 (add-hook 'init-hook 'clean-mode-line)
 (add-hook 'after-change-major-mode-hook 'clean-mode-line)
+
+(provide 'matt-interface)
+;;; matt-interface.el ends here

@@ -1,4 +1,15 @@
-(provide 'matt-packages)
+;;; matt-packages.el --- A list of required packages.
+
+;;; Copyright (c) 2013-2015 Matthew Chan
+;;; Author: Matthew Chan <matt@parametri.city>
+;;; URL: http://github.com/themattchan/emacs.d
+
+;;; Commentary:
+
+;; TODO: find a way to auto-generate this from the currently installed package
+;; list.
+
+;;; Code:
 
 ;; EXPORTED 6/6/15
 ;; Don't know what half of this shit is...
@@ -211,3 +222,6 @@
         when (not (package-installed-p pkg))
         do (return nil)
         finally (return t)))
+
+(provide 'matt-packages)
+;;; matt-packages.el ends here

@@ -1,9 +1,11 @@
-;;==============================================================================
-;; C family common customizations
-;;==============================================================================
-(provide 'matt-prog-cc)
+;;; matt-prog-cc.el ---  C family common customizations.
 
-;;
+;;; Copyright (c) 2013-2015 Matthew Chan
+;;; Author: Matthew Chan <matt@parametri.city>
+;;; URL: http://github.com/themattchan/emacs.d
+
+;;; Commentary:
+
 ;; cc-mode hooks in order:
 ;; 1. c-initialization-hook, init cc mode once per session (i.e. emacs startup)
 ;; 2. c-mode-common-hook, run immediately before loading language hook
@@ -11,7 +13,8 @@
 ;;    c, c++, objc, java, idl, pike, awk
 ;;
 ;; View syntactic context (to find the setting to set for c-set-offset): C-c C-s
-;;
+
+;;; Code:
 
 (defun matt/c-indent ()
   ;; use setq-local, its supposedly more hygienic
@@ -150,3 +153,6 @@
 (add-hook 'java-mode-hook 'matt/java-hooks)
 (add-hook 'java-mode-hook 'matt/c-indent)
 (add-hook 'java-mode-hook (lambda ()  (c-set-offset 'substatement-open 0)))
+
+(provide 'matt-prog-cc)
+;;; matt-prog-cc.el ends here

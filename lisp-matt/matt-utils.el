@@ -1,4 +1,12 @@
-(provide 'matt-utils)
+;;; matt-utils.el --- Settings for system utility replacements.
+
+;;; Copyright (c) 2013-2015 Matthew Chan
+;;; Author: Matthew Chan <matt@parametri.city>
+;;; URL: http://github.com/themattchan/emacs.d
+
+;;; Commentary:
+
+;;; Code:
 
 ;; dired
 ;; hide the -al stuff, toggle with ( and )
@@ -29,3 +37,6 @@
 ;; tramp mode
 (setq tramp-default-method "scpx")
 (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
+
+(provide 'matt-utils)
+;;; matt-utils.el ends here

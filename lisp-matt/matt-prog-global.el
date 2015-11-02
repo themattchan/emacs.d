@@ -1,7 +1,12 @@
-;;==============================================================================
-;; PROGRAMMING MODES
-;;==============================================================================
-(provide 'matt-prog-all)
+;;; matt-prog-global.el --- Global settings for Programming modes.
+
+;;; Copyright (c) 2013-2015 Matthew Chan
+;;; Author: Matthew Chan <matt@parametri.city>
+;;; URL: http://github.com/themattchan/emacs.d
+
+;;; Commentary:
+
+;;; Code:
 
 ;; highlight 80+ char overflows in programming modes
 (autoload 'whitespace-mode "whitespace" "whitespace-mode" t nil)
@@ -212,3 +217,6 @@
 (global-set-key (kbd "C-@") 'ecb-goto-window-sources)
 (global-set-key (kbd "C-#") 'ecb-goto-window-methods)
 (global-set-key (kbd "C-$") 'ecb-goto-window-compilation)
+
+(provide 'matt-prog-global)
+;;; matt-prog-global.el ends here
