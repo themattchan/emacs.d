@@ -34,14 +34,6 @@ Then as always,
 M-x matt/recompile-settings
 ```
 
-## Related
-
-My configs are mostly a hodgepodge of good things taken from others, look here
-for more inspiration
-
-- https://github.com/bryangarza/dot-emacs
-
-
 ## How do I use this?
 
 Look [here](http://themattchan.com/docs/emacs-beginner.pdf) for an intro to Emacs.
@@ -82,6 +74,17 @@ Here's a list of my keybindings:
 - Compile: `C-x g`
 
 - Silver searcher: `M-<f1>`
+
+
+
+## Related
+
+My configs are mostly a hodgepodge of good things taken from others, look here
+for more inspiration
+
+- https://github.com/bryangarza/dot-emacs
+
+
 
 ## License
 
