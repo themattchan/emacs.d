@@ -41,6 +41,49 @@ for more inspiration
 
 - https://github.com/bryangarza/dot-emacs
 
+
+## How do I use this?
+
+Look [here](http://themattchan.com/docs/emacs-beginner.pdf) for an intro to Emacs.
+
+Here's a list of my keybindings:
+
+- Modifiers on the Mac (graphical)
+
+    ```
+    Caps Lock     -> C
+    Left Command  -> M
+    Left Option   -> s
+    Left Fn       -> s
+    Right Command -> s
+    Right Option  -> H
+    ```
+- align-regexp  `C-x a r`
+
+- Transpose `M-t M-<thing>`
+    - where `<thing>` is
+    - `c` for character
+    - `t` for words
+    - `l` for line
+    - `s` for s-exprs
+
+- Buffer navigation:
+    - `s-<left/right>` in GUI
+
+- Window navigation:
+    - `s-S-<arrow>` in GUI
+    - `C-c <arrow>` in CLI
+
+- Functions keys:
+    - `<f8>` toggles neotree
+    - `<f11>` toggles fullscreen on Linux
+
+- Magit: `C-c C-g` brings up the status window
+
+- Compile: `C-x g`
+
+- Silver searcher: `M-<f1>`
+
 ## License
 
 Copyright (C) 2013-2015 Matthew Chan
