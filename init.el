@@ -75,8 +75,6 @@
 ;; (setq debug-on-error t)
 
 ;; Set file paths before anything else
-;; default search path
-(setq default-directory "~/Dropbox/" )
 
 ;; load path for extra packages
 (add-to-list 'load-path "~/.emacs.d/lisp-matt/")

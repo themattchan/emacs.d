@@ -81,8 +81,10 @@
   (progn
     (require 'helm-config)
     (when (executable-find "curl")
-      (setq helm-google-suggest-use-curl-p t))
+      (setq helm-net-prefer-curl t))
     (setq
+     helm-input-idle-delay                 0.001
+     helm-idle-delay                       0.001
      helm-candidate-number-limit           100
      helm-autoresize-max-height            40 ; it is %.
      helm-scroll-amount                    8
@@ -90,9 +92,11 @@
      helm-move-to-line-cycle-in-source     t
      helm-ff-search-library-in-sexp        t
      helm-ff-file-name-history-use-recentf t
-     helm-M-x-fuzzy-match                  t
      helm-quick-update                     t
      helm-bookmark-show-location           t
+     ;; fuzzy match
+     helm-M-x-fuzzy-match                  t
+     helm-ag-fuzzy-match                   t
      helm-buffers-fuzzy-matching           t
      helm-apropos-fuzzy-match              t
      helm-recentf-fuzzy-match              t
@@ -107,31 +111,53 @@
     (ido-mode -1) ; just in case
     (helm-autoresize-mode t)
 
+    (custom-set-variables
+     '(helm-ag-base-command "ag --nocolor --nogroup --ignore-case")
+     '(helm-ag-command-option "--all-text")
+     '(helm-ag-insert-at-point 'symbol))
+
     (global-unset-key (kbd "C-x c"))
-    (bind-keys
-     :map helm-map
+
+    (bind-keys :map helm-map
      ("<tab>" . helm-execute-persistent-action) ; rebind tab to run persistent action
      ("C-i"   . helm-execute-persistent-action) ; make TAB works in terminal
-     ("C-z"   . helm-select-action))            ; list actions using C-z
+     ("C-z"   . helm-select-action)) ; list actions using C-z
     (bind-key "C-c C-l" 'helm-comint-input-ring shell-mode-map)
     (bind-key "C-c C-l" 'helm-minibuffer-history minibuffer-local-map))
 
   :bind
-  (("C-c h"     . helm-command-prefix)
-   ("M-x"       . helm-M-x)
+  (;; help
+   ("C-h a"     . helm-apropos)
+   ("C-h i"     . helm-info-emacs)
+   ("C-h b"     . helm-descbinds)
    ("s-m"       . helm-man-woman)
+
+   ;; super aliases
+   ("s-f"       . helm-find-files)
+   ("s-b"       . helm-mini)
+   ("s-F"       . helm-occur)
+
+   ;; rebind common keys, searching + browsing
+   ("C-c h"     . helm-command-prefix)
+   ("M-x"       . helm-M-x)
    ("M-y"       . helm-show-kill-ring)
    ("C-x b"     . helm-mini)
    ("C-x C-f"   . helm-find-files)
-   ("s-f"       . helm-find-files)
-   ("s-b"       . helm-mini)
+   ("C-x f"     . helm-recentf)
+   ("C-x C-d"   . helm-browse-project)
+
    ("C-h SPC"   . helm-all-mark-rings)
    ("C-c h M-:" . helm-eval-expression-with-eldoc)
    ("C-c h o"   . helm-occur)
-   ("s-F"       . helm-occur)))
+
+   ;; silver searcher
+   ("M-s s"     . helm-ag)
+   ("M-s a"     . helm-ag-project-root)
+   ("M-s r"     . helm-ag-r)
+   ))
 
 
-;; DEPRECATE
+;; DEPRECATED
 ;; ;; ido
 ;; (autoload 'ido "ido")
 ;; ;(autoload 'flx-ido "flx-ido")
@@ -176,7 +202,7 @@
 (autoload 'recentf "recentf")
 (recentf-mode 1)
 (setq recentf-max-menu-items 30)
-(bind-key "C-x f" 'recentf-open-files)  ; rebind fill column, use M-x
+;;(bind-key "C-x f" 'recentf-open-files)  ; rebind fill column, use M-x
                                         ; set-fill-column
 
 ;;------------------------------------------------------------------------------
@@ -293,8 +319,7 @@
 
 ;;------------------------------------------------------------------------------
 ;; Smooth scrolling
-(setq redisplay-dont-pause t
-      scroll-margin 1
+(setq scroll-margin 1
       scroll-step 1
       scroll-conservatively 10000
       scroll-preserve-screen-position 1

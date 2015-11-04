@@ -126,14 +126,13 @@
 (bind-key "C-M-r" 'isearch-backward)
 
 ;; silver searcher
-(bind-key "<f1>" 'ag-project)
-(bind-key "M-<f1>" 'ag)                 ;C-<f1> doesn't work for some reason
+;; (bind-key "<f1>" 'ag-project)
+;; (bind-key "M-<f1>" 'ag)                 ;C-<f1> doesn't work for some reason
 
 ;; bind to compile
 (bind-key "C-x g" 'compile)
 
-;; (bind-key "C-x C-k"
-;;              (lambda () (interactive) (kill-buffer (current-buffer))))
+;; (bind-key "C-x C-k" (lambda () (interactive) (kill-buffer (current-buffer))))
 
 ;; cycle through split-panes
 (bind-key "C-c n" (lambda () (interactive) (select-window (next-window))))
