@@ -26,6 +26,7 @@
 
 ;; EXPORTED 6/6/15
 ;; Don't know what half of this shit is...
+;; C-h v package-activated-list
 (defvar matt/packages
   '(ac-c-headers
     ac-cider
@@ -43,6 +44,8 @@
     anything-git-grep
     async
     auctex
+    auctex-latexmk
+    auctex-lua
     auto-complete
     auto-complete-auctex
     autopair
@@ -56,6 +59,14 @@
     coffee-mode
     color-theme
     company
+    company-auctex
+    company-c-headers
+    company-cabal
+    company-coq
+    company-ghc
+    company-ghci
+    company-math
+    company-web
     concurrent
     ctable
     ctags
@@ -70,13 +81,21 @@
     dirtree
     display-theme
     django-mode
+    dot-mode
     ecb
+    ein
+    elm-mode
     elpy
     elscreen
     emamux
     ensime
     epc
     epl
+    ess
+    ess-R-data-view
+    ess-R-object-popup
+    ess-smart-equals
+    ess-smart-underscore
     evil
     exec-path-from-shell
     expand-region
@@ -90,9 +109,11 @@
     flycheck
     flycheck-clojure
     flycheck-color-mode-line
+    flycheck-elm
     flycheck-ghcmod
     flycheck-haskell
     flycheck-hdevtools
+    flycheck-liquidhs
     flycheck-ocaml
     flycheck-pos-tip
     flylisp
@@ -116,7 +137,12 @@
     git-annex
     git-auto-commit-mode
     git-blame
+    git-commit
+    git-commit-mode
+    git-rebase-mode
     gitconfig
+    gitignore-mode
+    gitlab
     go-mode
     goto-chg
     graphviz-dot-mode
@@ -125,9 +151,22 @@
     helm
     helm-ag
     helm-ag-r
+    helm-company
+    helm-core
+    helm-flycheck
+    helm-flyspell
+    helm-ghc
+    helm-git
+    helm-gitignore
+    helm-gitlab
+    helm-ls-git
+    helm-ls-hg
+    helm-ls-svn
+    helm-make
     highlight-indentation
     hippie-expand-slime
     htmlize
+    hy-mode
     hydra
     icicles
     ido-at-point
@@ -147,17 +186,20 @@
     js2-mode
     js3-mode
     jtags
+    julia-mode
     key-chord
     keyfreq
     latex-pretty-symbols
     latex-preview-pane
     let-alist
     lex
+    liquid-tip
     list-utils
     load-theme-buffer-local
     logito
     lua-mode
     magit
+    magit-popup
     markdown-mode
     marmalade
     math-symbol-lists
@@ -165,12 +207,13 @@
     menu-bar+
     merlin
     moe-theme
-    moe-theme
     monokai-theme
     multi-term
     multi-web-mode
+    neotree
     nose
     org
+    org-journal
     org-pandoc
     osx-plist
     pandoc-mode
@@ -189,16 +232,20 @@
     queue
     racket-mode
     rainbow-delimiters
+    request
     rich-minority
     s
     sbt-mode
     scala-mode
     scala-mode2
+    scala-outline-popup
     scf-mode
     scheme-complete
+    seq
     seti-theme
     shell-command
     shm
+    sicp
     simple-httpd
     slime
     smart-mode-line
@@ -208,8 +255,10 @@
     solarized-theme
     spacegray-theme
     spaces
+    spinner
     spotify
     sublime-themes
+    swiper
     tabbar
     top-mode
     tree-mode
@@ -220,8 +269,11 @@
     w3
     wc-goal-mode
     wc-mode
+    web-completion-data
     web-mode
+    websocket
     windata
+    with-editor
     wolfram-mode
     writegood-mode
     writeroom-mode
