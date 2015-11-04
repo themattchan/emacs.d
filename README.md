@@ -83,6 +83,7 @@ My configs are mostly a hodgepodge of good things taken from others, look here
 for more inspiration
 
 - https://github.com/bryangarza/dot-emacs
+- http://pages.sachachua.com/.emacs.d/Sacha.html
 
 
 

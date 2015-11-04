@@ -338,10 +338,6 @@
 (defalias 'rex 'replace-regexp)
 
 ;;------------------------------------------------------------------------------
-;; Moe-theme
-(require 'moe-theme)
-
-;;------------------------------------------------------------------------------
 ;; Unclutter mode line
 (autoload 'diminish "diminish")
 
@@ -361,6 +357,8 @@
     (flycheck-mode              . ""  )
     (subword-mode               . ""  )
     (yas-minor-mode             . ""  )
+    (helm-mode                  . ""  )
+    (company-mode               . ""  )
 
     ;; Major modes
     (lisp-interaction-mode      . "λeval" )

@@ -46,7 +46,7 @@
 (eval-when-compile (require 'cl))       ; use common lisp (macros only)
 (require 'cl-lib)
 
-(defvar *my-path-list*
+(defconst *my-path-list*
   '("/opt/"
     "/opt/local/bin"
     "/opt/local/sbin"

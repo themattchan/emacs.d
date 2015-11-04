@@ -4,3 +4,6 @@
 [submodule "themes/emacs-theme-darktooth"]
 	path = themes/emacs-theme-darktooth
 	url = https://github.com/bryangarza/emacs-theme-darktooth.git
+[submodule "themes/moe-theme.el"]
+	path = themes/moe-theme.el
+	url = https://github.com/bryangarza/moe-theme.el

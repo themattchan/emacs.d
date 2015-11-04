@@ -27,7 +27,6 @@
   (mapc #'disable-theme custom-enabled-themes))
 
 
-
 ;; expand filled paragraph to a line
 (defun unfill-paragraph ()
   (interactive)

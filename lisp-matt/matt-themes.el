@@ -17,12 +17,19 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+;; Package-Requires: ((dash "2.12.1") (dash-functional "1.2.0") (emacs "24"))
+
 ;;; Commentary:
 
 ;;; Code:
 
-(defvar matt/themes '(monokai spacegray))
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/emacs-theme-darktooth/")
+(setq lexical-binding t)
+(require 'f)                            ; the filesystem manipulation library
+
+(let ((themes (f-entries (f-join user-emacs-directory "themes"))))
+  (dolist (theme themes)
+    (add-to-list 'custom-theme-load-path theme)))
+
 
 (if (not (window-system))
     (progn

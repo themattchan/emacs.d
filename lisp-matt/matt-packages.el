@@ -72,6 +72,7 @@
     ctags
     ctags-update
     dash
+    dash-functional
     deferred
     diminish
     dired+
