@@ -26,7 +26,8 @@
 (setq lexical-binding t)
 (require 'f)                            ; the filesystem manipulation library
 
-(let ((themes (f-entries (f-join user-emacs-directory "themes"))))
+(let ((themes (f-entries (f-join user-emacs-directory "themes")
+                         #'file-directory-p)))
   (dolist (theme themes)
     (add-to-list 'custom-theme-load-path theme)))
 
