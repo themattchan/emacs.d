@@ -23,9 +23,11 @@
 
 ;;; Code:
 
+;; ----------------------------------------------------------------------
 ;; Haskell
+;; ----------------------------------------------------------------------
 
-;; liquidHaskell
+;; liquidhaskell
 ;;(require 'flycheck-sandbox-hdevtools)
 ;;(require 'flycheck-liquid)
 ;;(require 'liquid-tip)
@@ -84,45 +86,69 @@
 
 (eval-after-load 'haskell-mode
   '(progn
-     (bind-key "C-`"         'haskell-interactive-bring haskell-mode-map)
-     (bind-key "C-,"         'haskell-move-nested-left haskell-mode-map)
-     (bind-key "C-."         'haskell-move-nested-right haskell-mode-map)
-     (bind-key "C-c C-c"     'haskell-compile haskell-mode-map)
+     (bind-key "C-`"         'haskell-interactive-bring      haskell-mode-map)
+     (bind-key "C-,"         'haskell-move-nested-left       haskell-mode-map)
+     (bind-key "C-."         'haskell-move-nested-right      haskell-mode-map)
+     (bind-key "C-c C-c"     'haskell-compile                haskell-mode-map)
      (bind-key "C-c C-l"     'haskell-process-load-or-reload haskell-mode-map)
-     (bind-key "C-c C-z"     'haskell-interactive-switch haskell-mode-map)
+     (bind-key "C-c C-z"     'haskell-interactive-switch     haskell-mode-map)
      (bind-key "C-c C-k"     'haskell-interactive-mode-clear haskell-mode-map)
-     (bind-key "C-c C-n C-t" 'haskell-process-do-type haskell-mode-map)
-     (bind-key "C-c C-n C-i" 'haskell-process-do-info haskell-mode-map)
-     (bind-key "C-c C-n C-c" 'haskell-process-cabal-build haskell-mode-map)
-     (bind-key "C-c C-n c"   'haskell-process-cabal haskell-mode-map)
-     (bind-key [tab]         'indent-for-tab-command haskell-mode-map)
-     ;; (bind-key "SPC"      'haskell-mode-contextual-space haskell-mode-map)
-     ;; (bind-key "C-x C-s"  'haskell-mode-save-buffer haskell-mode-map)
+     (bind-key "C-c C-n C-t" 'haskell-process-do-type        haskell-mode-map)
+     (bind-key "C-c C-n C-i" 'haskell-process-do-info        haskell-mode-map)
+     (bind-key "C-c C-n C-c" 'haskell-process-cabal-build    haskell-mode-map)
+     (bind-key "C-c C-n c"   'haskell-process-cabal          haskell-mode-map)
+     (bind-key [tab]         'indent-for-tab-command         haskell-mode-map)
+     ;; (bind-key "SPC"      'haskell-mode-contextual-space  haskell-mode-map)
+     ;; (bind-key "C-x C-s"  'haskell-mode-save-buffer       haskell-mode-map)
      ))
 
 (eval-after-load 'haskell-cabal
   '(progn
      (bind-key "C-c C-c" 'haskell-compile haskell-cabal-mode-map)))
+
 (setq haskell-interactive-popup-error nil)
 
+;; ----------------------------------------------------------------------
 ;; OCaml
-(add-to-list 'auto-mode-alist '("\\.ml\\w?" . tuareg-mode))
+;; ----------------------------------------------------------------------
+
+(add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)
+(setq auto-mode-alist
+      (append '(("\\.ml[ily]?$" . tuareg-mode)
+                ("\\.topml$" . tuareg-mode))
+              auto-mode-alist))
 (add-to-list 'auto-mode-alist '("\\.mll\\'" . sml-lex-mode))
 (add-to-list 'auto-mode-alist '("\\.mly\\'" . sml-yacc-mode))
 
+;(autoload 'utop-setup-ocaml-buffer "utop" "Toplevel for OCaml" t)
+;(add-hook 'tuareg-mode-hook 'utop-setup-ocaml-buffer)
+(setq merlin-error-after-save nil)
+
+
 (autoload 'tuareg-mode "tuareg" "Major mode for editing Caml code" t)
 (autoload 'camldebug "camldebug" "Run the Caml debugger" t)
-(add-hook 'tuareg-mode-hook
-          (lambda()
-            (setq indent-tabs-mode nil)))
+(add-hook 'tuareg-mode-hook (lambda ()  (setq indent-tabs-mode nil)))
 
-(with-eval-after-load 'merlin
-  ;; Disable Merlin's own error checking
-  ;;  (setq merlin-error-after-save nil)
-  ;; Enable Flycheck checker
-  (flycheck-ocaml-setup))
 
-(add-hook 'tuareg-mode-hook #'merlin-mode)
+;; Add opam emacs directory to the load-path
+(setq opam-share (substring (shell-command-to-string "opam config var share 2> /dev/null") 0 -1))
+(add-to-list 'load-path (concat (file-name-directory opam-share) "/emacs/site-lisp"))
+;; Load merlin-mode
+(require 'merlin)
+;; Start merlin on ocaml files
+(add-hook 'tuareg-mode-hook 'merlin-mode t)
+(add-hook 'caml-mode-hook 'merlin-mode t)
+;; Enable auto-complete
+(setq merlin-use-auto-complete-mode 'easy)
+;; Use opam switch to lookup ocamlmerlin binary
+(setq merlin-command 'opam)
+
+
+;; (with-eval-after-load 'merlin
+;;   ;; Disable Merlin's own error checking
+;;   (setq merlin-error-after-save nil)
+;;   ;; Enable Flycheck checker
+;;   (flycheck-ocaml-setup))
 
 (provide 'matt-prog-ml)
 ;; Local Variables:

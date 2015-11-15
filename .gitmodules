@@ -7,3 +7,9 @@
 [submodule "themes/moe-theme.el"]
 	path = themes/moe-theme.el
 	url = https://github.com/bryangarza/moe-theme.el
+[submodule "themes/emacs-material-theme"]
+	path = themes/emacs-material-theme
+	url = https://github.com/cpaulik/emacs-material-theme.git
+[submodule "themes/aurora-theme"]
+	path = themes/aurora-theme
+	url = https://github.com/xzerocode/aurora-theme.git

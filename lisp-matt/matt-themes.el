@@ -17,8 +17,6 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-;; Package-Requires: ((dash "2.12.1") (dash-functional "1.2.0") (emacs "24"))
-
 ;;; Commentary:
 
 ;;; Code:
