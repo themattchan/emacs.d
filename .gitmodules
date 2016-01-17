@@ -13,3 +13,6 @@
 [submodule "themes/aurora-theme"]
 	path = themes/aurora-theme
 	url = https://github.com/xzerocode/aurora-theme.git
+[submodule "themes/color-theme-github"]
+	path = themes/color-theme-github
+	url = https://github.com/dudleyf/color-theme-github.git

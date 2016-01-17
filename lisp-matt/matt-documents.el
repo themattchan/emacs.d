@@ -132,7 +132,15 @@
 ;;------------------------------------------------------------------------------
 
 (setq org-startup-truncated nil
-      org-fontify-whole-heading-line t)
+      org-fontify-whole-heading-line t
+      org-src-fontify-natively t)
+
+(require 'ox-latex)
+(add-to-list 'org-latex-packages-alist '("" "minted"))
+(setq org-latex-listings 'minted)
+(setq org-latex-pdf-process
+      '("latexmk -pdflatex='xelatex --shell-escape' -pdf %f"))
+
 (add-hook 'org-mode-hook
           (lambda ()
             (set-face-attribute 'org-level-1 nil :height 120)))

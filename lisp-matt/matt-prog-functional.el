@@ -69,6 +69,8 @@
     (load (concat (file-name-as-directory proof-general-directory)
                   "generic/proof-site.el")))
 
+(add-hook 'coq-mode-hook #'company-coq-mode)
+
 (provide 'matt-prog-functional)
 ;; Local Variables:
 ;; indent-tabs-mode: nil

@@ -28,9 +28,9 @@
 ;; ----------------------------------------------------------------------
 
 ;; liquidhaskell
-;;(require 'flycheck-sandbox-hdevtools)
-;;(require 'flycheck-liquid)
-;;(require 'liquid-tip)
+(require 'flycheck-sandbox-hdevtools)
+(require 'flycheck-liquidhs)
+(require 'liquid-types)
 
 ;;(eval-after-load 'flycheck '(require 'liquid-hdevtools))
 ;;(eval-after-load 'flycheck '(require 'hdevtools))
@@ -52,8 +52,8 @@
   (interactive-haskell-mode 1)          ; cabal repl
   (inf-haskell-mode 1)                  ; repl
   (setq indent-tabs-mode nil)
-;;  (flycheck-select-checker 'haskell-liquid)
-  (liquid-tip-mode 1)
+  (flycheck-select-checker 'haskell-liquid)
+  (liquid-types-mode 1)
   (electric-indent-mode 0)
   )
 

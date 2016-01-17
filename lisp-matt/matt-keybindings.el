@@ -4,6 +4,8 @@
 ;;; Author: Matthew Chan <matt@parametri.city>
 ;;; URL: http://github.com/themattchan/emacs.d
 
+;; Package-Requires: ((bind-key "1.0") (diminish "0.44") (use-package "2.1"))
+
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or

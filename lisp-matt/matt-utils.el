@@ -48,7 +48,7 @@
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
 ;; tramp mode
-(setq tramp-default-method "scpx")
+(setq tramp-default-method "ssh")
 (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
 
 (provide 'matt-utils)
