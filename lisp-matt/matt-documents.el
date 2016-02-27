@@ -160,19 +160,41 @@
         (cl-remove-if (lambda (config) (string= config-name (car config)))
                       org-publish-project-alist)))
 
+(setq matt/file-loaded-set '())
 (setq matt/org-project-file-name "org-project.el")
 
-(defun matt/load-org-project-settings ()
+(defmacro set-add! (var set)
+  `(begin
+    (setq ,set (delq ,var ,set))
+    (push ,var ,set)))
+
+(defun matt/file-loaded-p (filename)
+  "Has file been loaded yet?"
+  (memq (intern filename) matt/file-loaded-set))
+
+(defun matt/safe-load-file (filename &rest cl-keys)
+  (cl--parsing-keywords ((:force f)) nil
+    (when (or cl-force
+              (not (matt/file-loaded-p filename)))
+      (load-file filename)
+      (set-add! (intern filename) matt/file-loaded-set))))
+
+(defun matt/load-org-project-settings (&rest cl-keys)
   "Keep going up the tree looking for the settings file, then load it"
+  (interactive)
   (let ((project-dir
-        (locate-dominating-file
-         (file-name-directory (or load-file-name buffer-file-name))
-         matt/org-project-file-name)))
+         (locate-dominating-file
+          (file-name-directory (or load-file-name buffer-file-name))
+          matt/org-project-file-name))
+        (force (or (called-interactively-p 'any)
+                    (cl--parsing-keywords ((:force f)) nil
+                      cl-force))))
     (when project-dir
-      (load-file (concat project-dir matt/org-project-file-name)))))
+      (let ((filename
+             (concat project-dir matt/org-project-file-name)))
+        (matt/safe-load-file filename :force force)))))
 
 (add-hook 'org-mode-hook 'matt/load-org-project-settings)
-
 
 ;; graphviz
 (add-to-list 'auto-mode-alist '("\\.gv\\'" . graphviz-dot-mode))
@@ -186,3 +208,7 @@
 ;; indent-tabs-mode: nil
 ;; End:
 ;; matt-documents.el ends here
+(setq sample-list '(a b c (4)))
+(delq 'a sample-list)
+sample-list
+(push 'goo sample-list)
