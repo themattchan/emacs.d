@@ -173,7 +173,7 @@
   (memq (intern filename) matt/file-loaded-set))
 
 (defun matt/safe-load-file (filename &rest cl-keys)
-  (cl--parsing-keywords ((:force f)) nil
+  (cl--parsing-keywords ((:force nil)) nil
     (when (or cl-force
               (not (matt/file-loaded-p filename)))
       (load-file filename)
@@ -187,7 +187,7 @@
           (file-name-directory (or load-file-name buffer-file-name))
           matt/org-project-file-name))
         (force (or (called-interactively-p 'any)
-                    (cl--parsing-keywords ((:force f)) nil
+                    (cl--parsing-keywords ((:force nil)) nil
                       cl-force))))
     (when project-dir
       (let ((filename
