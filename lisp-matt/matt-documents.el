@@ -160,10 +160,11 @@
         (cl-remove-if (lambda (config) (string= config-name (car config)))
                       org-publish-project-alist)))
 
-(setq matt/file-loaded-set '())
+(setq matt/file-loaded-set '())         ; PRIVATE -- things I've loaded
 (setq matt/org-project-file-name "org-project.el")
 
 (defmacro set-add! (var set)
+  "Lists as Sets"
   `(begin
     (setq ,set (delq ,var ,set))
     (push ,var ,set)))
@@ -173,6 +174,7 @@
   (memq (intern filename) matt/file-loaded-set))
 
 (defun matt/safe-load-file (filename &rest cl-keys)
+  "Load file only if not loaded yet or if forced by kw-arg"
   (cl--parsing-keywords ((:force nil)) nil
     (when (or cl-force
               (not (matt/file-loaded-p filename)))
