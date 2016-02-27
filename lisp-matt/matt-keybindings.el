@@ -102,6 +102,7 @@
 ;; C-y yank (paste)
 ;; M-y rotate kill ring
 
+(bind-key "C-<backspace>" 'kill-word)
 
 ;; also alias to C-Y
 ;; (bind-key "C-y" 'yank)

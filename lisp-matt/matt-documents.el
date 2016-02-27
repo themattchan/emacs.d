@@ -141,10 +141,25 @@
 (setq org-latex-pdf-process
       '("latexmk -pdflatex='xelatex --shell-escape' -pdf %f"))
 
+(add-hook 'org-mode-hook 'turn-on-stripe-table-mode)
+
 (add-hook 'org-mode-hook
           (lambda ()
             (set-face-attribute 'org-level-1 nil :height 120)))
 (put 'upcase-region 'disabled nil)
+
+(setq matt/org-project-file-name "org-project.el")
+
+(defun matt/load-org-project-settings ()
+  "Keep going up the tree looking for the settings file, then load it"
+  (let ((project-dir
+        (locate-dominating-file
+         (file-name-directory (or load-file-name buffer-file-name))
+         matt/org-project-file-name)))
+    (when project-dir
+      (load-file (concat project-dir matt/org-project-file-name)))))
+
+(add-hook 'org-mode-hook 'matt/load-org-project-settings)
 
 ;; graphviz
 (add-to-list 'auto-mode-alist '("\\.gv\\'" . graphviz-dot-mode))

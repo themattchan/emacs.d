@@ -242,6 +242,9 @@
  mouse-wheel-mode t
  echo-keystrokes 0.1
 
+
+ redisplay-dont-pause t
+
  ;; buffer handling
  save-place t
  save-place-forget-unreadable-files t

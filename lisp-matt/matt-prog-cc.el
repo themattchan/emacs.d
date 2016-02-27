@@ -105,7 +105,7 @@
 ;;------------------------------------------------------------------------------
 ;; C
 ;(autoload 'ac-c-headers "ac-c-headers")
-(add-hook 'c-mode-hook (lambda () (matt/c-indent)))
+(add-hook 'c-mode-hook 'matt/c-indent)
 
 ;;------------------------------------------------------------------------------
 ;; C++
@@ -120,7 +120,7 @@
 
 ;;------------------------------------------------------------------------------
 ;; Java
-(autoload 'jtags-mode "jtags" "Toggle jtags mode." t)
+;(autoload 'jtags-mode "jtags" "Toggle jtags mode." t)
 ;(require 'eclim)
 ;(require 'eclimd)
 

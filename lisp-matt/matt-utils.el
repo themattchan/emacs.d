@@ -30,6 +30,9 @@
       trash-directory "~/.Trash/"
       ;; show sym link targets
       Dired-details-hide-link-targets nil)
+(add-hook 'dired-mode-hook 'turn-on-stripe-buffer-mode)
+;; (add-hook 'dired-mode-hook 'stripe-listify-buffer)
+
 (require 'dired-x)
 (setq-default ; M-o to toggle omit mode
  dired-omit-mode t
@@ -46,10 +49,13 @@
 ;;   (progn
 ;;     (setq multi-term-program "/bin/zsh")))
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+(setenv "ESHELL" "bash")
 
 ;; tramp mode
 (setq tramp-default-method "ssh")
+(add-to-list 'tramp-default-method-alist '("ieng9.ucsd.edu" "" "scpx"))1
 (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
+(setq password-cache-expiry nil)
 
 (provide 'matt-utils)
 ;; Local Variables:
