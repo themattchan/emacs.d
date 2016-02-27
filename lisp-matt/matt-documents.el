@@ -160,12 +160,12 @@
         (cl-remove-if (lambda (config) (string= config-name (car config)))
                       org-publish-project-alist)))
 
-(setq matt/file-loaded-set '())         ; PRIVATE -- things I've loaded
+(setq matt/file-loaded-set '()y)         ; PRIVATE -- things I've loaded
 (setq matt/org-project-file-name "org-project.el")
 
 (defmacro set-add! (var set)
   "Lists as Sets"
-  `(begin
+  `(progn
     (setq ,set (delq ,var ,set))
     (push ,var ,set)))
 
