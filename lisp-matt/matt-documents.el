@@ -190,8 +190,7 @@
                     (cl--parsing-keywords ((:force nil)) nil
                       cl-force))))
     (when project-dir
-      (let ((filename
-             (concat project-dir matt/org-project-file-name)))
+      (let ((filename (concat project-dir matt/org-project-file-name)))
         (matt/safe-load-file filename :force force)))))
 
 (add-hook 'org-mode-hook 'matt/load-org-project-settings)
