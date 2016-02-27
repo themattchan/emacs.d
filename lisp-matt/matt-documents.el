@@ -148,6 +148,18 @@
             (set-face-attribute 'org-level-1 nil :height 120)))
 (put 'upcase-region 'disabled nil)
 
+
+(defun matt/add-org-publish-config (config)
+  "Register an org-project config"
+  (setq org-publish-project-alist
+        (cons config org-publish-project-alist)))
+
+(defun matt/remove-org-publish-config (config-name)
+  "Remove a config with config-name (string) from the config list"
+  (setq org-publish-project-alist
+        (cl-remove-if (lambda (config) (string= config-name (car config)))
+                      org-publish-project-alist)))
+
 (setq matt/org-project-file-name "org-project.el")
 
 (defun matt/load-org-project-settings ()
@@ -160,6 +172,7 @@
       (load-file (concat project-dir matt/org-project-file-name)))))
 
 (add-hook 'org-mode-hook 'matt/load-org-project-settings)
+
 
 ;; graphviz
 (add-to-list 'auto-mode-alist '("\\.gv\\'" . graphviz-dot-mode))
