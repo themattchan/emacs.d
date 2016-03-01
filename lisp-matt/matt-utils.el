@@ -56,7 +56,7 @@
 ;;------------------------------------------------------------------------------
 ;; TRAMP-mode
 (setq tramp-default-method "ssh")
-(add-to-list 'tramp-default-method-alist '("ieng9.ucsd.edu" "" "scpx"))1
+(add-to-list 'tramp-default-method-alist '("ieng9.ucsd.edu" "" "scpx"))
 (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
 (setq password-cache-expiry nil)
 
