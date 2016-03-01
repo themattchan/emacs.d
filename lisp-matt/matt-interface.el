@@ -362,6 +362,7 @@
     (yas-minor-mode             . ""  )
     (helm-mode                  . ""  )
     (company-mode               . ""  )
+    (projectile-mode            . ""  )
 
     ;; Major modes
     (lisp-interaction-mode      . "λeval" )
@@ -397,6 +398,11 @@ want to use in the modeline *in lieu of* the original.")
                (setq mode-name mode-str)))))
 (add-hook 'init-hook 'clean-mode-line)
 (add-hook 'after-change-major-mode-hook 'clean-mode-line)
+
+;;------------------------------------------------------------------------------
+;; Projectile mode by default
+(projectile-global-mode)
+
 
 (provide 'matt-interface)
 ;; Local Variables:

@@ -12,3 +12,5 @@ ede-projects.el
 neil
 *.dat
 *.elc
+
+private.el

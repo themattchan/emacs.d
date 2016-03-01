@@ -1,4 +1,4 @@
-;;; matt-utils.el --- Settings for system utility replacements.
+;;; matt-utils.el --- Settings for various "app modes"
 
 ;;; Copyright (c) 2013-2015 Matthew Chan
 ;;; Author: Matthew Chan <matt@parametri.city>
@@ -21,7 +21,8 @@
 
 ;;; Code:
 
-;; dired
+;;------------------------------------------------------------------------------
+;; Dired
 ;; hide the -al stuff, toggle with ( and )
 (require 'dired-details+)
 (setq dired-recursive-deletes 'always
@@ -38,7 +39,8 @@
  dired-omit-mode t
  dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^\\.")
 
-;; terminal
+;;------------------------------------------------------------------------------
+;; Terminal
 ;; (use-package multi-term
 ;;   :ensure t
 ;;   :commands (multi-term)
@@ -51,11 +53,30 @@
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 (setenv "ESHELL" "bash")
 
-;; tramp mode
+;;------------------------------------------------------------------------------
+;; TRAMP-mode
 (setq tramp-default-method "ssh")
 (add-to-list 'tramp-default-method-alist '("ieng9.ucsd.edu" "" "scpx"))1
 (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
 (setq password-cache-expiry nil)
+
+;;------------------------------------------------------------------------------
+;; IRC
+;; mostly from https://github.com/bryangarza/dot-emacs/blob/master/init.el#L1273
+(setq erc-server-coding-system '(utf-8 . utf-8))
+(setq erc-timestamp-format "[%I:%M %p]")
+(setq erc-hide-timestamps t)
+(setq erc-echo-timestamps nil)
+(setq erc-echo-timestamp-format "TS'd %A, %I:%M:%S %p")
+(setq erc-track-showcount t)
+(setq erc-track-enable-keybindings t)
+(add-to-list 'erc-modules 'scrolltobottom)
+
+;(setq erc-hide-list '("JOIN" "PART" "QUIT"))
+(setq erc-hide-list '("MODE" "324" "329" "332" "333" "353"))
+(setq erc-lurker-hide-list '("JOIN" "PART" "QUIT"))
+
+
 
 (provide 'matt-utils)
 ;; Local Variables:
