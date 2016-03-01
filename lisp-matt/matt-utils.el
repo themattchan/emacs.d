@@ -1,6 +1,6 @@
 ;;; matt-utils.el --- Settings for various "app modes"
 
-;;; Copyright (c) 2013-2015 Matthew Chan
+;;; Copyright (c) 2013-2016 Matthew Chan
 ;;; Author: Matthew Chan <matt@parametri.city>
 ;;; URL: http://github.com/themattchan/emacs.d
 
@@ -63,18 +63,34 @@
 ;;------------------------------------------------------------------------------
 ;; IRC
 ;; mostly from https://github.com/bryangarza/dot-emacs/blob/master/init.el#L1273
-(setq erc-server-coding-system '(utf-8 . utf-8))
-(setq erc-timestamp-format "[%I:%M %p]")
-(setq erc-hide-timestamps t)
-(setq erc-echo-timestamps nil)
-(setq erc-echo-timestamp-format "TS'd %A, %I:%M:%S %p")
-(setq erc-track-showcount t)
-(setq erc-track-enable-keybindings t)
-(add-to-list 'erc-modules 'scrolltobottom)
 
-;(setq erc-hide-list '("JOIN" "PART" "QUIT"))
-(setq erc-hide-list '("MODE" "324" "329" "332" "333" "353"))
-(setq erc-lurker-hide-list '("JOIN" "PART" "QUIT"))
+;;(autoload 'erc "erc" "" t)
+
+
+(require 'erc)
+
+(setq erc-server-coding-system '(utf-8 . utf-8)
+
+      erc-timestamp-format "[%I:%M %p]"
+      erc-hide-timestamps t
+      erc-echo-timestamps nil
+      erc-echo-timestamp-format "TS'd %A, %I:%M:%S %p"
+
+      erc-track-showcount t
+      erc-track-enable-keybindings t
+      erc-track-use-faces t
+      erc-track-exclude-types '("JOIN" "PART" "QUIT" "NICK" "MODE")
+
+      erc-part-reason-various-alist '(("^$" "Leaving"))
+      erc-quit-reason-various-alist '(("^$" "Leaving"))
+      erc-quit-reason 'erc-part-reason-various
+      erc-part-reason 'erc-quit-reason-various
+
+      erc-hide-list '("MODE" "324" "329" "332" "333" "353")
+      erc-lurker-hide-list '("JOIN" "PART" "QUIT" "NICK" "MODE")
+      )
+
+(add-to-list 'erc-modules 'scrolltobottom)
 
 
 
