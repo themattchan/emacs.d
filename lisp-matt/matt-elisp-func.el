@@ -160,7 +160,7 @@ With a prefix ARG always prompt for command to use."
          (buf (generate-new-buffer bufname)))
     (print
      `(defvar matt/packages
-     ,package-activated-list
+        (quote ,package-activated-list)
      "Default packages"
      )
      buf)
