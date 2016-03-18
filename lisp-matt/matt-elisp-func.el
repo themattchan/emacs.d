@@ -161,16 +161,16 @@ With a prefix ARG always prompt for command to use."
     (print
      `(defvar matt/packages
         (quote ,package-activated-list)
-     "Default packages"
-     )
+        "Default packages"
+        )
      buf)
 
     (print
      '(defun matt/packages-installed-p ()
-      (loop for pkg in matt/packages
-        when (not (package-installed-p pkg))
-        do (return nil)
-        finally (return t)))
+        (loop for pkg in matt/packages
+              when (not (package-installed-p pkg))
+              do (return nil)
+              finally (return t)))
      buf)
 
     (print '(provide 'matt-packages) buf)
