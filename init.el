@@ -118,7 +118,7 @@
 ;;==============================================================================
 (setq load-prefer-newer t)           ; Load latest bytecode
 
-(load-file "private.el")
+(load-file "~/.emacs.d/private.el")
 
 (let ((matt-configs
        '(;; Emacs Lisp functions

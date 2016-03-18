@@ -23,7 +23,7 @@
 
 ;;------------------------------------------------------------------------------
 ;; Dired
-;; hide the -al stuff, toggle with ( and )
+;; hide the -al stuff, toggle with '(' and ')'
 (require 'dired-details+)
 (setq dired-recursive-deletes 'always
       dired-recursive-copies 'always
@@ -86,7 +86,7 @@
       erc-quit-reason 'erc-part-reason-various
       erc-part-reason 'erc-quit-reason-various
 
-      erc-hide-list '("MODE" "324" "329" "332" "333" "353")
+      erc-hide-list '("JOIN" "PART" "QUIT" "NICK" "MODE" "324" "329" "332" "333" "353"  "477")
       erc-lurker-hide-list '("JOIN" "PART" "QUIT" "NICK" "MODE")
       )
 

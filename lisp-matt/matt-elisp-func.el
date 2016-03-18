@@ -1,4 +1,4 @@
-;;; matt-elisp-func.el --- Emacs Lisp functions.
+;;; matt-elisp-func.el --- Emacs Lisp funhelloctions.
 
 ;;; Copyright (c) 2013-2015 Matthew Chan
 ;;; Author: Matthew Chan <matt@parametri.city>
@@ -139,13 +139,47 @@ or just one char if that's not possible"
 With a prefix ARG always prompt for command to use."
   (interactive "P")
   (when buffer-file-name
-    (shell-command (concat
-                    (cond
-                     ((and (not arg) *is-mac*) "open")
-                     ((and (not arg) *is-linux*) "xdg-open")
-                     (t (read-shell-command "Open current file with: ")))
-                    " "
-                    (shell-quote-argument buffer-file-name)))))
+    (shell-command
+     (concat
+      (cond
+       ((and (not arg) *is-mac*) "open")
+       ((and (not arg) *is-linux*) "xdg-open")
+       (t (read-shell-command "Open current file with: ")))
+      " "
+      (shell-quote-argument buffer-file-name)))))
+
+(defun matt/get-package-activeated-list ()
+  `(defvar matt/packages
+     ,package-activated-list
+     "Default packages"
+     ))
+
+(defun matt/save-package-list ()
+  (let* ((oldbuf (current-buffer))
+         (bufname (format "%s" (gensym)))
+         (buf (generate-new-buffer bufname)))
+    (print
+     `(defvar matt/packages
+     ,package-activated-list
+     "Default packages"
+     )
+     buf)
+
+    (print
+     '(defun matt/packages-installed-p ()
+      (loop for pkg in matt/packages
+        when (not (package-installed-p pkg))
+        do (return nil)
+        finally (return t)))
+     buf)
+
+    (print '(provide 'matt-packages) buf)
+
+    (set-buffer buf)
+    (write-file "./matt-packages.el" t)
+    (kill-buffer buf)
+
+    (set-buffer oldbuf)))
 
 (provide 'matt-elisp-func)
 ;; Local Variables:

@@ -148,6 +148,21 @@
             (set-face-attribute 'org-level-1 nil :height 120)))
 (put 'upcase-region 'disabled nil)
 
+;; (setq org-export-html-style-include-scripts nil
+;;       org-export-html-style-include-default nil)
+
+
+;; (defun get-string-from-file (filePath)
+;;   "Return filePath's file content."
+;;   (with-temp-buffer
+;;     (insert-file-contents filePath)
+;;     (buffer-string)))
+
+;; (setq matt/org-export-default-css
+;;       (format "<style>%s</style>" (get-string-from-file "~/.emacs.d/org-style.css")))
+
+;; (setq org-export-html-style matt/org-export-default-css)
+
 
 (defun matt/add-org-publish-config (config)
   "Register an org-project config"

@@ -28,9 +28,9 @@
 ;; ----------------------------------------------------------------------
 
 ;; liquidhaskell
-(require 'flycheck-sandbox-hdevtools)
+;;(require 'flycheck-sandbox-hdevtools)
 (require 'flycheck-liquidhs)
-(require 'liquid-types)
+;;(require 'liquid-types)
 
 ;;(eval-after-load 'flycheck '(require 'liquid-hdevtools))
 ;;(eval-after-load 'flycheck '(require 'hdevtools))
@@ -44,16 +44,27 @@
 ;; ghc-mod
 (autoload 'ghc-init "ghc" nil t)
 (autoload 'ghc-debug "ghc" nil t)
-(add-hook 'haskell-mode-hook (lambda () (ghc-init)))
+
+
+(require 'haskell-interactive-mode)
+(require 'haskell-process)
+(add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+
+(require 'stack-mode)
+(add-hook 'haskell-mode-hook 'stack-mode)
+(add-hook 'haskell-interactive-mode-hook 'structured-haskell-repl-mode)
+
+;;(add-hook 'haskell-mode-hook 'ghc-init)
+
 (eval-after-load 'company-mode '(add-to-list 'company-backends 'company-ghc))
 
 (defun matt/haskell-hooks ()
   (haskell-indentation-mode 1)
-  (interactive-haskell-mode 1)          ; cabal repl
+;  (interactive-haskell-mode 1)          ; cabal repl
   (inf-haskell-mode 1)                  ; repl
   (setq indent-tabs-mode nil)
   (flycheck-select-checker 'haskell-liquid)
-  (liquid-types-mode 1)
+;  (liquid-types-mode 1)
   (electric-indent-mode 0)
   )
 
@@ -78,11 +89,13 @@
                       (back-to-indentation)
                       (current-column))))
 
-(custom-set-variables
- '(haskell-process-type 'stack-ghci)
- '(haskell-process-suggest-remove-import-lines t)
- '(haskell-process-auto-import-loaded-modules t)
- '(haskell-process-log t))
+(setq haskell-process-suggest-remove-import-lines t)
+(setq haskell-process-auto-import-loaded-modules t)
+(setq haskell-process-log t)
+(setq haskell-process-type 'stack-ghci)
+(setq haskell-process-path-ghci "stack")
+(setq haskell-process-args-ghci "ghci")
+
 
 (eval-after-load 'haskell-mode
   '(progn
@@ -101,6 +114,10 @@
      ;; (bind-key "SPC"      'haskell-mode-contextual-space  haskell-mode-map)
      ;; (bind-key "C-x C-s"  'haskell-mode-save-buffer       haskell-mode-map)
      ))
+(add-hook 'haskell-mode-hook 'haskell-doc-mode)
+(add-hook 'haskell-mode-hook 'haskell-indentation-mode)
+(add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+(add-hook 'haskell-mode-hook 'haskell-decl-scan-mode)
 
 (eval-after-load 'haskell-cabal
   '(progn
@@ -149,6 +166,14 @@
 ;;   (setq merlin-error-after-save nil)
 ;;   ;; Enable Flycheck checker
 ;;   (flycheck-ocaml-setup))
+
+;; ----------------------------------------------------------------------
+;; F#
+;; ----------------------------------------------------------------------
+
+(setq inferior-fsharp-program "/usr/local/bin/fsharpi --readline-")
+(setq fsharp-compiler "/usr/local/bin/fsharpc")
+
 
 (provide 'matt-prog-ml)
 ;; Local Variables:
