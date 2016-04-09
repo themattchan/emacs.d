@@ -60,6 +60,7 @@
     "/sbin"
     "/Users/matt/Library/Haskell/bin"        ; for hdevtools, ghc-mod
     "/Users/matt/.local/bin"                 ; for liquidhaskell
+    "/Library/TeX/texbin"
     ))
 
 ;; Set PATHs for Unix-based systems
