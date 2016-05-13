@@ -35,8 +35,8 @@
           (lambda()
             ;;(matt/load-theme 'adwaita)
             (electric-indent-mode 1)    ; auto indent
-            (linum-mode 1)
-            (show-paren-mode 1)
+;            (linum-mode 1)
+            (show-paren-mode)
             (hl-line-mode 1)            ; highlight current line
             (auto-fill-mode 1)
             (flyspell-prog-mode)
@@ -71,6 +71,7 @@
     (setq flycheck-display-errors-delay 2)   ; seconds
 
     (add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode)
+    (add-hook 'flycheck-mode-hook 'flycheck-pos-tip-mode)
 
     ;; colours at http://raebear.net/comp/emacscolors.html
     (set-face-attribute 'flycheck-error nil

@@ -29,14 +29,14 @@
 
 ;;; Code:
 
-(defun matt/c-indent ()
+(defun matt/c-indent (width)
   ;; use setq-local, its supposedly more hygienic
   ;; set correct backspace behaviour.
   (setq-local c-backspace-function 'backward-delete-char)
 
   ;; c-type lang specifics. want 4-space width tab tabs
-  (setq-local c-basic-offset 4)
-  (setq-local tab-width 4)
+  (setq-local c-basic-offset width)
+  (setq-local tab-width width)
   ;; (setq-local c-indent-level 4)
 
   ;;(setq-local c-indent-tabs-mode t)           ; tabs please
@@ -45,6 +45,7 @@
 
   ;;(setq-local tab-stop-list (number-sequence 8 120 8))
   )
+
 
 ;;------------------------------------------------------------------------------
 ;; c-initialization-hook, run once on cc-mode init
@@ -57,7 +58,7 @@
             ;; (add-to-list 'ac-sources 'ac-source-c-headers)
             ;; (add-to-list 'ac-sources 'ac-source-c-header-symbols t)
 
-            (matt/c-indent)
+;;            (matt/c-indent)
 
             (add-to-list 'c-cleanup-list 'comment-close-slash)
 
@@ -105,13 +106,13 @@
 ;;------------------------------------------------------------------------------
 ;; C
 ;(autoload 'ac-c-headers "ac-c-headers")
-(add-hook 'c-mode-hook 'matt/c-indent)
+(add-hook 'c-mode-hook (lambda () (matt/c-indent 8)))
 
 ;;------------------------------------------------------------------------------
 ;; C++
 (add-hook 'c++-mode-hook
           (lambda ()
-            (matt/c-indent)
+            (matt/c-indent 4)
             (c-set-offset 'statement-case-open 0)
             ;; don't indent curly for if...
             (c-set-offset 'substatement-open 0)
@@ -164,7 +165,7 @@
 
 
 (add-hook 'java-mode-hook 'matt/java-hooks)
-(add-hook 'java-mode-hook 'matt/c-indent)
+(add-hook 'java-mode-hook (lambda () (matt/c-indent 4)))
 (add-hook 'java-mode-hook (lambda ()  (c-set-offset 'substatement-open 0)))
 
 (provide 'matt-prog-cc)

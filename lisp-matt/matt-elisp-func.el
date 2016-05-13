@@ -73,6 +73,15 @@ or just one char if that's not possible"
   (interactive)
   (mapc 'kill-buffer (cdr (buffer-list (current-buffer)))))
 
+(defun indent-marked-files ()
+  (interactive)
+  (dolist (file (dired-get-marked-files))
+    (find-file file)
+    (indent-region (point-min) (point-max))
+    (save-buffer)
+    (kill-buffer nil)))
+
+
 (defun do-files (files)
   (lambda (fun)
     (dolist (file files) ; path to file

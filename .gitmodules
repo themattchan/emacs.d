@@ -19,3 +19,6 @@
 [submodule "themes/tao-theme-emacs"]
 	path = themes/tao-theme-emacs
 	url = https://github.com/bryangarza/tao-theme-emacs
+[submodule "themes/flatland-emacs"]
+	path = themes/flatland-emacs
+	url = https://github.com/gchp/flatland-emacs.git

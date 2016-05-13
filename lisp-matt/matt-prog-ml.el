@@ -27,9 +27,56 @@
 ;; Haskell
 ;; ----------------------------------------------------------------------
 
+(defun haskell-custom-hook ()
+    (require 'haskell-interactive-mode)
+    (require 'haskell-process)
+    (add-hook 'haskell-mode-hook #'interactive-haskell-mode)
+    (add-hook 'haskell-mode-hook 'haskell-doc-mode)
+    (add-hook 'haskell-mode-hook 'haskell-decl-scan-mode)
+    (haskell-indentation-mode)
+
+    ;; Load the current file (and make a session if not already made).
+    (define-key haskell-mode-map (kbd "C-c C-l") #'haskell-process-load-file)
+    ;; Switch to the REPL.
+    (define-key haskell-mode-map [?\C-c ?\C-z] #'haskell-interactive-switch)
+    ;; “Bring” the REPL, hiding all other windows apart from the source
+    ;; and the REPL.
+    (define-key haskell-mode-map (kbd "C-`") #'haskell-interactive-bring)
+    ;; Get the type and info of the symbol at point, print it in the
+    ;; message buffer.
+    (define-key haskell-mode-map (kbd "C-c C-t") #'haskell-process-do-type)
+    (define-key haskell-mode-map (kbd "C-c C-i") #'haskell-process-do-info)
+    ;; Jump to the imports. Keep tapping to jump between import
+    ;; groups. C-u f8 to jump back again.
+    (define-key haskell-mode-map [f8] #'haskell-navigate-imports)
+
+    (define-key haskell-cabal-mode-map (kbd "C-`") #'haskell-interactive-bring)
+    (define-key haskell-cabal-mode-map (kbd "C-c C-k") #'haskell-interactive-mode-clear)
+    (define-key haskell-cabal-mode-map (kbd "C-c C-c") #'haskell-process-cabal-build)
+    ;; ;; Interactively choose the Cabal command to run.
+    (define-key haskell-cabal-mode-map (kbd "C-c c") #'haskell-process-cabal)
+
+    (custom-set-variables
+     '(haskell-process-type 'stack-ghci)
+     '(haskell-process-suggest-remove-import-lines t)
+     '(haskell-process-auto-import-loaded-modules t)
+     '(haskell-process-log t))
+
+)
+
+ (use-package haskell-mode
+    :ensure t
+    :config
+    (progn
+      (bind-key "C-c C-c" #'haskell-compile haskell-mode-map)
+      ;; (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
+      ))
+
+(add-hook 'haskell-mode-hook #'haskell-custom-hook)
+
 ;; liquidhaskell
 ;;(require 'flycheck-sandbox-hdevtools)
-(require 'flycheck-liquidhs)
+;;(require 'flycheck-liquidhs)
 ;;(require 'liquid-types)
 
 ;;(eval-after-load 'flycheck '(require 'liquid-hdevtools))
@@ -42,88 +89,102 @@
 ;;(add-hook 'haskell-mode-hook (local-set-key (kbd "RET") 'newline-and-indent-relative))
 
 ;; ghc-mod
-(autoload 'ghc-init "ghc" nil t)
-(autoload 'ghc-debug "ghc" nil t)
+;; (autoload 'ghc-init "ghc" nil t)
+;; (autoload 'ghc-debug "ghc" nil t)
 
 
-(require 'haskell-interactive-mode)
-(require 'haskell-process)
-(add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+;; (require 'haskell-interactive-mode)
+;; (require 'haskell-process)
+;; ;;(require 'stack-mode)
 
-(require 'stack-mode)
-(add-hook 'haskell-mode-hook 'stack-mode)
-(add-hook 'haskell-interactive-mode-hook 'structured-haskell-repl-mode)
+;; (setq haskell-process-type 'stack-ghci)
+;; (setq haskell-process-suggest-remove-import-lines t)
+;; (setq haskell-process-auto-import-loaded-modules t)
+;; (setq haskell-process-log t)
+;; ;; (setq haskell-process-path-ghci "stack")
+;; ;; (setq haskell-process-args-ghci "ghci")
+;; ;; (setq haskell-program-name "stack ghci")
 
-;;(add-hook 'haskell-mode-hook 'ghc-init)
+;; ;(add-hook 'haskell-mode-hook 'stack-mode)
+;; (add-hook 'haskell-mode-hook 'haskell-doc-mode)
+;; (add-hook 'haskell-mode-hook 'haskell-indentation-mode)
+;; (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+;; (add-hook 'haskell-mode-hook 'haskell-decl-scan-mode)
+;; ;(add-hook 'haskell-interactive-mode-hook 'structured-haskell-repl-mode)
+
+;; ;;(add-hook 'haskell-mode-hook 'ghc-init)
+;; (setq-default flycheck-disabled-checkers  '(haskell-ghc))
+
+;; (defun matt/haskell-keybinds ()
+;;   (bind-keys :map haskell-mode-map ("C-`"          . 'haskell-interactive-bring      ))
+;;   (bind-keys :map haskell-mode-map ("C-,"          . 'haskell-move-nested-left       ))
+;;   (bind-keys :map haskell-mode-map ("C-."          . 'haskell-move-nested-right      ))
+;;   (bind-keys :map haskell-mode-map ("C-c C-c"      . 'haskell-compile                ))
+;;   (bind-keys :map haskell-mode-map ("C-c C-l"      . 'haskell-process-load-or-reload ))
+;;   (bind-keys :map haskell-mode-map ("C-c C-z"      . 'haskell-interactive-switch     ))
+;;   (bind-keys :map haskell-mode-map ("C-c C-k"      . 'haskell-interactive-mode-clear ))
+;;   (bind-keys :map haskell-mode-map ("C-c C-n C-t"  . 'haskell-process-do-type        ))
+;;   (bind-keys :map haskell-mode-map ("C-c C-n C-i"  . 'haskell-process-do-info        ))
+;;   (bind-keys :map haskell-mode-map ("C-c C-n C-c"  . 'haskell-process-cabal-build    ))
+;;   (bind-keys :map haskell-mode-map ("C-c C-n c"    . 'haskell-process-cabal          ))
+;;   (bind-keys :map haskell-mode-map ([tab]          . 'indent-for-tab-command         ))
+;;   (bind-keys :map haskell-cabal-mode-map ("C-c C-c" . 'haskell-compile))
+;;   )
+
+;; (defun matt/haskell-hooks ()
+;;   (haskell-indentation-mode)
+;; ;  (interactive-haskell-mode 1)          ; cabal repl
+;;   (setq indent-tabs-mode nil)
+;;   ;;  (flycheck-select-checker 'haskell-liquid)
+;;   (flycheck-select-checker 'haskell-stack-ghc)
+;;   ;;  (liquid-types-mode 1)
+;;   (electric-indent-mode 0)
+
+;;   ;; Load the current file (and make a session if not already made).
+;;   (define-key haskell-mode-map (kbd "C-c C-l") #'haskell-process-load-or-reload)
+;;   ;; Switch to the REPL.
+;;   (define-key haskell-mode-map [?\C-c ?\C-z] #'haskell-interactive-switch)
+;;   ;; “Bring” the REPL, hiding all other windows apart from the source
+;;   ;; and the REPL.
+;;   (define-key haskell-mode-map (kbd "C-`") #'haskell-interactive-bring)
+;;   ;; Get the type and info of the symbol at point, print it in the
+;;   ;; message buffer.
+;;   (define-key haskell-mode-map (kbd "C-c C-t") #'haskell-process-do-type)
+;;   (define-key haskell-mode-map (kbd "C-c C-i") #'haskell-process-do-info)
+
+;;   ;; Jump to the imports. Keep tapping to jump between import
+;;   ;; groups. C-u f8 to jump back again.
+;;   (define-key haskell-mode-map [f8] #'haskell-navigate-imports)
+
+;;   (define-key haskell-cabal-mode-map (kbd "C-`") #'haskell-interactive-bring)
+;;   (define-key haskell-cabal-mode-map (kbd "C-c C-k") #'haskell-interactive-mode-clear)
+;;   (define-key haskell-cabal-mode-map (kbd "C-c C-c") #'haskell-process-cabal-build)
+;;   ;; ;; Interactively choose the Cabal command to run.
+;;   (define-key haskell-cabal-mode-map (kbd "C-c c") #'haskell-process-cabal)
+;;   )
+
+
+;; ;; (eval-after-load 'flycheck
+;; ;;   '(add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
+
+;; ;; (add-hook 'flycheck-mode-hook
+;; ;;       (lambda () (require 'flycheck-liquidhs)
+;; ;;         (flycheck-add-next-checker 'haskell-stack-ghc 'haskell-hlint)
+;; ;;         (flycheck-add-next-checker 'haskell-hlint 'haskell-liquid)))
+
+;; ;; (add-hook 'flycheck-after-syntax-check-hook
+;; ;;           (lambda () (liquid-tip-update 'flycheck)))
+
+;; (add-hook 'haskell-mode-hook 'matt/haskell-hooks)
+;; (add-hook 'literate-haskell-mode-hook 'matt/haskell-hooks)
+
+;; ;; so we can actually see our writings
+(setq haskell-literate-comment-face 'default)
+(setq haskell-interactive-popup-error nil)
+
 
 (eval-after-load 'company-mode '(add-to-list 'company-backends 'company-ghc))
 
-(defun matt/haskell-hooks ()
-  (haskell-indentation-mode 1)
-;  (interactive-haskell-mode 1)          ; cabal repl
-  (inf-haskell-mode 1)                  ; repl
-  (setq indent-tabs-mode nil)
-  (flycheck-select-checker 'haskell-liquid)
-;  (liquid-types-mode 1)
-  (electric-indent-mode 0)
-  )
-
-(eval-after-load 'flycheck
-  '(add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
-
-;; (add-hook 'flycheck-after-syntax-check-hook
-;;           (lambda () (liquid-tip-update 'flycheck)))
-
-;;(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-(add-hook 'haskell-mode-hook 'matt/haskell-hooks)
-(add-hook 'literate-haskell-mode-hook 'matt/haskell-hooks)
-
-;; so we can actually see our writings
-(setq haskell-literate-comment-face 'default)
-
-(defun newline-and-indent-relative ()
-  (interactive)
-  (newline)
-  (indent-to-column (save-excursion
-                      (forward-line -1)
-                      (back-to-indentation)
-                      (current-column))))
-
-(setq haskell-process-suggest-remove-import-lines t)
-(setq haskell-process-auto-import-loaded-modules t)
-(setq haskell-process-log t)
-(setq haskell-process-type 'stack-ghci)
-(setq haskell-process-path-ghci "stack")
-(setq haskell-process-args-ghci "ghci")
-
-
-(eval-after-load 'haskell-mode
-  '(progn
-     (bind-key "C-`"         'haskell-interactive-bring      haskell-mode-map)
-     (bind-key "C-,"         'haskell-move-nested-left       haskell-mode-map)
-     (bind-key "C-."         'haskell-move-nested-right      haskell-mode-map)
-     (bind-key "C-c C-c"     'haskell-compile                haskell-mode-map)
-     (bind-key "C-c C-l"     'haskell-process-load-or-reload haskell-mode-map)
-     (bind-key "C-c C-z"     'haskell-interactive-switch     haskell-mode-map)
-     (bind-key "C-c C-k"     'haskell-interactive-mode-clear haskell-mode-map)
-     (bind-key "C-c C-n C-t" 'haskell-process-do-type        haskell-mode-map)
-     (bind-key "C-c C-n C-i" 'haskell-process-do-info        haskell-mode-map)
-     (bind-key "C-c C-n C-c" 'haskell-process-cabal-build    haskell-mode-map)
-     (bind-key "C-c C-n c"   'haskell-process-cabal          haskell-mode-map)
-     (bind-key [tab]         'indent-for-tab-command         haskell-mode-map)
-     ;; (bind-key "SPC"      'haskell-mode-contextual-space  haskell-mode-map)
-     ;; (bind-key "C-x C-s"  'haskell-mode-save-buffer       haskell-mode-map)
-     ))
-(add-hook 'haskell-mode-hook 'haskell-doc-mode)
-(add-hook 'haskell-mode-hook 'haskell-indentation-mode)
-(add-hook 'haskell-mode-hook 'interactive-haskell-mode)
-(add-hook 'haskell-mode-hook 'haskell-decl-scan-mode)
-
-(eval-after-load 'haskell-cabal
-  '(progn
-     (bind-key "C-c C-c" 'haskell-compile haskell-cabal-mode-map)))
-
-(setq haskell-interactive-popup-error nil)
 
 ;; ----------------------------------------------------------------------
 ;; OCaml

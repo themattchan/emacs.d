@@ -46,7 +46,7 @@
  ispell-dictionary "english"            ; English spelling, thanks
 
  ;; Tabs and indentation and whitespace
- ;; indent-tabs-mode nil                ; tabs to spaces by default
+ indent-tabs-mode nil                   ; tabs to spaces by default
  tab-width 4                            ; Default tab display is 4 spaces
  ;; default insert is also 4 and inc of 4
  ;; got to specify this or it will continue to expand to 8 spc
