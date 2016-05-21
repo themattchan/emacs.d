@@ -117,7 +117,10 @@
             ;; don't indent curly for if...
             (c-set-offset 'substatement-open 0)
             ;; don't indent curly for inline method def
-            (c-set-offset 'inline-open 0)))
+            (c-set-offset 'inline-open 0)
+            (setq-default flycheck-gcc-language-standard "c++11"
+                          flycheck-clang-language-standard "c++11")
+            ))
 
 ;;------------------------------------------------------------------------------
 ;; Java
