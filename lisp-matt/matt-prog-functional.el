@@ -32,7 +32,8 @@
     elm-mode
     scala-mode
     scala2-mode
-    erlang-mode))
+    erlang-mode
+    fsharp-mode))
 
 (defvar lisp-modes
   '(lisp-mode
