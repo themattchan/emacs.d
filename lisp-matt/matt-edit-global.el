@@ -83,7 +83,7 @@
 ;;------------------------------------------------------------------------------
 ;; flyspell - aspell is better
 (if *is-mac*
-    (setq-default ispell-program-name "/opt/local/bin/aspell")
+    (setq-default ispell-program-name "/usr/local/bin/aspell")
   (setq-default ispell-program-name "/usr/bin/aspell"))
 
 (set-language-environment "UTF-8")

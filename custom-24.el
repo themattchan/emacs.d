@@ -136,7 +136,7 @@
  '(quack-programs
    (quote
     ("mit-scheme-x86-64" "bigloo" "csi" "csi -hygienic" "gosh" "gracket" "gsi" "gsi ~~/syntax-case.scm -" "guile" "kawa" "mit-scheme" "racket" "racket -il typed/racket" "rs" "scheme" "scheme48" "scsh" "sisc" "stklos" "sxi")))
- '(reftex-plug-into-AUCTeX t)
+ '(reftex-plug-into-AUCTeX t t)
  '(scheme-mit-dialect t)
  '(send-mail-function (quote mailclient-send-it))
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#eee8d5" 0.2))
@@ -175,7 +175,11 @@
  '(xterm-color-names
    ["#073642" "#dc322f" "#859900" "#b58900" "#268bd2" "#d33682" "#2aa198" "#eee8d5"])
  '(xterm-color-names-bright
-   ["#002b36" "#cb4b16" "#586e75" "#657b83" "#839496" "#6c71c4" "#93a1a1" "#fdf6e3"]))
+   ["#002b36" "#cb4b16" "#586e75" "#657b83" "#839496" "#6c71c4" "#93a1a1" "#fdf6e3"])
+ '(znc-servers
+   (quote
+    (("162.248.141.245" 1701 t
+      ((matt-znc "mach" "Z2fqfcxgPdJWn8Y")))))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

@@ -79,8 +79,9 @@
 
 ;; load path for extra packages
 (add-to-list 'load-path (concat user-emacs-directory "lisp-matt/"))
-(add-to-list 'load-path (concat user-emacs-directory "lisp/"))
-
+;;(add-to-list 'load-path (concat user-emacs-directory "lisp/"))
+(let ((default-directory  (concat user-emacs-directory "lisp/")))
+  (normal-top-level-add-to-load-path '("flycheck-liquidhs.el" "liquid-types.el")))
 ;; customize.el settings location
 (setq custom-file "~/.emacs.d/custom-24.el")
 (load custom-file)

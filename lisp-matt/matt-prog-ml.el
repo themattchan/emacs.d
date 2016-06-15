@@ -1,4 +1,4 @@
-;;; matt-prog-ml.el --- Settings for the ML family.
+;;; matt-prog-ml.el --- Settings for the ML-like languages.
 
 ;;; Copyright (c) 2013-2015 Matthew Chan
 ;;; Author: Matthew Chan <matt@parametri.city>
@@ -62,9 +62,18 @@
      '(haskell-process-auto-import-loaded-modules t)
      '(haskell-process-log t))
 
+    (require 'flycheck-liquidhs)
+    (require 'liquid-types)
+
+    (add-hook 'flycheck-mode-hook
+              (lambda () ;;(require 'flycheck-liquidhs)
+                (flycheck-add-next-checker 'haskell-stack-ghc 'haskell-hlint)
+                (flycheck-add-next-checker 'haskell-hlint 'haskell-liquid)))
+    (flycheck-select-checker 'haskell-stack-ghc)
+    (liquid-types-mode 1)
 )
 
- (use-package haskell-mode
+(use-package haskell-mode
     :ensure t
     :config
     (progn
@@ -76,8 +85,8 @@
 
 ;; liquidhaskell
 ;;(require 'flycheck-sandbox-hdevtools)
-;;(require 'flycheck-liquidhs)
-;;(require 'liquid-types)
+;; (require 'flycheck-liquidhs)
+;; (require 'liquid-types)
 
 ;;(eval-after-load 'flycheck '(require 'liquid-hdevtools))
 ;;(eval-after-load 'flycheck '(require 'hdevtools))
@@ -209,8 +218,8 @@
 
 
 ;; Add opam emacs directory to the load-path
-(setq opam-share (substring (shell-command-to-string "opam config var share 2> /dev/null") 0 -1))
-(add-to-list 'load-path (concat (file-name-directory opam-share) "/emacs/site-lisp"))
+;(setq opam-share (substring (shell-command-to-string "opam config var share 2> /dev/null") 0 -1))
+;(add-to-list 'load-path (concat (file-name-directory opam-share) "/emacs/site-lisp"))
 ;; Load merlin-mode
 (require 'merlin)
 ;; Start merlin on ocaml files

@@ -41,7 +41,7 @@
             (auto-fill-mode 1)
             (flyspell-prog-mode)
             (flycheck-mode)
-            (whitespace-mode)
+;;            (whitespace-mode)
             (subword-mode)
 
             ;; (define-key ac-mode-map (kbd "<backtab>") 'auto-complete)

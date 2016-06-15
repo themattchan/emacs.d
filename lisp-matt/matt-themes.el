@@ -34,7 +34,8 @@
     (progn
       ;; default theme on terminals
       (load-theme 'monokai t)           ; wombat
-      (set-background-color "black")))
+      (set-background-color "black"))
+  (load-theme 'flatland t))
 
 (provide 'matt-themes)
 ;; Local Variables:
