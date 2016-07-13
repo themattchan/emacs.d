@@ -14,3 +14,7 @@ neil
 *.elc
 
 private.el
+
+abbrev_defs 
+tramp
+projectile-bookmarks.eld

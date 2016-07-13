@@ -41,6 +41,7 @@
             (auto-fill-mode 1)
             (flyspell-prog-mode)
             (flycheck-mode)
+            (flycheck-pos-tip-mode)
 ;;            (whitespace-mode)
             (subword-mode)
 

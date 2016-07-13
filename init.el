@@ -46,8 +46,8 @@
 (eval-when-compile (require 'cl))       ; use common lisp (macros only)
 (require 'cl-lib)
 
-(defconst *my-path-list*
-  '("/opt/"
+(setq *my-path-list*
+  `("/opt/"
     "/opt/local/bin"
     "/opt/local/sbin"
     "/opt/X11/bin"
@@ -58,8 +58,8 @@
     "/usr/sbin"
     "/bin"
     "/sbin"
-    "/Users/matt/Library/Haskell/bin"        ; for hdevtools, ghc-mod
-    "/Users/matt/.local/bin"                 ; for liquidhaskell
+    ,(substitute-in-file-name "$HOME/Library/Haskell/bin") ; for hdevtools, ghc-mod
+    ,(substitute-in-file-name "$HOME/.local/bin")          ; stack install dir
     "/Library/TeX/texbin"
     ))
 
@@ -141,7 +141,8 @@
          matt-prog-global             ; Settings for all programming modes
          matt-prog-functional         ; Settings for all functional langs
          matt-prog-lisp               ; Lisp family: CL, Scheme, Racket, Clojure
-         matt-prog-ml                 ; ML family: Haskell, OCaml
+         matt-prog-haskell            ; Haskell
+         matt-prog-ml                 ; ML family: OCaml
          matt-prog-cc                 ; C family: C, C++, Java, (and ASM)
          matt-prog-other              ; Other langs: Scala, Python, web stuff
 

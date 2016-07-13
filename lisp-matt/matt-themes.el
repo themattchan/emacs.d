@@ -35,7 +35,7 @@
       ;; default theme on terminals
       (load-theme 'monokai t)           ; wombat
       (set-background-color "black"))
-  (load-theme 'flatland t))
+  (load-theme 'odersky t))
 
 (provide 'matt-themes)
 ;; Local Variables:
