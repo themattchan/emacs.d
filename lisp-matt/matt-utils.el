@@ -82,6 +82,8 @@
       erc-track-use-faces t
       erc-track-exclude-types '("JOIN" "PART" "QUIT" "NICK" "MODE")
 
+      erc-join-buffer 'bury
+
       erc-part-reason-various-alist '(("^$" "Leaving"))
       erc-quit-reason-various-alist '(("^$" "Leaving"))
       erc-quit-reason 'erc-part-reason-various
