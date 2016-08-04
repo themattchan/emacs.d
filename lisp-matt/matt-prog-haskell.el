@@ -1,18 +1,10 @@
-
 ;; ----------------------------------------------------------------------
 ;; Haskell
 ;; ----------------------------------------------------------------------
 
-(defun haskell-custom-hook ()
-    (require 'haskell-interactive-mode)
-    (require 'haskell-process)
-    (require 'intero)
-    (remove-hook 'haskell-mode-hook 'interactive-haskell-mode)
-    (remove-hook 'haskell-mode-hook 'stack-mode)
-    (add-hook 'haskell-mode-hook 'haskell-doc-mode)
-    (add-hook 'haskell-mode-hook 'haskell-decl-scan-mode)
-    (add-hook 'haskell-mode-hook 'intero-mode)
+(use-package haskell-mode :ensure t)
 
+(defun haskell-custom-hook ()
     (haskell-indentation-mode)
 
     (define-key intero-mode-map (kbd "C-`") 'flycheck-list-errors)
@@ -40,12 +32,20 @@
     (require 'liquid-types)
 
     (flycheck-select-checker 'haskell-stack-ghc)
-    (flycheck-add-next-checker 'haskell-stack-ghc 'haskell-hlint)
-    (flycheck-add-next-checker 'haskell-hlint 'haskell-liquid)
+    (flycheck-add-next-checker 'haskell-stack-ghc '(t . haskell-hlint))
+    (flycheck-add-next-checker 'haskell-hlint '(t . haskell-liquid))
     (liquid-types-mode 1)
 )
 
-(use-package haskell-mode :ensure t)
+(require 'haskell-interactive-mode)
+(require 'haskell-process)
+(require 'intero)
+
+(remove-hook 'haskell-mode-hook 'interactive-haskell-mode)
+(remove-hook 'haskell-mode-hook 'stack-mode)
+(add-hook 'haskell-mode-hook 'haskell-doc-mode)
+(add-hook 'haskell-mode-hook 'haskell-decl-scan-mode)
+(add-hook 'haskell-mode-hook 'intero-mode)
 
 (add-hook 'haskell-mode-hook #'haskell-custom-hook)
 
@@ -53,8 +53,13 @@
 (setq haskell-literate-comment-face 'default)
 (setq haskell-interactive-popup-error nil)
 
+;; idk why this was removed from haskell-mode upstream...
+
+(dolist (mode '(haskell-mode literate-haskell-mode))
+  (font-lock-add-keywords mode '(("\\_<\\(error\\|undefined\\)\\_>" 0 'font-lock-warning-face))))
 
 (eval-after-load 'company-mode '(add-to-list 'company-backends 'company-ghc))
+
 
 (provide 'matt-prog-haskell)
 ;; Local Variables:
