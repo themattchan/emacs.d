@@ -153,7 +153,9 @@
    ;; silver searcher
    ("M-s s"     . helm-ag)
    ("M-s a"     . helm-ag-project-root)
-   ("M-s r"     . helm-ag-r)
+   ("M-s b"     . helm-ag-buffers)
+   ("M-s p"     . helm-ag-pop-stack)
+   ("M-s C-c"   . helm-ag-clear-stack)
    ))
 
 
