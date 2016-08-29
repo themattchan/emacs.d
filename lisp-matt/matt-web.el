@@ -30,6 +30,8 @@
 (add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.scss\\'" . web-mode))
 
+(add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode))
+
 (add-hook 'web-mode-hook
           (lambda ()
             (setq indent-tabs-mode nil
