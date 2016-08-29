@@ -25,12 +25,9 @@
 (autoload 'web-mode "web-mode" "" t)
 (add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
 
-
 (add-to-list 'auto-mode-alist '("\\.scala.html\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.scss\\'" . web-mode))
-
-(add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode))
 
 (add-hook 'web-mode-hook
           (lambda ()
@@ -45,7 +42,7 @@
                                            ("blade" . "\\.blade\\.")))))
 
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js3-mode))
-(add-to-list 'auto-mode-alist '("\\.json\\'" . js3-mode))
+(add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode))
 
 (setq js2-bounce-indent-p t)
 (setq js2-auto-indent-p nil)
