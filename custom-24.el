@@ -130,6 +130,7 @@
  '(proof-electric-terminator-enable nil)
  '(proof-three-window-mode-policy (quote hybrid))
  '(proof-toolbar-enable nil)
+ '(purescript-mode-hook (quote (turn-on-purescript-indent)))
  '(quack-default-program "mit-scheme")
  '(quack-fontify-style (quote plt))
  '(quack-pretty-lambda-p t)
