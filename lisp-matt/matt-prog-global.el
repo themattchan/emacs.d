@@ -47,8 +47,8 @@
 
             ;; (define-key ac-mode-map (kbd "<backtab>") 'auto-complete)
             (setq
-             ;; tabs are tabs when i'm programming, unless specified
-             indent-tabs-mode t
+             ;; tabs are spaces unless specified
+             indent-tabs-mode nil
              ;; also, ensure that tabs are 4 spc wide unless specified
              tab-width 4
 

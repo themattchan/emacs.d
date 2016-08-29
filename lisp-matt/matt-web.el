@@ -44,6 +44,8 @@
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js3-mode))
 (add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode))
 
+(setq json-reformat:indent-width 2)
+(setq js-indent-level 2)
 (setq js2-bounce-indent-p t)
 (setq js2-auto-indent-p nil)
 (setq js2-basic-offset 2)
