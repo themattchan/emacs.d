@@ -22,3 +22,6 @@
 [submodule "themes/flatland-emacs"]
 	path = themes/flatland-emacs
 	url = https://github.com/gchp/flatland-emacs.git
+[submodule "themes/atom-one-dark-theme"]
+	path = themes/atom-one-dark-theme
+	url = https://github.com/jonathanchu/atom-one-dark-theme.git

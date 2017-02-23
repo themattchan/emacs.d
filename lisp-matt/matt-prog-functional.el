@@ -64,14 +64,24 @@
 (if *is-mac* (setq coq-prog-name "/opt/local/bin/coqtop"))
 
 (setq coq-default-undo-limit 10000)
-(setq proof-general-directory "~/.emacs.d/lisp/ProofGeneral-4.3beta")
+(setq proof-general-directory "~/.emacs.d/lisp/PG")
 (setq company-coq-disabled-features '(prettify-symbols))
 
 (if (file-accessible-directory-p proof-general-directory)
     (load (concat (file-name-as-directory proof-general-directory)
-                  "generic/proof-site.el")))
+                  "generic/proof-site")))
 
 ;;(add-hook 'coq-mode-hook #'company-coq-mode)
+
+;;  Purescript
+
+(add-hook 'purescript-mode-hook
+  (lambda ()
+    (require 'psc-ide)
+    (psc-ide-mode)
+    (company-mode)
+    (flycheck-mode)
+    (turn-on-purescript-indentation)))
 
 (provide 'matt-prog-functional)
 ;; Local Variables:

@@ -29,7 +29,7 @@
 
 ;;; Code:
 
-(defun matt/c-indent (width)
+(defun matt/c-indent (width tabs)
   ;; use setq-local, its supposedly more hygienic
   ;; set correct backspace behaviour.
   (setq-local c-backspace-function 'backward-delete-char)
@@ -40,8 +40,8 @@
   ;; (setq-local c-indent-level 4)
 
   ;;(setq-local c-indent-tabs-mode t)           ; tabs please
-  (setq-local c-tab-always-indent t)          ; t for tabs, nil for spaces
-  (setq-local indent-tabs-mode t)
+  (setq-local c-tab-always-indent tabs)          ; t for tabs, nil for spaces
+  (setq-local indent-tabs-mode tabs)
 
   ;;(setq-local tab-stop-list (number-sequence 8 120 8))
   )
@@ -58,7 +58,7 @@
             ;; (add-to-list 'ac-sources 'ac-source-c-headers)
             ;; (add-to-list 'ac-sources 'ac-source-c-header-symbols t)
 
-;;            (matt/c-indent)
+            ;;            (matt/c-indent)
 
             (add-to-list 'c-cleanup-list 'comment-close-slash)
 
@@ -105,14 +105,14 @@
 
 ;;------------------------------------------------------------------------------
 ;; C
-;(autoload 'ac-c-headers "ac-c-headers")
-(add-hook 'c-mode-hook (lambda () (matt/c-indent 8)))
+                                        ;(autoload 'ac-c-headers "ac-c-headers")
+(add-hook 'c-mode-hook (lambda () (matt/c-indent 8 t)))
 
 ;;------------------------------------------------------------------------------
 ;; C++
 (add-hook 'c++-mode-hook
           (lambda ()
-            (matt/c-indent 4)
+            (matt/c-indent 2 nil)
             (c-set-offset 'statement-case-open 0)
             ;; don't indent curly for if...
             (c-set-offset 'substatement-open 0)
@@ -124,30 +124,30 @@
 
 ;;------------------------------------------------------------------------------
 ;; Java
-;(autoload 'jtags-mode "jtags" "Toggle jtags mode." t)
-;(require 'eclim)
-;(require 'eclimd)
+                                        ;(autoload 'jtags-mode "jtags" "Toggle jtags mode." t)
+                                        ;(require 'eclim)
+                                        ;(require 'eclimd)
 
 
 ;; (defvar eclimd-port nil
 ;;   "The active eclimd port number")
 
 (custom-set-variables
-  '(eclim-eclipse-dirs '("/Applications/eclipse"))
-  '(eclim-executable "/Applications/eclipse/eclim"))
+ '(eclim-eclipse-dirs '("/Applications/eclipse"))
+ '(eclim-executable "/Applications/eclipse/eclim"))
 
 ;; add the emacs-eclim source
 ;; (require 'ac-emacs-eclim-source)
 ;; (ac-emacs-eclim-config)
-;
+                                        ;
 (defun matt/java-hooks ()
   ;; Treat Java 1.5 @-style annotations as comments.
   (setq c-comment-start-regexp "(@|/(/|[*][*]?))")
   (modify-syntax-entry ?@ "< b" java-mode-syntax-table)
 
   (jtags-mode)
- ; (eclim-mode)
-;  (setq eclim-auto-save t)
+                                        ; (eclim-mode)
+                                        ;  (setq eclim-auto-save t)
 
   ;; Don't newline open curly
   (setq c-hanging-braces-alist

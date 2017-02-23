@@ -299,8 +299,9 @@
 
    (*is-linux*
     (set-face-attribute 'default nil
-                        :font "Monospace-10"
-                        :height 100
+                        :font "Monospace-13"
+                        :height 150
+                        :weight 'normal
                         :width 'normal))
 
    (*is-windows*
