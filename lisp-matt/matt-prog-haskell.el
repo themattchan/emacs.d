@@ -14,6 +14,10 @@
     (define-key haskell-mode-map [?\C-c ?\C-z] #'haskell-interactive-switch)
     (define-key haskell-mode-map (kbd "C-c C-i") #'haskell-process-do-info)
     (define-key haskell-mode-map [f8] #'haskell-navigate-imports)
+    (define-key haskell-mode-map "C-c C-h" 'haskell-hoogle)
+    (define-key haskell-mode-map "C-c C-b" 'flycheck-buffer)
+    (define-key haskell-mode-map "M-n" 'flycheck-next-error)
+    (define-key haskell-mode-map "M-p" 'flycheck-previous-error)
 
     ;; (define-key haskell-cabal-mode-map (kbd "C-c C-k") #'haskell-interactive-mode-clear)
     ;; (define-key haskell-cabal-mode-map (kbd "C-c c") #'haskell-process-cabal)
