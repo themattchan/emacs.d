@@ -1,4 +1,4 @@
-;;; matt-elisp-func.el --- Emacs Lisp funhelloctions.
+;;; matt-elisp-func.el --- Emacs Lisp functions.
 
 ;;; Copyright (c) 2013-2015 Matthew Chan
 ;;; Author: Matthew Chan <matt@parametri.city>
