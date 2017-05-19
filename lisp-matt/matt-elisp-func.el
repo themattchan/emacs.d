@@ -157,7 +157,7 @@ With a prefix ARG always prompt for command to use."
       " "
       (shell-quote-argument buffer-file-name)))))
 
-(defun matt/get-package-activeated-list ()
+(defun matt/get-package-activated-list ()
   `(defvar matt/packages
      ,package-activated-list
      "Default packages"
