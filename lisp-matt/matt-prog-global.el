@@ -74,6 +74,12 @@
     (add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode)
     (add-hook 'flycheck-mode-hook 'flycheck-pos-tip-mode)
 
+    (setq flycheck-disabled-checkers
+          (append flycheck-disabled-checkers
+                  '(javascript-jshint)))
+
+    (flycheck-add-mode 'javascript-eslint 'web-mode)
+
     ;; colours at http://raebear.net/comp/emacscolors.html
     (set-face-attribute 'flycheck-error nil
                         :foreground "red"

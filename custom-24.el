@@ -38,7 +38,7 @@
  '(doc-view-continuous t)
  '(ecb-layout-name "left2")
  '(ecb-options-version "2.40")
- '(ecb-source-path (quote (("/" "/"))))
+ '(ecb-source-path (quote (("/" "/") ("/Users/matt/Dropbox" "dropbox"))))
  '(ecb-tip-of-the-day nil)
  '(eclim-eclipse-dirs (quote ("/Applications/eclipse")))
  '(eclim-executable "/Applications/eclipse/eclim")
@@ -143,7 +143,7 @@
  '(quack-programs
    (quote
     ("mit-scheme-x86-64" "bigloo" "csi" "csi -hygienic" "gosh" "gracket" "gsi" "gsi ~~/syntax-case.scm -" "guile" "kawa" "mit-scheme" "racket" "racket -il typed/racket" "rs" "scheme" "scheme48" "scsh" "sisc" "stklos" "sxi")))
- '(reftex-plug-into-AUCTeX t t)
+ '(reftex-plug-into-AUCTeX t)
  '(scheme-mit-dialect t)
  '(send-mail-function (quote mailclient-send-it))
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#eee8d5" 0.2))
@@ -186,7 +186,7 @@
  '(znc-servers
    (quote
     (("162.248.141.245" 1701 t
-      ((matt-znc "mach" "Z2fqfcxgPdJWn8Y")))))))
+      ((matt-znc "mach" "Z2fqfcxgPdJWn8Y"))))) t))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

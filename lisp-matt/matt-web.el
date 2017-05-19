@@ -43,6 +43,7 @@
 
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js3-mode))
 (add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
 
 (setq json-reformat:indent-width 2)
 (setq js-indent-level 2)

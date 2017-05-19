@@ -112,7 +112,8 @@
 ;; use shift-tab for yasnippet completion so it doesn't conflict w/ ac-mode
 (define-key yas-minor-mode-map (kbd "<tab>") nil)
 (define-key yas-minor-mode-map (kbd "TAB") nil)
-(define-key yas-minor-mode-map (kbd "<backtab>") 'yas-expand)
+(define-key yas-minor-mode-map (kbd "<S-tab>") 'yas-expand)
+(global-set-key (kbd "<S-tab>") 'yas-expand)
 
 ;;------------------------------------------------------------------------------
 ;; auto-complete mode
