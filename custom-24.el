@@ -126,6 +126,8 @@
  '(nrepl-message-colors
    (quote
     ("#dc322f" "#cb4b16" "#b58900" "#546E00" "#B4C342" "#00629D" "#2aa198" "#d33682" "#6c71c4")))
+ '(olivetti-body-width 100)
+ '(olivetti-minimum-body-width 40)
  '(org-indent-mode-turns-on-hiding-stars nil)
  '(org-startup-indented t)
  '(org-startup-truncated nil)
