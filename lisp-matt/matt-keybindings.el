@@ -159,11 +159,21 @@
       (bind-key "s-S-<down>"    'windmove-down)
       (bind-key "s-<left>"      'previous-buffer)   ; move to prev buffer
       (bind-key "s-<right>"     'next-buffer))      ; move to next buffer
+
   (progn ;; terminal doesn't like the meta key
     (bind-key "C-c <left>"      'windmove-left)
     (bind-key "C-c <right>"     'windmove-right)
     (bind-key "C-c <up>"        'windmove-up)
     (bind-key "C-c <down>"      'windmove-down)))
+
+;; alternate pane navigation on keyboard, no arrow keys
+(progn
+  (bind-key "C-S-b"         'windmove-left)     ; move to left window
+  (bind-key "C-S-f"         'windmove-right)    ; move to right window
+  (bind-key "C-S-p"         'windmove-up)       ; move to upper window
+  (bind-key "C-S-n"         'windmove-down)
+  (bind-key "C-c b"         'previous-buffer)   ; move to prev buffer
+  (bind-key "C-c n"         'next-buffer))      ; move to next buffer
 
 (defun toggle-fullscreen-linux ()
   "Toggle full screen on X11."
