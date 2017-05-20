@@ -30,17 +30,17 @@
 
 ;; Fix modifier keys on Mac GUI
 ;; Carbon Emacs. Assume Control is Caps
-(setq
- ns-command-modifier 'meta              ; L command -> M
- ns-option-modifier 'super              ; L option -> super
- ;; ns-control-modifier 'super          ; L control -> super
- ;; ns-function-modifier 'hyper         ; fn -> super
- ns-function-modifier 'super
-
- ;; right hand side modifiers
- ns-right-command-modifier 'super       ; R command -> super
- ns-right-option-modifier 'hyper        ; R option -> hyper
- )
+(when *is-mac*
+  (setq
+   ns-command-modifier 'meta              ; L command -> M
+   ns-option-modifier 'super              ; L option -> super
+   ;; ns-control-modifier 'super          ; L control -> super
+   ;; ns-function-modifier 'hyper         ; fn -> super
+   ns-function-modifier 'super
+   ;; right hand side modifiers
+   ns-right-command-modifier 'super       ; R command -> super
+   ns-right-option-modifier 'hyper        ; R option -> hyper
+   ))
 
 
 ;; type brackets in pairs with Super and right hands's home-row
