@@ -158,42 +158,8 @@
    ("M-s C-c"   . helm-ag-clear-stack)
    ))
 
-
-;; DEPRECATED
-;; ;; ido
-;; (autoload 'ido "ido")
-;; ;(autoload 'flx-ido "flx-ido")
-;; (ido-mode 'both)
-;; (ido-everywhere 1)
-;; ;(flx-ido-mode 1)
-
-;; (setq
-;;  ido-save-directory-list-file "~/.emacs.d/cache/ido.last"
-
-;;  ido-ignore-buffers ;; ignore these guys
-;;  '("\\` " "^\*Mess" "^\*Back" ".*Completion" "^\*Ido" "^\*trace"
-;;    "^\*compilation" "^\*GTAGS" "^session\.*" "^\*")
-;;  ido-work-directory-list '("~/" "~/Desktop" "~/Documents" "~src")
-;;  ido-case-fold  t                    ; be case-insensitive
-
-;;  ido-enable-last-directory-history t ; remember last used dirs
-;;  ido-max-work-directory-list 30      ; should be enough
-;;  ido-max-work-file-list      50      ; remember many
-;;  ido-use-filename-at-point nil       ; don't use filename at point (annoying)
-;;  ido-use-url-at-point nil            ; don't use url at point (annoying)
-
-;;  ido-enable-flex-matching nil        ; don't try to be too smart
-;;  ido-max-prospects 8                 ; don't spam my minibuffer
-;;  ido-confirm-unique-completion t     ; wait for RET, even with unique completion
-;;  ido-use-virtual-buffers t
-;;  ido-use-faces nil
-;;  )
-
 ;; when using ido, the confirmation is rather annoying...
  (setq confirm-nonexistent-file-or-buffer nil)
-;; icicles tab completion
-;; (autoload 'icicles "icicles")
-;; (icicle-mode t)
 
 ;;------------------------------------------------------------------------------
 ;; winner-mode
@@ -204,11 +170,6 @@
 (autoload 'recentf "recentf")
 (recentf-mode 1)
 (setq recentf-max-menu-items 30)
-;;(bind-key "C-x f" 'recentf-open-files)  ; rebind fill column, use M-x
-                                        ; set-fill-column
-
-;;------------------------------------------------------------------------------
-(autoload 'sr-speedbar "sr-speedbar") ;; in-window-speedbar
 
 ;;------------------------------------------------------------------------------
 ;; Fix Emacs interface annoyances
@@ -319,10 +280,6 @@
 ;; No popups and dialogues. They crash carbon emacs.
 ;; Not to mention that they're incredibly annoying.
 (defadvice y-or-n-p (around prevent-dialog activate)
-  "Prevent y-or-n-p from activating a dialog"
-  (let ((use-dialog-box nil))
-    ad-do-it))
-(defadvice y-or-n-p (around prevent-dialog-yorn activate)
   "Prevent y-or-n-p from activating a dialog"
   (let ((use-dialog-box nil))
     ad-do-it))
