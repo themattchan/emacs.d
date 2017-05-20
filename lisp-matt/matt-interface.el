@@ -285,6 +285,12 @@
 ;; (smartparens-global-mode t)
 
 ;;------------------------------------------------------------------------------
+;; neotree
+
+;; classic(default) ascii arrow icons nerd
+(setq neo-theme 'nerd)
+
+;;------------------------------------------------------------------------------
 ;; Fonts (face) customization
 (autoload 'faces "faces")
 ;; default font size is 14pt on carbon emacs
