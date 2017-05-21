@@ -40,7 +40,6 @@
 
 (setq inferior-lisp-program "sbcl")
 (setq scheme-program-name "racket")
-(setq geiser-racket-binary "/Applications/Racket/bin/racket")
 
 ;;------------------------------------------------------------------------------
 ;; colourful parens
@@ -83,7 +82,7 @@
 
 ;;(eval-after-load "geiser" (progn '(require xscheme) '(require quack)))
 
-;;(setq scheme-program-name "mit-scheme")
+(setq scheme-program-name "mit-scheme")
 ;;(eval-after-load "geiser" '(require quack))
 
 ;; (autoload 'ac-geiser "ac-geiser")
