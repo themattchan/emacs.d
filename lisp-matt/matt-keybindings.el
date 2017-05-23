@@ -30,17 +30,16 @@
 
 ;; Fix modifier keys on Mac GUI
 ;; Carbon Emacs. Assume Control is Caps
-(when *is-mac*
-  (setq
-   ns-command-modifier 'meta              ; L command -> M
-   ns-option-modifier 'super              ; L option -> super
-   ;; ns-control-modifier 'super          ; L control -> super
-   ;; ns-function-modifier 'hyper         ; fn -> super
-   ns-function-modifier 'super
-   ;; right hand side modifiers
-   ns-right-command-modifier 'super       ; R command -> super
-   ns-right-option-modifier 'hyper        ; R option -> hyper
-   ))
+(setq
+ ns-command-modifier 'meta              ; L command -> M
+ ns-option-modifier 'super              ; L option -> super
+ ;; ns-control-modifier 'super          ; L control -> super
+ ;; ns-function-modifier 'hyper         ; fn -> super
+ ns-function-modifier 'super
+ ;; right hand side modifiers
+ ns-right-command-modifier 'super       ; R command -> super
+ ns-right-option-modifier 'hyper        ; R option -> hyper
+ )
 
 
 ;; type brackets in pairs with Super and right hands's home-row
@@ -166,7 +165,7 @@
     (bind-key "C-c <up>"        'windmove-up)
     (bind-key "C-c <down>"      'windmove-down)))
 
-;; alternate pane navigation on keyboard, no arrow keys
+;; ;; alternate pane navigation on keyboard, no arrow keys
 (progn
   (bind-key "C-S-b"         'windmove-left)     ; move to left window
   (bind-key "C-S-f"         'windmove-right)    ; move to right window
@@ -174,6 +173,10 @@
   (bind-key "C-S-n"         'windmove-down)
   (bind-key "C-c b"         'previous-buffer)   ; move to prev buffer
   (bind-key "C-c n"         'next-buffer))      ; move to next buffer
+
+(bind-key "<mouse-4>"     'previous-buffer)   ; move to prev buffer
+(bind-key "<mouse-3>"     'next-buffer)
+
 
 (defun toggle-fullscreen-linux ()
   "Toggle full screen on X11."
