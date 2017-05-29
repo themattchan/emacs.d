@@ -33,9 +33,11 @@
 (if (not (window-system))
     (progn
       ;; default theme on terminals
-      (load-theme 'monokai t)           ; wombat
-      (set-background-color "black"))
-  (load-theme 'odersky t))
+;;      (load-theme 'wombat t)
+      (set-background-color "black")))
+
+(load-theme 'doom-tomorrow-night t)
+;;(load-theme 'odersky t))
 
 (provide 'matt-themes)
 ;; Local Variables:

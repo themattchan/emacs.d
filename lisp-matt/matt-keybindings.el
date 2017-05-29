@@ -42,15 +42,7 @@
  ns-right-option-modifier 'hyper        ; R option -> hyper
  )
 
-
-;; type brackets in pairs with Super and right hands's home-row
-;; (bind-key "s-j" (lambda () (interactive) (insert "()" (backward-char 1))))
-;; (bind-key "s-k" (lambda () (interactive) (insert "[]" (backward-char 1))))
-;; (bind-key "s-l" (lambda () (interactive) (insert "{}" (backward-char 1))))
-
-
 (bind-key "C-;" 'comment-or-uncomment-region)
-
 
 (bind-key "M-/" 'hippie-expand) ; replace default expand command
 ;; backtab is now yasnippet complete snippet
@@ -90,6 +82,8 @@
 (bind-key "M-[" 'backward-paragraph)
 (bind-key "M-]" 'forward-paragraph)
 
+(bind-key "M-<up>" 'scroll-down-command)
+(bind-key "M-<down>" 'scroll-up-command)
 
 ;; Cut copy paste (there is no delete)
 ;; -----------------------------------
@@ -137,11 +131,6 @@
 
 ;; (bind-key "C-x C-k" (lambda () (interactive) (kill-buffer (current-buffer))))
 
-;; cycle through split-panes
-(bind-key "C-c n" (lambda () (interactive) (select-window (next-window))))
-(bind-key "C-c p" (lambda () (interactive) (select-window (previous-window))))
-
-
 ;; cycle through frames (on the terminal, these fill the screen like tabs)
 ;; C-x 5 2 make new frame
 ;; C-x 5 b open buffer in new frame
@@ -168,15 +157,15 @@
 
 ;; alternate pane navigation on keyboard, no arrow keys
 (progn
-  (bind-key "C-S-b"         'windmove-left)     ; move to left window
-  (bind-key "C-S-f"         'windmove-right)    ; move to right window
-  (bind-key "C-S-p"         'windmove-up)       ; move to upper window
-  (bind-key "C-S-n"         'windmove-down)
+  (bind-key "C-s-b"         'windmove-left)     ; move to left window
+  (bind-key "C-s-f"         'windmove-right)    ; move to right window
+  (bind-key "C-s-p"         'windmove-up)       ; move to upper window
+  (bind-key "C-s-n"         'windmove-down)
   (bind-key "C-c b"         'previous-buffer)   ; move to prev buffer
   (bind-key "C-c n"         'next-buffer))      ; move to next buffer
 
 (bind-key "<wheel-left>"     'previous-buffer)   ; move to prev buffer
-(bind-key "<wheel-right>"     'next-buffer)
+(bind-key "<wheel-right>"    'next-buffer)
 
 (defun toggle-fullscreen-linux ()
   "Toggle full screen on X11."
@@ -200,6 +189,7 @@
 
 ;; neotree
 (bind-key "<f8>" 'neotree-toggle)
+(setq neo-theme 'nerd)
 
 (provide 'matt-keybindings)
 ;; Local Variables:
