@@ -260,7 +260,7 @@
    (*is-mac*
     (set-face-attribute 'default nil
                         :font "Monaco"
-                        :height 120    ; default font size is 12pt on carbon emacs
+                        :height 160    ; default font size is 12pt on carbon emacs
                         :weight 'normal
                         :width 'normal))
 
