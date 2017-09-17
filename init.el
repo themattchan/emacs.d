@@ -47,7 +47,9 @@
 (require 'cl-lib)
 
 (setq *my-path-list*
-  `("/opt/"
+  `("~/.nix-profile/bin"
+    "~/.nix-profile/sbin"
+    "/opt/"
     "/opt/local/bin"
     "/opt/local/sbin"
     "/opt/X11/bin"
@@ -62,6 +64,7 @@
     ,(substitute-in-file-name "$HOME/.local/bin")          ; stack install dir
     "/Library/TeX/texbin"
     ))
+(setenv "NIX_PATH" (substitute-in-file-name "$HOME/.nix-defexpr/channels/nixpkgs/"))
 
 ;; Set PATHs for Unix-based systems
 (setenv "PATH" (mapconcat #'identity *my-path-list* ":"))
@@ -73,7 +76,7 @@
 ;;(setenv "PYTHONPATH" "/usr/local/lib/python2.7/site-packages:")
 
 ;; Show stack trace on error
-;; (setq debug-on-error t)
+;;(setq debug-on-error t)
 
 ;; Set file paths before anything else
 

@@ -36,7 +36,6 @@
  ;; ns-control-modifier 'super          ; L control -> super
  ;; ns-function-modifier 'hyper         ; fn -> super
  ns-function-modifier 'super
-
  ;; right hand side modifiers
  ns-right-command-modifier 'super       ; R command -> super
  ns-right-option-modifier 'hyper        ; R option -> hyper
@@ -166,7 +165,7 @@
     (bind-key "C-c <up>"        'windmove-up)
     (bind-key "C-c <down>"      'windmove-down)))
 
-;; alternate pane navigation on keyboard, no arrow keys
+;; ;; alternate pane navigation on keyboard, no arrow keys
 (progn
   (bind-key "C-S-b"         'windmove-left)     ; move to left window
   (bind-key "C-S-f"         'windmove-right)    ; move to right window

@@ -1,6 +1,6 @@
 [submodule "snippets"]
 	path = snippets
-	url = git@github.com:themattchan/more-snippets.git
+	url = https://github.com/themattchan/more-snippets.git
 [submodule "themes/emacs-theme-darktooth"]
 	path = themes/emacs-theme-darktooth
 	url = https://github.com/bryangarza/emacs-theme-darktooth.git

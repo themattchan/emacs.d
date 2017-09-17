@@ -61,7 +61,7 @@
 
 ;; Proof General and Coq
 ;; TODO: autoload
-(if *is-mac* (setq coq-prog-name "/opt/local/bin/coqtop"))
+(if *is-mac* (setq coq-prog-name "/usr/local/bin/coqtop"))
 
 (setq coq-default-undo-limit 10000)
 (setq proof-general-directory "~/.emacs.d/lisp/PG")
