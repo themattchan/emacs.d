@@ -83,6 +83,8 @@
     (flycheck-mode)
     (turn-on-purescript-indentation)))
 
+(setq idris-interpreter-path "/usr/local/bin/idris")
+
 (provide 'matt-prog-functional)
 ;; Local Variables:
 ;; indent-tabs-mode: nil

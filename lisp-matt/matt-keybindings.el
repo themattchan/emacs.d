@@ -175,8 +175,8 @@
   (bind-key "C-c b"         'previous-buffer)   ; move to prev buffer
   (bind-key "C-c n"         'next-buffer))      ; move to next buffer
 
-(bind-key "<wheel-left>"     'previous-buffer)   ; move to prev buffer
-(bind-key "<wheel-right>"     'next-buffer)
+;; (bind-key "<wheel-left>"     'previous-buffer)   ; move to prev buffer
+;; (bind-key "<wheel-right>"     'next-buffer)
 
 (defun toggle-fullscreen-linux ()
   "Toggle full screen on X11."

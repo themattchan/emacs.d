@@ -65,12 +65,12 @@
 ;; IRC
 ;; mostly from https://github.com/bryangarza/dot-emacs/blob/master/init.el#L1273
 
-;;(autoload 'erc "erc" "" t)
-
-
 (require 'erc)
-
+(require 'erc-services)
+(erc-services-mode 1)
 (setq erc-server-coding-system '(utf-8 . utf-8)
+
+      erc-prompt-for-nickserv-password nil
 
       erc-timestamp-format "[%I:%M %p]"
       erc-hide-timestamps t
@@ -92,9 +92,14 @@
       erc-hide-list '("JOIN" "PART" "QUIT" "NICK" "MODE" "324" "329" "332" "333" "353"  "477")
       erc-lurker-hide-list '("JOIN" "PART" "QUIT" "NICK" "MODE")
       )
+(setq erc-autojoin-channels-alist
+      '(("freenode.net"
+         "#haskell" "#haskell-lens" "#haskell-in-depth" "#haskell-beginners" "#xmonad"
+         "#idris"
+         )))
+(erc :server "irc.freenode.net" :port 6667 :nick "mach")
 
 (add-to-list 'erc-modules 'scrolltobottom)
-
 
 
 (provide 'matt-utils)

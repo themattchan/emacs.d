@@ -253,6 +253,8 @@
 ;; open info files in the interactive browser
 (add-to-list 'auto-mode-alist '("\\.info\\'" . info-mode))
 
+(add-to-list 'auto-mode-alist '("\\.ott\\'" . ott-mode))
+
 (provide 'matt-documents)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
