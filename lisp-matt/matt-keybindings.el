@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t -*-
 ;;; matt-keybindings.el --- Keybindings.
 
 ;;; Copyright (c) 2013-2015 Matthew Chan
@@ -27,6 +28,7 @@
 ;; likewise, to unbind a key from a map, (unbind-key <key> &<map>)
 
 ;;; Code:
+(setq lexical-binding t)
 
 ;; Fix modifier keys on Mac GUI
 ;; Carbon Emacs. Assume Control is Caps
@@ -119,6 +121,9 @@
 ;; (bind-key "C-x u" 'undo)
 (when (require 'redo nil 'noerror) (bind-key "C-?" 'redo))
 
+(bind-key "\C-x\C-m" 'execute-extended-command)
+(bind-key "\C-c\C-m" 'execute-extended-command)
+
 ;; rebind normal search to use regex
 (bind-key "C-s" 'isearch-forward-regexp)
 (bind-key "C-r" 'isearch-backward-regexp)
@@ -192,9 +197,19 @@
 ;; cua rectangle selection is good.
 ;; (cua-selection-mode 1)
 
+;; avy
+(avy-setup-default)
+(global-set-key (kbd "C-'") 'avy-goto-char-timer)
+
+;; jump buffers
+
+;; WARNING: lexical-binding must be on
+(dotimes (i 4)
+  (let ((i (+ 1 i)))
+    (bind-key (kbd (format "<f%d>"   i)) (lambda () (interactive) (jump-to-register  i)))
+    (bind-key (kbd (format "<S-f%d>" i)) (lambda () (interactive) (point-to-register i)))))
 
 ;; magit
-
 (bind-key "C-x C-g" 'magit-status)
 
 ;; neotree

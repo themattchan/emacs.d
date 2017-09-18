@@ -47,8 +47,9 @@
              ;; got to specify this or it will continue to expand to 8 spc
              tab-stop-list (number-sequence 4 120 4)
              )
+            (global-captain-mode)
 
-             (turn-on-auto-fill))
+            (turn-on-auto-fill))
             ;; ask to turn on hard line wrapping
             ;; (if (y-or-n-p "Hard wrap text?")
             ;;   (progn
