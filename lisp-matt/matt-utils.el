@@ -65,42 +65,49 @@
 ;; IRC
 ;; mostly from https://github.com/bryangarza/dot-emacs/blob/master/init.el#L1273
 
-(require 'erc)
-(require 'erc-services)
-(erc-services-mode 1)
-(setq erc-server-coding-system '(utf-8 . utf-8)
+(defun matt/start-irc ()
+  (interactive)
+  (require 'erc)
+  (require 'erc-services)
+  (erc-services-mode 1)
+  (eval-after-load 'erc
+    '(progn
+       (setq erc-server-coding-system '(utf-8 . utf-8)
 
-      erc-prompt-for-nickserv-password nil
+             erc-prompt-for-nickserv-password nil
 
-      erc-timestamp-format "[%I:%M %p]"
-      erc-hide-timestamps t
-      erc-echo-timestamps nil
-      erc-echo-timestamp-format "TS'd %A, %I:%M:%S %p"
+             erc-timestamp-format "[%I:%M %p]"
+             erc-hide-timestamps t
+             erc-echo-timestamps nil
+             erc-echo-timestamp-format "TS'd %A, %I:%M:%S %p"
 
-      erc-track-showcount t
-      erc-track-enable-keybindings t
-      erc-track-use-faces t
-      erc-track-exclude-types '("JOIN" "PART" "QUIT" "NICK" "MODE")
+             erc-track-showcount t
+             erc-track-enable-keybindings t
+             erc-track-use-faces t
+             erc-track-exclude-types '("JOIN" "PART" "QUIT" "NICK" "MODE")
 
-      erc-join-buffer 'bury
+             erc-join-buffer 'bury
 
-      erc-part-reason-various-alist '(("^$" "Leaving"))
-      erc-quit-reason-various-alist '(("^$" "Leaving"))
-      erc-quit-reason 'erc-part-reason-various
-      erc-part-reason 'erc-quit-reason-various
+             erc-part-reason-various-alist '(("^$" "Leaving"))
+             erc-quit-reason-various-alist '(("^$" "Leaving"))
+             erc-quit-reason 'erc-part-reason-various
+             erc-part-reason 'erc-quit-reason-various
 
-      erc-hide-list '("JOIN" "PART" "QUIT" "NICK" "MODE" "324" "329" "332" "333" "353"  "477")
-      erc-lurker-hide-list '("JOIN" "PART" "QUIT" "NICK" "MODE")
-      )
-(setq erc-autojoin-channels-alist
-      '(("freenode.net"
-         "#haskell" "#haskell-lens" "#haskell-in-depth" "#haskell-beginners" "#xmonad"
-         "#idris"
-         )))
-(erc :server "irc.freenode.net" :port 6667 :nick "mach")
+             erc-hide-list '("JOIN" "PART" "QUIT" "NICK" "MODE" "324" "329" "332" "333" "353"  "477")
+             erc-lurker-hide-list '("JOIN" "PART" "QUIT" "NICK" "MODE")
+             )
+       (setq erc-autojoin-channels-alist
+             '(("freenode.net"
+                "#haskell" "#haskell-lens" "#haskell-in-depth" "#haskell-beginners" "#xmonad"
+                "#idris" "#categorytheory"
+                )))
+       (erc :server "irc.freenode.net" :port 6667 :nick matt/irc-username :password matt/freenode-pass)
+       (setq erc-nickserv-passwords
+             '((freenode     ((matt/irc-username . matt/freenode-pass))))
+             )
 
-(add-to-list 'erc-modules 'scrolltobottom)
-
+       (add-to-list 'erc-modules 'scrolltobottom)
+       )))
 
 (provide 'matt-utils)
 ;; Local Variables:
