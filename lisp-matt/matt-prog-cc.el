@@ -122,6 +122,9 @@
                           flycheck-clang-language-standard "c++11")
             ))
 
+(add-hook 'protobuf-mode-hook
+            (lambda () (matt/c-indent 2 nil)))
+
 ;;------------------------------------------------------------------------------
 ;; Java
                                         ;(autoload 'jtags-mode "jtags" "Toggle jtags mode." t)

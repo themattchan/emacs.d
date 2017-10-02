@@ -32,40 +32,40 @@
   ;; (define-key haskell-cabal-mode-map (kbd "C-c C-k") #'haskell-interactive-mode-clear)
   ;; (define-key haskell-cabal-mode-map (kbd "C-c c") #'haskell-process-cabal)
 
-  (cond
-   ((locate-dominating-file default-directory "shell.nix")
-    (custom-set-variables
-     '(haskell-process-type 'cabal-repl)
-     ;; '(flycheck-haskell-runghc-command
-     ;;   `(,(substitute-in-file-name "$HOME/.nix-profile/bin/nix-shell") "--run" "cabal repl"))
-     '(haskell-process-wrapper-function
-       #'(lambda (argv)
-            `("nix-shell" "-I"
-             ,(substitute-in-file-name "nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs/")
-             "--command")
-            ,(mapconcat 'identity argv " "))))
+  ;; (cond
+  ;;  ((locate-dominating-file default-directory "shell.nix")
+  ;;   (custom-set-variables
+  ;;    '(haskell-process-type 'cabal-repl)
+  ;;    ;; '(flycheck-haskell-runghc-command
+  ;;    ;;   `(,(substitute-in-file-name "$HOME/.nix-profile/bin/nix-shell") "--run" "cabal repl"))
+  ;;    '(haskell-process-wrapper-function
+  ;;      #'(lambda (argv)
+  ;;           `("nix-shell" "-I"
+  ;;            ,(substitute-in-file-name "nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs/")
+  ;;            "--command")
+  ;;           ,(mapconcat 'identity argv " "))))
 
-     '(haskell-process-path-ghci
-       `(,(substitute-in-file-name "$HOME/.nix-profile/bin/nix-shell") "--run" "cabal repl"))
-     )
+  ;;    '(haskell-process-path-ghci
+  ;;      `(,(substitute-in-file-name "$HOME/.nix-profile/bin/nix-shell") "--run" "cabal repl"))
+  ;;    )
 
 
-   ((executable-find "stack")
-    (custom-set-variables
-     '(haskell-process-type 'stack-ghci)
-     '(flycheck-haskell-runghc-command
-       '("stack" "--verbosity" "silent" "runghc" "--no-ghc-package-path" "--" "--ghc-arg=-i"))
-     '(haskell-process-path-ghci "stack")
-     ))
+  ;;  ((executable-find "stack")
+  ;;   (custom-set-variables
+  ;;    '(haskell-process-type 'stack-ghci)
+  ;;    '(flycheck-haskell-runghc-command
+  ;;      '("stack" "--verbosity" "silent" "runghc" "--no-ghc-package-path" "--" "--ghc-arg=-i"))
+  ;;    '(haskell-process-path-ghci "stack")
+  ;;    ))
 
-   (t
-    (custom-set-variables
-     '(flycheck-haskell-runghc-command
-       '("runghc" "-i"))
-     '(haskell-process-path-ghci "stack"))))
+  ;;  (t
+  ;;   (custom-set-variables
+  ;;    '(flycheck-haskell-runghc-command
+  ;;      '("runghc" "-i"))
+  ;;    '(haskell-process-path-ghci "stack"))))
 
    (custom-set-variables
-    '(haskell-process-use-ghci t)
+    ;; '(haskell-process-use-ghci t)
     ;;     '(haskell-process-args-ghci '("nix-shell" "--run" "cabal repl")) ; '("ghci" "--with-ghc" "intero" "--no-load" "--no-build"))
     '(haskell-process-suggest-remove-import-lines t)
     '(haskell-process-auto-import-loaded-modules t)
@@ -81,13 +81,13 @@
    )
 (require 'haskell-interactive-mode)
 (require 'haskell-process)
-;;(require 'intero)
+;; (require 'intero)
 
 (remove-hook 'haskell-mode-hook 'interactive-haskell-mode)
 (remove-hook 'haskell-mode-hook 'stack-mode)
 ;; (add-hook 'haskell-mode-hook 'haskell-doc-mode)
 ;; (add-hook 'haskell-mode-hook 'haskell-decl-scan-mode)
-;;(add-hook 'haskell-mode-hook 'intero-mode)
+;; (add-hook 'haskell-mode-hook 'intero-mode)
 (add-hook 'haskell-mode-hook #'haskell-custom-hook)
 
 ;; ;; so we can actually see our writings
