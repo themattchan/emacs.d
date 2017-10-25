@@ -328,6 +328,8 @@
     (helm-mode                  . ""  )
     (company-mode               . ""  )
     (projectile-mode            . ""  )
+    (anzu-mode                  . ""  )
+    (captain-mode               . ""  )
 
     ;; Major modes
     (lisp-interaction-mode      . "λeval" )
@@ -367,6 +369,9 @@ want to use in the modeline *in lieu of* the original.")
 ;;------------------------------------------------------------------------------
 ;; Projectile mode by default
 (projectile-global-mode)
+
+
+(global-anzu-mode +1)
 
 
 (provide 'matt-interface)

@@ -79,8 +79,8 @@
    ;;    (flycheck-add-next-checker 'haskell-hlint '(t . haskell-liquid))
    ;;    (liquid-types-mode 1)
    )
-(require 'haskell-interactive-mode)
-(require 'haskell-process)
+;;(require 'haskell-interactive-mode)
+;;(require 'haskell-process)
 ;; (require 'intero)
 
 (remove-hook 'haskell-mode-hook 'interactive-haskell-mode)
