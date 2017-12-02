@@ -85,7 +85,8 @@
 ;;(add-to-list 'load-path (concat user-emacs-directory "lisp/")
 (let ((default-directory  (concat user-emacs-directory "lisp/")))
   (dolist (file (directory-files default-directory nil "\\.el$"))
-    (load-file (concat  (file-name-as-directory default-directory) file)))
+    (when (file-regular-p file)
+      (load-file (concat  (file-name-as-directory default-directory) file))))
   (normal-top-level-add-to-load-path '("flycheck-liquidhs.el" "liquid-types.el")))
 ;; customize.el settings location
 (setq custom-file "~/.emacs.d/custom-24.el")
