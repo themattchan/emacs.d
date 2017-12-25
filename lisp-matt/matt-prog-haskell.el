@@ -10,8 +10,14 @@
 ;;   :init
 ;;   (add-hook 'haskell-mode-hook 'dante-mode)
 ;;   (add-hook 'haskell-mode-hook 'flycheck-mode))
+
+(defconst matt/haskell-modes-list '(haskell-mode literate-haskell-mode))
+
 (defun my-nix-current-sandbox ()
   (locate-dominating-file default-directory "shell.nix"))
+
+(defun is-haskell-mode ()
+  (numberp (position major-mode matt/haskell-modes-list)))
 
 (defun haskell-custom-hook ()
   (haskell-indentation-mode)
@@ -35,7 +41,7 @@
   ;; (define-key haskell-cabal-mode-map (kbd "C-c c") #'haskell-process-cabal)
 
   (cond
-   ((locate-dominating-file default-directory "shell.nix")
+   ((my-nix-current-sandbox)
     (progn
       (message "HASKELL: found shell.nix")
       (flycheck-select-checker 'haskell-ghc)
@@ -54,15 +60,15 @@
        '(haskell-process-wrapper-function
          #'(lambda (args)
              ;;(apply 'nix-shell-command (nix-current-sandbox) args)
-             (list "bash" "-c" (format "source %s; %s" (nix-sandbox-rc (my-nix-current-sandbox)) (s-join " --run " args)))
+             `("bash" "-c" ,(format "source %s; %s" (nix-sandbox-rc (my-nix-current-sandbox)) (s-join " --run " args)))
              ))
 
        '(flycheck-command-wrapper-function
          #'(lambda (command)
              ;; don't fuck up other modes
-             (if (numberp (position major-mode '(haskell-mode literate-haskell-mode)))
+             (if (is-haskell-mode)
                  ;;                 (apply 'nix-shell-command (nix-current-sandbox) command)
-                 (list "bash" "-c" (format "source %s; %s" (nix-sandbox-rc (my-nix-current-sandbox)) (s-join " --run " command)))
+                 `("bash" "-c" ,(format "source %s; %s" (nix-sandbox-rc (my-nix-current-sandbox)) (s-join " --run " command)))
                command)))
 
        '(flycheck-executable-find
@@ -78,7 +84,6 @@
        ;; '(haskell-process-path-ghci
        ;;   `(,(substitute-in-file-name "$HOME/.nix-profile/bin/nix-shell") "--run" "cabal repl"))
        )))
-
 
    ((executable-find "stack")
     (progn
@@ -137,7 +142,7 @@
 (setq haskell-interactive-popup-error nil)
 
 ;; idk why this was removed from haskell-mode upstream...
-(dolist (mode '(haskell-mode literate-haskell-mode))
+(dolist (mode matt/haskell-modes-list)
   (font-lock-add-keywords mode '(("\\_<\\(error\\|undefined\\)\\_>" 0 'font-lock-warning-face))))
 
 (eval-after-load 'company-mode '(add-to-list 'company-backends 'company-ghc))
