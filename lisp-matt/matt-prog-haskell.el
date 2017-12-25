@@ -67,38 +67,37 @@
       (flycheck-add-next-checker 'haskell-ghc '(t . haskell-hlint))
       (add-to-list 'flycheck-disabled-checkers 'haskell-stack-ghc)
 
-      (custom-set-variables
-       '(haskell-process-type 'cabal-repl)
+;;      (custom-set-variables
+      (setq-local haskell-process-type 'cabal-repl)
        ;; '(flycheck-haskell-runghc-command
        ;;   `(,(substitute-in-file-name "$HOME/.nix-profile/bin/nix-shell")
        ;;   "--run" "cabal repl"))
 
-       '(flycheck-haskell-runghc-command
+      (setq-local flycheck-haskell-runghc-command
          '("runghc" "-i"))
 
-       '(haskell-process-path-ghci "cabal repl")
+       (setq-local haskell-process-path-ghci "cabal repl")
 
-       '(haskell-process-wrapper-function
+       (setq-local haskell-process-wrapper-function
          #'(lambda (command)
              ;;(apply 'nix-shell-command (nix-current-sandbox) args)
 ;;             `("bash" "-c" ,(format "source %s;" (nix-sandbox-rc (my-nix-current-sandbox))) ,@args)
                 (make-bash-nix-ghc-command command)
              ))
 
-       '(flycheck-command-wrapper-function
+       (setq-local flycheck-command-wrapper-function
          #'(lambda (command) ;; command has type List[String]
-             (message "FLYCHECK COMMAND WRAP")
-             (message "type of 'command' argument :: %S" (type-of command))
-;;             don't fuck up other modes
-             (if (is-haskell-mode)
+
+             (if (and (eq 'haskell-ghc flycheck-checker) (my-nix-current-sandbox) (is-haskell-mode))
                  (progn
-;;                   (message "NIX WRAPPED COMMAND \n $S" (make-bash-nix-ghc-command command))
+                   (message "[flycheck-haskell] Checking buffer")
+;;                   (message "Command: %s" (make-bash-nix-ghc-command command))
                    (make-bash-nix-ghc-command command)
                    )
                command)
              ))
 
-       '(flycheck-executable-find
+       (setq-local flycheck-executable-find
          #'(lambda (cmd) (nix-executable-find (my-nix-current-sandbox) cmd)))
 
        ;; '(haskell-process-wrapper-function
@@ -110,10 +109,9 @@
 
        ;; '(haskell-process-path-ghci
        ;;   `(,(substitute-in-file-name "$HOME/.nix-profile/bin/nix-shell") "--run" "cabal repl"))
-       )
+;;       )
       (message "NIX GHC: %s" (nix-ghc-executable))
 ;;      (setq flycheck-haskell-ghc-executable (nix-ghc-executable))
-      (message "HASKELL-NIX: Flycheck checker is %s" flycheck-checker)
       ))
 
    ((executable-find "stack")
@@ -137,6 +135,8 @@
        '(haskell-process-path-ghci "stack")))
     )
    ) ;; cond
+
+  (message "HASKELL: Flycheck checker is %s" flycheck-checker)
 
    (custom-set-variables
     ;; '(haskell-process-use-ghci t)
