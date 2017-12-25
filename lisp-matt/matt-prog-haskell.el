@@ -117,8 +117,9 @@
 
 (defun nix-compile-current-sandbox (command)
   (interactive "Mcommand: ")
-  (compile (nix-shell-string (my-nix-current-sandbox) command)))
-
+  ;; override dynamically bound variable used by 'compile'
+  (let ((default-directory (my-nix-current-sandbox)))
+    (compile (nix-shell-string default-directory command))))
 
 ;;(require 'haskell-interactive-mode)
 ;;(require 'haskell-process)
