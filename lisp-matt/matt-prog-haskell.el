@@ -20,6 +20,15 @@
 (defun is-haskell-mode ()
   (memq major-mode matt/haskell-modes-list))
 
+(defun make-bash-nix-ghc-command (command)
+  `("bash" "-c"
+    ,(format "source %s;" (nix-sandbox-rc (my-nix-current-sandbox)))
+    "-I" ,(substitute-in-file-name "nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs/")
+    "--show-trace"
+    "--command"
+    ,@command)
+  )
+
 (defun haskell-custom-hook ()
   (haskell-indentation-mode)
 
@@ -53,26 +62,27 @@
       (flycheck-haskell-setup)
       (use-nix-ghc-in-flycheck) ;; see lisp/ghc-nix.el
       (flycheck-select-checker 'haskell-ghc)
+      (flycheck-set-checker-executable (nix-ghc-executable))
+      (setq flycheck-haskell-ghc-executable (nix-ghc-executable))
       (flycheck-add-next-checker 'haskell-ghc '(t . haskell-hlint))
-
       (add-to-list 'flycheck-disabled-checkers 'haskell-stack-ghc)
-
-      (message "HASKELL-NIX: Flycheck checker is %s" flycheck-checker)
 
       (custom-set-variables
        '(haskell-process-type 'cabal-repl)
        ;; '(flycheck-haskell-runghc-command
        ;;   `(,(substitute-in-file-name "$HOME/.nix-profile/bin/nix-shell")
        ;;   "--run" "cabal repl"))
+
        '(flycheck-haskell-runghc-command
          '("runghc" "-i"))
 
        '(haskell-process-path-ghci "cabal repl")
 
        '(haskell-process-wrapper-function
-         #'(lambda (args)
+         #'(lambda (command)
              ;;(apply 'nix-shell-command (nix-current-sandbox) args)
-             `("bash" "-c" ,(format "source %s;" (nix-sandbox-rc (my-nix-current-sandbox))) ,@args)
+;;             `("bash" "-c" ,(format "source %s;" (nix-sandbox-rc (my-nix-current-sandbox))) ,@args)
+                (make-bash-nix-ghc-command command)
              ))
 
        '(flycheck-command-wrapper-function
@@ -81,7 +91,10 @@
              (message "type of 'command' argument :: %S" (type-of command))
 ;;             don't fuck up other modes
              (if (is-haskell-mode)
-                 `("bash" "-c" ,(format "source %s;" (nix-sandbox-rc (my-nix-current-sandbox))) ,@command)
+                 (progn
+;;                   (message "NIX WRAPPED COMMAND \n $S" (make-bash-nix-ghc-command command))
+                   (make-bash-nix-ghc-command command)
+                   )
                command)
              ))
 
@@ -97,19 +110,23 @@
 
        ;; '(haskell-process-path-ghci
        ;;   `(,(substitute-in-file-name "$HOME/.nix-profile/bin/nix-shell") "--run" "cabal repl"))
-       )))
+       )
+      (message "NIX GHC: %s" (nix-ghc-executable))
+;;      (setq flycheck-haskell-ghc-executable (nix-ghc-executable))
+      (message "HASKELL-NIX: Flycheck checker is %s" flycheck-checker)
+      ))
 
-   ;; ((executable-find "stack")
-   ;;  (progn
-   ;;    (custom-set-variables
-   ;;     '(haskell-process-type 'stack-ghci)
-   ;;     '(flycheck-haskell-runghc-command
-   ;;       '("stack" "--verbosity" "silent" "runghc" "--no-ghc-package-path" "--" "--ghc-arg=-i"))
-   ;;     '(haskell-process-path-ghci "stack"))
+   ((executable-find "stack")
+    (progn
+      (custom-set-variables
+       '(haskell-process-type 'stack-ghci)
+       '(flycheck-haskell-runghc-command
+         '("stack" "--verbosity" "silent" "runghc" "--no-ghc-package-path" "--" "--ghc-arg=-i"))
+       '(haskell-process-path-ghci "stack"))
 
-   ;;    (flycheck-select-checker 'haskell-stack-ghc)
-   ;;    (flycheck-add-next-checker 'haskell-stack-ghc '(t . haskell-hlint))
-   ;;    ))
+      (flycheck-select-checker 'haskell-stack-ghc)
+      (flycheck-add-next-checker 'haskell-stack-ghc '(t . haskell-hlint))
+      ))
 
    (t
     (progn

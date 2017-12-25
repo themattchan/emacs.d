@@ -33,26 +33,31 @@
   "Return the path to the ghc executable inside the nix-shell."
   (-chomp-end (-run-nix-command "type -p ghc")))
 
-
 (defun -run-nix-command (command)
   "Run COMMAND inside a nix-shell, returning output."
   (let ((default-directory (locate-dominating-file default-directory "shell.nix")))
-    (shell-command-to-string (-get-command-for-env default-directory command))))
+    (shell-command-to-string (-get-nix-command command))))
+;;(-get-command-for-env default-directory command))))
 
 (defun -get-command-for-env (directory command)
   "Get the shell command to run COMMAND with correct environment."
   (let ((direnv-directory (locate-dominating-file directory ".envrc")))
     (if direnv-directory
-        (-get-direnv-nix-command direnv-directory command) (-get-nix-command command))))
+        (-get-direnv-nix-command direnv-directory command)
+      (-get-nix-command command))))
 
 (defun -get-nix-command (command)
   "Get the command to run COMMAND inside a nix-shell."
-  (combine-and-quote-strings `("nix-shell" "--run" ,command)))
+  (combine-and-quote-strings
+   `("nix-shell"
+     "-I" ,(substitute-in-file-name "nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs/")
+     "--show-trace"
+     "--run" ,command
+     "|" "tail" "-1"))) ;; get rid of info messages we print out
 
 (defun -get-direnv-nix-command (directory command)
   "Get the command to run COMMAND inside a nix-shell using direnv variables."
   (combine-and-quote-strings `("direnv" "exec" ,directory "$(type -p nix-shell)" "--command" ,command "2>/dev/null")))
-
 
 (defun -find-package-databases (ghc-pkg-output)
   "Find package database paths in GHC-PKG-OUTPUT."

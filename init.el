@@ -26,7 +26,8 @@
   (byte-recompile-file "~/.emacs.d/init.el" 0)
   (byte-recompile-file "~/.emacs.d/custom-24.el" 0)
   (byte-recompile-directory "~/.emacs.d/lisp-matt" 0)
-  (load-file "~/.emacs.d/init.elc"))
+  (load-file user-init-file)
+  )
 
 ;;==============================================================================
 ;; Personalisations and globals
@@ -44,6 +45,12 @@
 ;;==============================================================================
 (eval-when-compile (require 'cl))       ; use common lisp (macros only)
 (require 'cl-lib)
+
+(setenv "SHELL" "/bin/bash")
+(setenv "LC_CTYPE" "en_US.UTF-8")
+(setenv "LC_ALL" "en_US.UTF-8")
+(setq shell-file-name "/bin/bash")
+(setq explicit-shell-file-name "/bin/bash")
 
 (setq *my-path-list*
   `("~/.nix-profile/bin"
@@ -83,8 +90,10 @@
 (add-to-list 'load-path (concat user-emacs-directory "lisp-matt/"))
 ;;(add-to-list 'load-path (concat user-emacs-directory "lisp/")
 (let ((default-directory  (concat user-emacs-directory "lisp/")))
+  (message "load lisp files")
   (dolist (file (directory-files default-directory nil "\\.el$"))
     (when (file-regular-p file)
+      (message "loaded %s" file)
       (load-file (concat  (file-name-as-directory default-directory) file))))
   (normal-top-level-add-to-load-path '("flycheck-liquidhs.el" "liquid-types.el")))
 ;; customize.el settings location
