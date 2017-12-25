@@ -138,7 +138,7 @@
 ;; (bind-key "M-<f1>" 'ag)                 ;C-<f1> doesn't work for some reason
 
 ;; bind to compile
-(bind-key "C-x g" 'compile)
+(bind-key "C-x g" 'compile) ;; todo support nix
 
 ;; (bind-key "C-x C-k" (lambda () (interactive) (kill-buffer (current-buffer))))
 

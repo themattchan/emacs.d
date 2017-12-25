@@ -4,6 +4,7 @@
 ;; ----------------------------------------------------------------------
 
 (use-package haskell-mode :ensure t)
+(require 'ghc-nix)
 ;; (use-package dante
 ;;   :ensure t
 ;;   :commands 'dante-mode
@@ -17,13 +18,18 @@
   (locate-dominating-file default-directory "shell.nix"))
 
 (defun is-haskell-mode ()
-  (numberp (position major-mode matt/haskell-modes-list)))
+  (memq major-mode matt/haskell-modes-list))
 
 (defun haskell-custom-hook ()
   (haskell-indentation-mode)
 
   ;; (define-key intero-mode-map (kbd "C-`") 'flycheck-list-errors)
   ;; (define-key intero-mode-map [f12] 'intero-devel-reload)
+  (use-package flycheck
+    :init (flycheck-mode 1))
+
+  (use-package flycheck-haskell
+    :config (flycheck-haskell-setup))
 
   ;; use flycheck-haskell
   (flycheck-haskell-setup)
@@ -44,14 +50,20 @@
    ((my-nix-current-sandbox)
     (progn
       (message "HASKELL: found shell.nix")
+      (flycheck-haskell-setup)
+      (use-nix-ghc-in-flycheck) ;; see lisp/ghc-nix.el
       (flycheck-select-checker 'haskell-ghc)
       (flycheck-add-next-checker 'haskell-ghc '(t . haskell-hlint))
+
+      (add-to-list 'flycheck-disabled-checkers 'haskell-stack-ghc)
+
+      (message "HASKELL-NIX: Flycheck checker is %s" flycheck-checker)
+
       (custom-set-variables
        '(haskell-process-type 'cabal-repl)
        ;; '(flycheck-haskell-runghc-command
        ;;   `(,(substitute-in-file-name "$HOME/.nix-profile/bin/nix-shell")
        ;;   "--run" "cabal repl"))
-
        '(flycheck-haskell-runghc-command
          '("runghc" "-i"))
 
@@ -60,16 +72,18 @@
        '(haskell-process-wrapper-function
          #'(lambda (args)
              ;;(apply 'nix-shell-command (nix-current-sandbox) args)
-             `("bash" "-c" ,(format "source %s; %s" (nix-sandbox-rc (my-nix-current-sandbox)) (s-join " --run " args)))
+             `("bash" "-c" ,(format "source %s;" (nix-sandbox-rc (my-nix-current-sandbox))) ,@args)
              ))
 
        '(flycheck-command-wrapper-function
-         #'(lambda (command)
-             ;; don't fuck up other modes
+         #'(lambda (command) ;; command has type List[String]
+             (message "FLYCHECK COMMAND WRAP")
+             (message "type of 'command' argument :: %S" (type-of command))
+;;             don't fuck up other modes
              (if (is-haskell-mode)
-                 ;;                 (apply 'nix-shell-command (nix-current-sandbox) command)
-                 `("bash" "-c" ,(format "source %s; %s" (nix-sandbox-rc (my-nix-current-sandbox)) (s-join " --run " command)))
-               command)))
+                 `("bash" "-c" ,(format "source %s;" (nix-sandbox-rc (my-nix-current-sandbox))) ,@command)
+               command)
+             ))
 
        '(flycheck-executable-find
          #'(lambda (cmd) (nix-executable-find (my-nix-current-sandbox) cmd)))
@@ -85,23 +99,26 @@
        ;;   `(,(substitute-in-file-name "$HOME/.nix-profile/bin/nix-shell") "--run" "cabal repl"))
        )))
 
-   ((executable-find "stack")
-    (progn
-      (custom-set-variables
-       '(haskell-process-type 'stack-ghci)
-       '(flycheck-haskell-runghc-command
-         '("stack" "--verbosity" "silent" "runghc" "--no-ghc-package-path" "--" "--ghc-arg=-i"))
-       '(haskell-process-path-ghci "stack"))
+   ;; ((executable-find "stack")
+   ;;  (progn
+   ;;    (custom-set-variables
+   ;;     '(haskell-process-type 'stack-ghci)
+   ;;     '(flycheck-haskell-runghc-command
+   ;;       '("stack" "--verbosity" "silent" "runghc" "--no-ghc-package-path" "--" "--ghc-arg=-i"))
+   ;;     '(haskell-process-path-ghci "stack"))
 
-      (flycheck-select-checker 'haskell-stack-ghc)
-      (flycheck-add-next-checker 'haskell-stack-ghc '(t . haskell-hlint))
-      ))
+   ;;    (flycheck-select-checker 'haskell-stack-ghc)
+   ;;    (flycheck-add-next-checker 'haskell-stack-ghc '(t . haskell-hlint))
+   ;;    ))
 
    (t
-    (custom-set-variables
-     '(flycheck-haskell-runghc-command
-       '("runghc" "-i"))
-     '(haskell-process-path-ghci "stack")))
+    (progn
+      (flycheck-select-checker 'haskell-ghc)
+      (custom-set-variables
+       '(flycheck-haskell-runghc-command
+         '("runghc" "-i"))
+       '(haskell-process-path-ghci "stack")))
+    )
    ) ;; cond
 
    (custom-set-variables
