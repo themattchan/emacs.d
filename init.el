@@ -141,7 +141,7 @@
          ;; General interface settings
          matt-keybindings            ; Fix Emacs annoyances, add power
          matt-interface              ; Fix Emacs annoyances, add power
-         matt-edit-global               ; Tabs, fill, undo, ispell, UTF-8, backups
+         matt-edit-global            ; Tabs, fill, undo, ispell, UTF-8, backups
          matt-themes                 ; Mostly deprecated
 
          ;; Hooks for editing
@@ -152,9 +152,9 @@
          ;; Programming
          matt-prog-global             ; Settings for all programming modes
          matt-prog-functional         ; Settings for all functional langs
-         matt-prog-lisp               ; Lisp family: CL, Scheme, Racket, Clojure
          matt-prog-haskell            ; Haskell
          matt-prog-ml                 ; ML family: OCaml
+         matt-prog-lisp               ; Lisp family: CL, Scheme, Racket, Clojure
          matt-prog-cc                 ; C family: C, C++, Java, (and ASM)
          matt-prog-other              ; Other langs: Scala, Python, web stuff
 

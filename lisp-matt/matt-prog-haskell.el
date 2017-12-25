@@ -14,14 +14,10 @@
 
 (defconst matt/haskell-modes-list '(haskell-mode literate-haskell-mode))
 
-;; If this returns NIL, then not nix
-(defun my-nix-current-sandbox ()
-  (locate-dominating-file default-directory "shell.nix"))
-
-(defun use-stack ()
+(defun use-stack-p ()
   (locate-dominating-file default-directory "stack.yaml"))
 
-(defun is-haskell-mode ()
+(defun haskell-mode-p ()
   (memq major-mode matt/haskell-modes-list))
 
 (defun make-bash-nix-ghc-command (command)
@@ -32,6 +28,26 @@
     "--command"
     ,@command)
   )
+
+;; If this returns NIL, then not nix
+(defun my-nix-current-sandbox ()
+  (locate-dominating-file default-directory "shell.nix"))
+
+;; (defun nix-compile-current-sandbox (command)
+;;   (interactive "Mcommand: ")
+;;   ;; override dynamically bound variable used by 'compile'
+;;   (let ((default-directory (my-nix-current-sandbox)))
+;;     (compile (nix-shell-string default-directory command))))
+
+;; If in nix, compile inside a nix shell
+(defadvice compile (around maybe-compile-in-nix-sandbox activate)
+  (let ((sandbox (my-nix-current-sandbox)))
+    (if sandbox
+        ;; override dynamically bound variables used by 'compile'
+        (let ((default-directory (my-nix-current-sandbox))
+              (command (nix-shell-string default-directory command)))
+          ad-do-it)
+      ad-do-it)))
 
 ;; This is run ONCE when you switch to 'haskell-mode'
 (defun haskell-custom-hook ()
@@ -93,7 +109,7 @@
     (setq-local flycheck-command-wrapper-function
                 #'(lambda (command) ;; command has type List[String]
 
-                    (if (and (eq 'haskell-ghc flycheck-checker) (my-nix-current-sandbox) (is-haskell-mode))
+                    (if (and (eq 'haskell-ghc flycheck-checker) (my-nix-current-sandbox) (haskell-mode-p))
                         (progn
                           (message "[flycheck-haskell] Checking buffer")
                           ;;                   (message "Command: %s" (make-bash-nix-ghc-command command))
@@ -120,7 +136,7 @@
     )
 
 
-   ((and (use-stack) (executable-find "stack"))
+   ((and (use-stack-p) (executable-find "stack"))
     ;; => USE STACK
     (setq-local haskell-process-type 'stack-ghci)
     (setq-local flycheck-haskell-runghc-command
@@ -138,6 +154,7 @@
 
     (flycheck-select-checker 'haskell-stack-ghc)
     (flycheck-add-next-checker 'haskell-stack-ghc '(t . haskell-hlint))
+    (intero-mode)
     )
 
 
@@ -167,12 +184,6 @@
   ;;    (liquid-types-mode 1)
 
   ) ;; haskell-custom-hook
-
-(defun nix-compile-current-sandbox (command)
-  (interactive "Mcommand: ")
-  ;; override dynamically bound variable used by 'compile'
-  (let ((default-directory (my-nix-current-sandbox)))
-    (compile (nix-shell-string default-directory command))))
 
 ;;(require 'haskell-interactive-mode)
 ;;(require 'haskell-process)
