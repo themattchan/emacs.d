@@ -35,7 +35,6 @@
 (setq user-full-name      "Matthew Chan"
       user-mail-address   "matt@themattchan.com")
 
-
 (defconst *is-mac*     (eq system-type 'darwin))
 (defconst *is-linux*   (member system-type '(gnu gnu/linux gnu/kfreebsd)))
 (defconst *is-windows* (member system-type '(ms-dos windows-nt cygwin)))
@@ -98,14 +97,11 @@
 
 (require 'package)
 
-;; (add-to-list 'package-archives
-;;              '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (setq package-archive-enable-alist '(("melpa" deft magit)))
 (package-initialize)
 
-;; Required packages. Never leave home without them.
 (require 'matt-packages)
 (unless (matt/packages-installed-p)
   (message "%s" "Installing required packages...")
@@ -125,8 +121,9 @@
 ;; Now load my configs
 ;;==============================================================================
 (setq load-prefer-newer t)           ; Load latest bytecode
-
-(load-file "~/.emacs.d/private.el")
+(let ((private "~/.emacs.d/private.el"))
+  (when (file-exists-p private)
+    (load-file private)))
 
 (let ((matt-configs
        '(;; Emacs Lisp functions

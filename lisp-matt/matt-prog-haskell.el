@@ -10,6 +10,8 @@
 ;;   :init
 ;;   (add-hook 'haskell-mode-hook 'dante-mode)
 ;;   (add-hook 'haskell-mode-hook 'flycheck-mode))
+(defun my-nix-current-sandbox ()
+  (locate-dominating-file default-directory "shell.nix"))
 
 (defun haskell-custom-hook ()
   (haskell-indentation-mode)
@@ -32,37 +34,70 @@
   ;; (define-key haskell-cabal-mode-map (kbd "C-c C-k") #'haskell-interactive-mode-clear)
   ;; (define-key haskell-cabal-mode-map (kbd "C-c c") #'haskell-process-cabal)
 
-  ;; (cond
-  ;;  ((locate-dominating-file default-directory "shell.nix")
-  ;;   (custom-set-variables
-  ;;    '(haskell-process-type 'cabal-repl)
-  ;;    ;; '(flycheck-haskell-runghc-command
-  ;;    ;;   `(,(substitute-in-file-name "$HOME/.nix-profile/bin/nix-shell") "--run" "cabal repl"))
-  ;;    '(haskell-process-wrapper-function
-  ;;      #'(lambda (argv)
-  ;;           `("nix-shell" "-I"
-  ;;            ,(substitute-in-file-name "nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs/")
-  ;;            "--command")
-  ;;           ,(mapconcat 'identity argv " "))))
+  (cond
+   ((locate-dominating-file default-directory "shell.nix")
+    (progn
+      (message "HASKELL: found shell.nix")
+      (flycheck-select-checker 'haskell-ghc)
+      (flycheck-add-next-checker 'haskell-ghc '(t . haskell-hlint))
+      (custom-set-variables
+       '(haskell-process-type 'cabal-repl)
+       ;; '(flycheck-haskell-runghc-command
+       ;;   `(,(substitute-in-file-name "$HOME/.nix-profile/bin/nix-shell")
+       ;;   "--run" "cabal repl"))
 
-  ;;    '(haskell-process-path-ghci
-  ;;      `(,(substitute-in-file-name "$HOME/.nix-profile/bin/nix-shell") "--run" "cabal repl"))
-  ;;    )
+       '(flycheck-haskell-runghc-command
+         '("runghc" "-i"))
+
+       '(haskell-process-path-ghci "cabal repl")
+
+       '(haskell-process-wrapper-function
+         #'(lambda (args)
+             ;;(apply 'nix-shell-command (nix-current-sandbox) args)
+             (list "bash" "-c" (format "source %s; %s" (nix-sandbox-rc (my-nix-current-sandbox)) (s-join " --run " args)))
+             ))
+
+       '(flycheck-command-wrapper-function
+         #'(lambda (command)
+             ;; don't fuck up other modes
+             (if (numberp (position major-mode '(haskell-mode literate-haskell-mode)))
+                 ;;                 (apply 'nix-shell-command (nix-current-sandbox) command)
+                 (list "bash" "-c" (format "source %s; %s" (nix-sandbox-rc (my-nix-current-sandbox)) (s-join " --run " command)))
+               command)))
+
+       '(flycheck-executable-find
+         #'(lambda (cmd) (nix-executable-find (my-nix-current-sandbox) cmd)))
+
+       ;; '(haskell-process-wrapper-function
+       ;;   #'(lambda (argv)
+       ;;        `("nix-shell" "-I"
+       ;;         ,(substitute-in-file-name "nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs/")
+       ;;         "--command")
+       ;;        ,(mapconcat 'identity argv " "))))
+
+       ;; '(haskell-process-path-ghci
+       ;;   `(,(substitute-in-file-name "$HOME/.nix-profile/bin/nix-shell") "--run" "cabal repl"))
+       )))
 
 
-  ;;  ((executable-find "stack")
-  ;;   (custom-set-variables
-  ;;    '(haskell-process-type 'stack-ghci)
-  ;;    '(flycheck-haskell-runghc-command
-  ;;      '("stack" "--verbosity" "silent" "runghc" "--no-ghc-package-path" "--" "--ghc-arg=-i"))
-  ;;    '(haskell-process-path-ghci "stack")
-  ;;    ))
+   ((executable-find "stack")
+    (progn
+      (custom-set-variables
+       '(haskell-process-type 'stack-ghci)
+       '(flycheck-haskell-runghc-command
+         '("stack" "--verbosity" "silent" "runghc" "--no-ghc-package-path" "--" "--ghc-arg=-i"))
+       '(haskell-process-path-ghci "stack"))
 
-  ;;  (t
-  ;;   (custom-set-variables
-  ;;    '(flycheck-haskell-runghc-command
-  ;;      '("runghc" "-i"))
-  ;;    '(haskell-process-path-ghci "stack"))))
+      (flycheck-select-checker 'haskell-stack-ghc)
+      (flycheck-add-next-checker 'haskell-stack-ghc '(t . haskell-hlint))
+      ))
+
+   (t
+    (custom-set-variables
+     '(flycheck-haskell-runghc-command
+       '("runghc" "-i"))
+     '(haskell-process-path-ghci "stack")))
+   ) ;; cond
 
    (custom-set-variables
     ;; '(haskell-process-use-ghci t)
@@ -74,11 +109,17 @@
    ;; (require 'flycheck-liquidhs)
    ;; (require 'liquid-types)
 
-   (flycheck-select-checker 'haskell-stack-ghc)
-   (flycheck-add-next-checker 'haskell-stack-ghc '(t . haskell-hlint))
+
    ;;    (flycheck-add-next-checker 'haskell-hlint '(t . haskell-liquid))
    ;;    (liquid-types-mode 1)
-   )
+
+   ) ;; defun
+
+(defun nix-compile-current-sandbox (command)
+  (interactive "Mcommand: ")
+  (compile (nix-shell-string (my-nix-current-sandbox) command)))
+
+
 ;;(require 'haskell-interactive-mode)
 ;;(require 'haskell-process)
 ;; (require 'intero)
@@ -99,7 +140,6 @@
   (font-lock-add-keywords mode '(("\\_<\\(error\\|undefined\\)\\_>" 0 'font-lock-warning-face))))
 
 (eval-after-load 'company-mode '(add-to-list 'company-backends 'company-ghc))
-
 
 (provide 'matt-prog-haskell)
 ;; Local Variables:

@@ -90,7 +90,8 @@
 
 (bind-key "M-[" 'backward-paragraph)
 (bind-key "M-]" 'forward-paragraph)
-
+(bind-key "C-M-d" 'down-list)
+(bind-key "C-M-u" 'up-list)
 
 ;; Cut copy paste (there is no delete)
 ;; -----------------------------------
