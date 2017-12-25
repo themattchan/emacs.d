@@ -14,8 +14,12 @@
 
 (defconst matt/haskell-modes-list '(haskell-mode literate-haskell-mode))
 
+;; If this returns NIL, then not nix
 (defun my-nix-current-sandbox ()
   (locate-dominating-file default-directory "shell.nix"))
+
+(defun use-stack ()
+  (locate-dominating-file default-directory "stack.yaml"))
 
 (defun is-haskell-mode ()
   (memq major-mode matt/haskell-modes-list))
@@ -29,6 +33,7 @@
     ,@command)
   )
 
+;; This is run ONCE when you switch to 'haskell-mode'
 (defun haskell-custom-hook ()
   (haskell-indentation-mode)
 
@@ -57,102 +62,111 @@
 
   (cond
    ((my-nix-current-sandbox)
-    (progn
-      (message "HASKELL: found shell.nix")
-      (flycheck-haskell-setup)
-      (use-nix-ghc-in-flycheck) ;; see lisp/ghc-nix.el
-      (flycheck-select-checker 'haskell-ghc)
-      (flycheck-set-checker-executable (nix-ghc-executable))
-      (setq flycheck-haskell-ghc-executable (nix-ghc-executable))
-      (flycheck-add-next-checker 'haskell-ghc '(t . haskell-hlint))
-      (add-to-list 'flycheck-disabled-checkers 'haskell-stack-ghc)
+    ;; => USE NIX
+    (message "HASKELL: found shell.nix")
+    (flycheck-haskell-setup)
+    (use-nix-ghc-in-flycheck) ;; see lisp/ghc-nix.el
+    (flycheck-select-checker 'haskell-ghc)
+    (flycheck-set-checker-executable (nix-ghc-executable))
+    (setq flycheck-haskell-ghc-executable (nix-ghc-executable))
+    (flycheck-add-next-checker 'haskell-ghc '(t . haskell-hlint))
+    (add-to-list 'flycheck-disabled-checkers 'haskell-stack-ghc)
 
-;;      (custom-set-variables
-      (setq-local haskell-process-type 'cabal-repl)
-       ;; '(flycheck-haskell-runghc-command
-       ;;   `(,(substitute-in-file-name "$HOME/.nix-profile/bin/nix-shell")
-       ;;   "--run" "cabal repl"))
+    ;;      (custom-set-variables
+    (setq-local haskell-process-type 'cabal-repl)
+    ;; '(flycheck-haskell-runghc-command
+    ;;   `(,(substitute-in-file-name "$HOME/.nix-profile/bin/nix-shell")
+    ;;   "--run" "cabal repl"))
 
-      (setq-local flycheck-haskell-runghc-command
-         '("runghc" "-i"))
+    (setq-local flycheck-haskell-runghc-command
+                '("runghc" "-i"))
 
-       (setq-local haskell-process-path-ghci "cabal repl")
+    (setq-local haskell-process-path-ghci "cabal repl")
 
-       (setq-local haskell-process-wrapper-function
-         #'(lambda (command)
-             ;;(apply 'nix-shell-command (nix-current-sandbox) args)
-;;             `("bash" "-c" ,(format "source %s;" (nix-sandbox-rc (my-nix-current-sandbox))) ,@args)
-                (make-bash-nix-ghc-command command)
-             ))
+    (setq-local haskell-process-wrapper-function
+                #'(lambda (command)
+                    ;;(apply 'nix-shell-command (nix-current-sandbox) args)
+                    ;;             `("bash" "-c" ,(format "source %s;" (nix-sandbox-rc (my-nix-current-sandbox))) ,@args)
+                    (make-bash-nix-ghc-command command)
+                    ))
 
-       (setq-local flycheck-command-wrapper-function
-         #'(lambda (command) ;; command has type List[String]
+    (setq-local flycheck-command-wrapper-function
+                #'(lambda (command) ;; command has type List[String]
 
-             (if (and (eq 'haskell-ghc flycheck-checker) (my-nix-current-sandbox) (is-haskell-mode))
-                 (progn
-                   (message "[flycheck-haskell] Checking buffer")
-;;                   (message "Command: %s" (make-bash-nix-ghc-command command))
-                   (make-bash-nix-ghc-command command)
-                   )
-               command)
-             ))
+                    (if (and (eq 'haskell-ghc flycheck-checker) (my-nix-current-sandbox) (is-haskell-mode))
+                        (progn
+                          (message "[flycheck-haskell] Checking buffer")
+                          ;;                   (message "Command: %s" (make-bash-nix-ghc-command command))
+                          (make-bash-nix-ghc-command command)
+                          )
+                      command)
+                    ))
 
-       (setq-local flycheck-executable-find
-         #'(lambda (cmd) (nix-executable-find (my-nix-current-sandbox) cmd)))
+    (setq-local flycheck-executable-find
+                #'(lambda (cmd) (nix-executable-find (my-nix-current-sandbox) cmd)))
 
-       ;; '(haskell-process-wrapper-function
-       ;;   #'(lambda (argv)
-       ;;        `("nix-shell" "-I"
-       ;;         ,(substitute-in-file-name "nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs/")
-       ;;         "--command")
-       ;;        ,(mapconcat 'identity argv " "))))
+    ;; '(haskell-process-wrapper-function
+    ;;   #'(lambda (argv)
+    ;;        `("nix-shell" "-I"
+    ;;         ,(substitute-in-file-name "nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs/")
+    ;;         "--command")
+    ;;        ,(mapconcat 'identity argv " "))))
 
-       ;; '(haskell-process-path-ghci
-       ;;   `(,(substitute-in-file-name "$HOME/.nix-profile/bin/nix-shell") "--run" "cabal repl"))
-;;       )
-      (message "NIX GHC: %s" (nix-ghc-executable))
-;;      (setq flycheck-haskell-ghc-executable (nix-ghc-executable))
-      ))
+    ;; '(haskell-process-path-ghci
+    ;;   `(,(substitute-in-file-name "$HOME/.nix-profile/bin/nix-shell") "--run" "cabal repl"))
+    ;;       )
+    (message "NIX GHC: %s" (nix-ghc-executable))
+    ;;      (setq flycheck-haskell-ghc-executable (nix-ghc-executable))
+    )
 
-   ((executable-find "stack")
-    (progn
-      (custom-set-variables
-       '(haskell-process-type 'stack-ghci)
-       '(flycheck-haskell-runghc-command
-         '("stack" "--verbosity" "silent" "runghc" "--no-ghc-package-path" "--" "--ghc-arg=-i"))
-       '(haskell-process-path-ghci "stack"))
 
-      (flycheck-select-checker 'haskell-stack-ghc)
-      (flycheck-add-next-checker 'haskell-stack-ghc '(t . haskell-hlint))
-      ))
+   ((and (use-stack) (executable-find "stack"))
+    ;; => USE STACK
+    (setq-local haskell-process-type 'stack-ghci)
+    (setq-local flycheck-haskell-runghc-command
+                '("stack" "--verbosity" "silent" "runghc" "--no-ghc-package-path" "--" "--ghc-arg=-i"))
+    (setq-local haskell-process-path-ghci "stack")
+    (setq-local flycheck-command-wrapper-function
+                #'(lambda (command) ;; command has type List[String]
+                    (message "[flycheck-haskell] Checking buffer")
+                    ;;                   (message "Command: %s" (make-bash-nix-ghc-command command))
+                    (message "COMMAND: %S" command)
+
+                    command)
+                )
+
+
+    (flycheck-select-checker 'haskell-stack-ghc)
+    (flycheck-add-next-checker 'haskell-stack-ghc '(t . haskell-hlint))
+    )
+
 
    (t
-    (progn
-      (flycheck-select-checker 'haskell-ghc)
-      (custom-set-variables
-       '(flycheck-haskell-runghc-command
-         '("runghc" "-i"))
-       '(haskell-process-path-ghci "stack")))
+    ;; => DEFAULT GHCI
+    (flycheck-select-checker 'haskell-ghc)
+    (setq-local flycheck-haskell-runghc-command '("runghc" "-i"))
+    (setq-local haskell-process-path-ghci "ghci")
     )
+
    ) ;; cond
 
   (message "HASKELL: Flycheck checker is %s" flycheck-checker)
 
-   (custom-set-variables
-    ;; '(haskell-process-use-ghci t)
-    ;;     '(haskell-process-args-ghci '("nix-shell" "--run" "cabal repl")) ; '("ghci" "--with-ghc" "intero" "--no-load" "--no-build"))
-    '(haskell-process-suggest-remove-import-lines t)
-    '(haskell-process-auto-import-loaded-modules t)
-    '(haskell-process-log t))
+  ;;   (custom-set-variables
+  ;; '(haskell-process-use-ghci t)
+  ;;     '(haskell-process-args-ghci '("nix-shell" "--run" "cabal repl")) ; '("ghci" "--with-ghc" "intero" "--no-load" "--no-build"))
+  (setq-local haskell-process-suggest-remove-import-lines t)
+  (setq-local haskell-process-auto-import-loaded-modules t)
+  (setq-local haskell-process-log t)
 
-   ;; (require 'flycheck-liquidhs)
-   ;; (require 'liquid-types)
+  ;; (require 'flycheck-liquidhs)
+  ;; (require 'liquid-types)
 
 
-   ;;    (flycheck-add-next-checker 'haskell-hlint '(t . haskell-liquid))
-   ;;    (liquid-types-mode 1)
+  ;;    (flycheck-add-next-checker 'haskell-hlint '(t . haskell-liquid))
+  ;;    (liquid-types-mode 1)
 
-   ) ;; defun
+  ) ;; haskell-custom-hook
 
 (defun nix-compile-current-sandbox (command)
   (interactive "Mcommand: ")
