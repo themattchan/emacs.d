@@ -19,11 +19,11 @@
 
 (defun haskell-insert-language-extension (ext)
   (interactive "MHaskell Extension: ")
-  (insert (format "{-# LANGUAGE %s #-}\n" ext)))
+  (insert (format "{-# LANGUAGE %s #-}\n" (s-upper-camel-case ext))))
 
 (defun haskell-insert-compiler-extension (ext)
   (interactive "MGHC Extension: ")
-  (insert (format "{-# OPTIONS_GHC -f%s #-}\n" ext)))
+  (insert (format "{-# OPTIONS_GHC -f%s #-}\n" (s-dashed-words ext))))
 
 ;; http://ergoemacs.org/emacs/elisp_command_working_on_string_or_region.html
 (defun haskell-format-language-extensions ($string &optional $from $to)
