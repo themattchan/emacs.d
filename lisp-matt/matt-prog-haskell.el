@@ -24,7 +24,6 @@
 ;;; Code:
 
 (use-package haskell-mode :ensure t)
-(require 'ghc-nix)
 
 (defconst haskell-modes-list '(haskell-mode literate-haskell-mode))
 
@@ -106,9 +105,28 @@
     )
   )
 
-;; If this returns NIL, then not nix
 (defun my-nix-current-sandbox ()
+  "Try to find if the current project is a nix project.
+Returns the project root with a shell.nix file, or NIL if not nix."
   (locate-dominating-file default-directory "shell.nix"))
+
+(defun -wrap-nix-command (command)
+  "Wrap the shell command COMMAND to be invoked inside a nix-shell."
+  (combine-and-quote-strings
+   `("nix-shell"
+     "-I" ,(substitute-in-file-name "nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs/")
+     "--show-trace"
+     "--run" ,command
+     "|" "tail" "-1"))) ;; get rid of info messages we print out
+
+(defun -run-nix-command (command)
+  "Run COMMAND inside the current sandbox (implicitly)."
+  (let ((default-directory (my-nix-current-sandbox)))
+    (shell-command-to-string (-wrap-nix-command command))))
+
+(defun nix-ghc-executable ()
+  "Return the path to the ghc executable inside the current sandbox."
+  (s-trim (-run-nix-command "type -p ghc")))
 
 ;; If in nix, compile inside a nix shell
 (defadvice compile (around maybe-compile-in-nix-sandbox activate)
