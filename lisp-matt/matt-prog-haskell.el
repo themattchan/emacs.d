@@ -197,7 +197,6 @@ Returns the project root with a shell.nix file, or NIL if not nix."
     ;; => USE NIX
     (message "HASKELL: found shell.nix")
     (flycheck-haskell-setup)
-    (use-nix-ghc-in-flycheck) ;; see lisp/ghc-nix.el
     (flycheck-select-checker 'haskell-ghc)
     (flycheck-set-checker-executable (nix-ghc-executable))
     (setq flycheck-haskell-ghc-executable (nix-ghc-executable))
