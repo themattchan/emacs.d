@@ -154,7 +154,7 @@
 
     ;; flycheck batch compilation
     (setq-local flycheck-command-wrapper-function
-                #'(lambda (command) ;; command has type List[String]
+                #'(lambda (command) ;; List[String] -> List[String]
                     (if (and (eq 'haskell-ghc flycheck-checker)
                              (my-nix-current-sandbox)
                              (haskell-mode-p))
