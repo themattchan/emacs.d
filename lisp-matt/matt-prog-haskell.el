@@ -57,15 +57,15 @@
     (mapc 'haskell-insert-language-extension formatted-extension-list)
     )))
 
-(defconst matt/haskell-modes-list '(haskell-mode literate-haskell-mode))
+(defconst haskell-modes-list '(haskell-mode literate-haskell-mode))
 
-(defun use-stack-p ()
+(defun haskell-use-stack-p ()
   (locate-dominating-file default-directory "stack.yaml"))
 
 (defun haskell-mode-p ()
-  (memq major-mode matt/haskell-modes-list))
+  (memq major-mode haskell-modes-list))
 
-(defun make-bash-nix-ghc-command (command)
+(defun haskell-make-bash-nix-ghc-command (command)
   `("bash" "-c"
     ,(format "source %s;" (nix-sandbox-rc (my-nix-current-sandbox)))
     "-I" ,(substitute-in-file-name "nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs/")
@@ -75,7 +75,7 @@
     )
   )
 
-(defun make-bash-nix-ghci-repl (argv)
+(defun haskell-make-bash-nix-ghci-repl (argv)
   `("bash" "-c"
     ,(format "source %s;" (nix-sandbox-rc (my-nix-current-sandbox)))
     "-I" ,(substitute-in-file-name "nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs/")
@@ -125,6 +125,9 @@
 
   ;; (define-key haskell-cabal-mode-map (kbd "C-c C-k") #'haskell-interactive-mode-clear)
   ;; (define-key haskell-cabal-mode-map (kbd "C-c c") #'haskell-process-cabal)
+  (define-key haskell-mode-map (kbd "C-c i e") #'haskell-insert-language-extension)
+  (define-key haskell-mode-map (kbd "C-c i o") #'haskell-insert-compiler-extension)
+  (define-key haskell-mode-map (kbd "C-c i s") #'haskell-format-language-extensions)
 
   (cond
    ((my-nix-current-sandbox)
@@ -147,7 +150,7 @@
 
     ;; C-c C-l repl
     (setq-local haskell-process-wrapper-function
-                #'make-bash-nix-ghci-repl)
+                #'haskell-make-bash-nix-ghci-repl)
 
     ;; flycheck batch compilation
     (setq-local flycheck-command-wrapper-function
@@ -157,7 +160,7 @@
                              (haskell-mode-p))
                         (progn
                           (message "[flycheck-haskell] Checking buffer")
-                          (make-bash-nix-ghc-command command)
+                          (haskell-make-bash-nix-ghc-command command)
                           )
                       command)
                     ))
@@ -169,7 +172,7 @@
     )
 
 
-   ((and (use-stack-p) (executable-find "stack"))
+   ((and (haskell-use-stack-p) (executable-find "stack"))
     ;; => USE STACK
     (setq-local haskell-process-type 'stack-ghci)
     (setq-local flycheck-haskell-runghc-command
