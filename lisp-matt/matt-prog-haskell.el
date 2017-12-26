@@ -54,7 +54,7 @@
   (save-excursion
     (delete-region $from $to)
     (goto-char $from)
-    (mapc 'matt/haskell-insert-language-extension formatted-extension-list)
+    (mapc 'haskell-insert-language-extension formatted-extension-list)
     )))
 
 (defconst matt/haskell-modes-list '(haskell-mode literate-haskell-mode))
