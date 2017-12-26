@@ -28,7 +28,7 @@
 
 (defconst haskell-modes-list '(haskell-mode literate-haskell-mode))
 
-;; typecheck *library* only by compiling with -fno-code
+;; Typecheck *library* only by compiling with -fno-code
 (defun matt/haskell-cabal-typecheck ()
   (interactive)
   (compile "cabal build -j8 --ghc-options=\"-fno-code -fwrite-interface -fforce-recomp\""))
@@ -122,17 +122,8 @@
 
 ;; This is run ONCE when you switch to 'haskell-mode'
 (defun haskell-custom-hook ()
-  (haskell-indentation-mode)
 
-  (use-package flycheck
-    :init (flycheck-mode 1))
-
-  (use-package flycheck-haskell
-    :config (flycheck-haskell-setup))
-
-  ;; use flycheck-haskell
-  (flycheck-haskell-setup)
-
+  ;; Haskell mode keybindings
   (define-key haskell-mode-map (kbd "C-`") 'flycheck-list-errors)
   ;; (define-key haskell-mode-map (kbd "C-c C-l") #'haskell-interactive-bring)
   ;; (define-key haskell-mode-map (kbd "C-c C-z") #'haskell-interactive-switch)
@@ -154,8 +145,32 @@
   (define-key haskell-mode-map (kbd "C-c i o") #'haskell-insert-compiler-extension)
   (define-key haskell-mode-map (kbd "C-c i s") #'haskell-format-language-extensions)
 
-  (eval-after-load 'intero-mode '(lambda () (define-key intero-mode-map (kbd "<f12>") 'intero-devel-reload)))
+  (eval-after-load 'intero-mode
+    '(define-key intero-mode-map (kbd "<f12>") 'intero-devel-reload))
 
+  ;; Haskell mode GLOBAL settings
+  (use-package flycheck
+    :init (flycheck-mode 1))
+
+  (use-package flycheck-haskell
+    :config (flycheck-haskell-setup))
+
+  ;; use flycheck-haskell
+  (flycheck-haskell-setup)
+
+  (haskell-indentation-mode)
+
+  (setq-local haskell-process-suggest-remove-import-lines t)
+  (setq-local haskell-process-auto-import-loaded-modules t)
+  (setq-local haskell-process-log t)
+
+  ;; (require 'flycheck-liquidhs)
+  ;; (require 'liquid-types)
+
+  ;;    (flycheck-add-next-checker 'haskell-hlint '(t . haskell-liquid))
+  ;;    (liquid-types-mode 1)
+
+  ;; Build tool dependent settings
   (cond
    ((my-nix-current-sandbox)
     ;; => USE NIX
@@ -203,7 +218,12 @@
     ;; => USE STACK
     (setq-local haskell-process-type 'stack-ghci)
     (setq-local flycheck-haskell-runghc-command
-                '("stack" "--verbosity" "silent" "runghc" "--no-ghc-package-path" "--" "--ghc-arg=-i"))
+                '("stack"
+                  "--verbosity" "silent"
+                  "runghc"
+                  "--no-ghc-package-path"
+                  "--" "--ghc-arg=-i"))
+
     (setq-local haskell-process-path-ghci "stack")
 
     (flycheck-select-checker 'haskell-stack-ghc)
@@ -222,17 +242,6 @@
    ) ;; cond
 
   (message "HASKELL: Flycheck checker is %s" flycheck-checker)
-
-  (setq-local haskell-process-suggest-remove-import-lines t)
-  (setq-local haskell-process-auto-import-loaded-modules t)
-  (setq-local haskell-process-log t)
-
-  ;; (require 'flycheck-liquidhs)
-  ;; (require 'liquid-types)
-
-  ;;    (flycheck-add-next-checker 'haskell-hlint '(t . haskell-liquid))
-  ;;    (liquid-types-mode 1)
-
   ) ;; haskell-custom-hook
 
 ;;(require 'haskell-interactive-mode)
@@ -244,6 +253,7 @@
 (add-hook 'haskell-mode-hook 'haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'haskell-decl-scan-mode)
 (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+
 (add-hook 'haskell-mode-hook #'haskell-custom-hook)
 
 ;; ;; so we can actually see our writings
