@@ -5,12 +5,55 @@
 
 (use-package haskell-mode :ensure t)
 (require 'ghc-nix)
+
 ;; (use-package dante
 ;;   :ensure t
 ;;   :commands 'dante-mode
 ;;   :init
 ;;   (add-hook 'haskell-mode-hook 'dante-mode)
 ;;   (add-hook 'haskell-mode-hook 'flycheck-mode))
+
+;; (defun matt/hoogle-search-at-point ()
+;;   (interactive "
+
+
+(defun haskell-insert-language-extension (ext)
+  (interactive "MExtension: ")
+  (insert (format "{-# LANGUAGE %s #-}\n" ext)))
+
+(defun haskell-insert-compiler-extension (ext)
+  (interactive "MExtension: ")
+  (insert (format "{-# OPTIONS_GHC -f%s #-}\n" ext)))
+
+;; http://ergoemacs.org/emacs/elisp_command_working_on_string_or_region.html
+(defun haskell-format-language-extensions ($string &optional $from $to)
+  (interactive
+    (if (use-region-p)
+        (list nil (region-beginning) (region-end))
+      (let ((bds (bounds-of-thing-at-point 'paragraph)) )
+        (list nil (car bds) (cdr bds)))))
+  (let* ((input
+          (s-lines (buffer-substring-no-properties $from $to)))
+
+         (get-extensions ;; String -> List[String]
+          (lambda (s)
+           (mapcar 's-trim
+            (s-split ","
+             (s-chop-prefix "{-# LANGUAGE"
+              (s-chop-suffix "#-}" s))))))
+
+         (formatted-extension-list
+          (seq-filter (lambda (s) (not (string= "" s)))
+           (delete-dups
+            (sort-strings
+             (apply 'append
+              (mapcar get-extensions input))))))
+         )
+  (save-excursion
+    (delete-region $from $to)
+    (goto-char $from)
+    (mapc 'matt/haskell-insert-language-extension formatted-extension-list)
+    )))
 
 (defconst matt/haskell-modes-list '(haskell-mode literate-haskell-mode))
 
@@ -26,18 +69,23 @@
     "-I" ,(substitute-in-file-name "nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs/")
     "--show-trace"
     "--command"
-    ,@command)
+    ,@command
+    )
+  )
+
+(defun make-bash-nix-ghci-repl (argv)
+  `("bash" "-c"
+    ,(format "source %s;" (nix-sandbox-rc (my-nix-current-sandbox)))
+    "-I" ,(substitute-in-file-name "nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs/")
+    "--show-trace"
+    "--command"
+    ,(s-join " " argv)
+    )
   )
 
 ;; If this returns NIL, then not nix
 (defun my-nix-current-sandbox ()
   (locate-dominating-file default-directory "shell.nix"))
-
-;; (defun nix-compile-current-sandbox (command)
-;;   (interactive "Mcommand: ")
-;;   ;; override dynamically bound variable used by 'compile'
-;;   (let ((default-directory (my-nix-current-sandbox)))
-;;     (compile (nix-shell-string default-directory command))))
 
 ;; If in nix, compile inside a nix shell
 (defadvice compile (around maybe-compile-in-nix-sandbox activate)
@@ -88,31 +136,25 @@
     (flycheck-add-next-checker 'haskell-ghc '(t . haskell-hlint))
     (add-to-list 'flycheck-disabled-checkers 'haskell-stack-ghc)
 
-    ;;      (custom-set-variables
     (setq-local haskell-process-type 'cabal-repl)
-    ;; '(flycheck-haskell-runghc-command
-    ;;   `(,(substitute-in-file-name "$HOME/.nix-profile/bin/nix-shell")
-    ;;   "--run" "cabal repl"))
 
     (setq-local flycheck-haskell-runghc-command
                 '("runghc" "-i"))
 
     (setq-local haskell-process-path-ghci "cabal repl")
 
+    ;; C-c C-l repl
     (setq-local haskell-process-wrapper-function
-                #'(lambda (command)
-                    ;;(apply 'nix-shell-command (nix-current-sandbox) args)
-                    ;;             `("bash" "-c" ,(format "source %s;" (nix-sandbox-rc (my-nix-current-sandbox))) ,@args)
-                    (make-bash-nix-ghc-command command)
-                    ))
+                #'make-bash-nix-ghci-repl)
 
+    ;; flycheck batch compilation
     (setq-local flycheck-command-wrapper-function
                 #'(lambda (command) ;; command has type List[String]
-
-                    (if (and (eq 'haskell-ghc flycheck-checker) (my-nix-current-sandbox) (haskell-mode-p))
+                    (if (and (eq 'haskell-ghc flycheck-checker)
+                             (my-nix-current-sandbox)
+                             (haskell-mode-p))
                         (progn
                           (message "[flycheck-haskell] Checking buffer")
-                          ;;                   (message "Command: %s" (make-bash-nix-ghc-command command))
                           (make-bash-nix-ghc-command command)
                           )
                       command)
@@ -121,18 +163,7 @@
     (setq-local flycheck-executable-find
                 #'(lambda (cmd) (nix-executable-find (my-nix-current-sandbox) cmd)))
 
-    ;; '(haskell-process-wrapper-function
-    ;;   #'(lambda (argv)
-    ;;        `("nix-shell" "-I"
-    ;;         ,(substitute-in-file-name "nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs/")
-    ;;         "--command")
-    ;;        ,(mapconcat 'identity argv " "))))
-
-    ;; '(haskell-process-path-ghci
-    ;;   `(,(substitute-in-file-name "$HOME/.nix-profile/bin/nix-shell") "--run" "cabal repl"))
-    ;;       )
     (message "NIX GHC: %s" (nix-ghc-executable))
-    ;;      (setq flycheck-haskell-ghc-executable (nix-ghc-executable))
     )
 
 
@@ -142,15 +173,6 @@
     (setq-local flycheck-haskell-runghc-command
                 '("stack" "--verbosity" "silent" "runghc" "--no-ghc-package-path" "--" "--ghc-arg=-i"))
     (setq-local haskell-process-path-ghci "stack")
-    (setq-local flycheck-command-wrapper-function
-                #'(lambda (command) ;; command has type List[String]
-                    (message "[flycheck-haskell] Checking buffer")
-                    ;;                   (message "Command: %s" (make-bash-nix-ghc-command command))
-                    (message "COMMAND: %S" command)
-
-                    command)
-                )
-
 
     (flycheck-select-checker 'haskell-stack-ghc)
     (flycheck-add-next-checker 'haskell-stack-ghc '(t . haskell-hlint))
@@ -179,7 +201,6 @@
   ;; (require 'flycheck-liquidhs)
   ;; (require 'liquid-types)
 
-
   ;;    (flycheck-add-next-checker 'haskell-hlint '(t . haskell-liquid))
   ;;    (liquid-types-mode 1)
 
@@ -189,11 +210,11 @@
 ;;(require 'haskell-process)
 ;; (require 'intero)
 
-(remove-hook 'haskell-mode-hook 'interactive-haskell-mode)
+;;(remove-hook 'haskell-mode-hook 'interactive-haskell-mode)
 (remove-hook 'haskell-mode-hook 'stack-mode)
-;; (add-hook 'haskell-mode-hook 'haskell-doc-mode)
-;; (add-hook 'haskell-mode-hook 'haskell-decl-scan-mode)
-;; (add-hook 'haskell-mode-hook 'intero-mode)
+(add-hook 'haskell-mode-hook 'haskell-doc-mode)
+(add-hook 'haskell-mode-hook 'haskell-decl-scan-mode)
+(add-hook 'haskell-mode-hook 'interactive-haskell-mode)
 (add-hook 'haskell-mode-hook #'haskell-custom-hook)
 
 ;; ;; so we can actually see our writings

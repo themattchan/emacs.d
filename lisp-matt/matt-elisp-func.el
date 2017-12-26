@@ -33,6 +33,8 @@
   (let ((fill-column (point-max)))
     (fill-paragraph nil)))
 
+(defun sort-strings (xs)
+  (sort xs'string-lessp))
 
 ;;------------------------------------------------------------------------------
 ;; uniquify lines

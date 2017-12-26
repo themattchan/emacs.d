@@ -110,6 +110,13 @@
        (add-to-list 'erc-modules 'scrolltobottom)
        )))
 
+;;------------------------------------------------------------------------------
+;; GNUS RSS
+
+(setq gnus-select-method '(nntp "news.gmane.org"))
+(add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
+
+
 (provide 'matt-utils)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
