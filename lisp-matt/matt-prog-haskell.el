@@ -55,7 +55,7 @@
       (let ((bds (bounds-of-thing-at-point 'paragraph)) )
         (list nil (car bds) (cdr bds)))))
   (let* ((input
-          ;; { List[x:String] | x = {-# LANGUAGE <ext1>, ..., <extn> #-} }
+          ;; { List[x:String] | x = "{-# LANGUAGE <ext1>, ..., <extn> #-}" }
           (s-lines (buffer-substring-no-properties $from $to)))
 
          (get-extensions ;; String -> List[String]
@@ -66,7 +66,7 @@
               (s-chop-suffix "#-}" s))))))
 
          (formatted-extension-list
-          ;; { xs:List[x:String] | sortedBy <ext> xs, x = {-# LANGUAGE <ext> #-} }
+          ;; { xs:List[x:String] | sortedBy <ext> xs, x = "{-# LANGUAGE <ext> #-}" }
           (seq-filter (lambda (s) (not (string= "" s)))
            (delete-dups
             (sort-strings
