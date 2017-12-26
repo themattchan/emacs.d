@@ -18,11 +18,11 @@
 
 
 (defun haskell-insert-language-extension (ext)
-  (interactive "MExtension: ")
+  (interactive "MHaskell Extension: ")
   (insert (format "{-# LANGUAGE %s #-}\n" ext)))
 
 (defun haskell-insert-compiler-extension (ext)
-  (interactive "MExtension: ")
+  (interactive "MGHC Extension: ")
   (insert (format "{-# OPTIONS_GHC -f%s #-}\n" ext)))
 
 ;; http://ergoemacs.org/emacs/elisp_command_working_on_string_or_region.html
@@ -33,6 +33,7 @@
       (let ((bds (bounds-of-thing-at-point 'paragraph)) )
         (list nil (car bds) (cdr bds)))))
   (let* ((input
+          ;; { List[x:String] | x = {-# LANGUAGE <ext1>, ..., <extn> #-} }
           (s-lines (buffer-substring-no-properties $from $to)))
 
          (get-extensions ;; String -> List[String]
@@ -43,6 +44,7 @@
               (s-chop-suffix "#-}" s))))))
 
          (formatted-extension-list
+          ;; { xs:List[x:String] | sortedBy <ext> xs, x = {-# LANGUAGE <ext> #-} }
           (seq-filter (lambda (s) (not (string= "" s)))
            (delete-dups
             (sort-strings
