@@ -110,6 +110,9 @@
 Returns the project root with a shell.nix file, or NIL if not nix."
   (locate-dominating-file default-directory "shell.nix"))
 
+;; The following three functions are copied from
+;; https://github.com/jml/emacs-configuration/blob/master/plugins/ghc-nix.el
+;; with modifications
 (defun -wrap-nix-command (command)
   "Wrap the shell command COMMAND to be invoked inside a nix-shell."
   (combine-and-quote-strings
