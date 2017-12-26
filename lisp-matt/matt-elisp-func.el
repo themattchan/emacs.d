@@ -26,7 +26,6 @@
     (before theme-dont-propagate activate)
   (mapc #'disable-theme custom-enabled-themes))
 
-
 ;; expand filled paragraph to a line
 (defun unfill-paragraph ()
   (interactive)
@@ -35,6 +34,11 @@
 
 (defun sort-strings (xs)
   (sort xs'string-lessp))
+
+(defun selected-or-symbol-at-point ()
+  (if (use-region-p)
+      (buffer-substring-no-properties (region-beginning) (region-end))
+    (thing-at-point 'symbol)))
 
 ;;------------------------------------------------------------------------------
 ;; uniquify lines

@@ -26,16 +26,14 @@
 (use-package haskell-mode :ensure t)
 (require 'ghc-nix)
 
-;; (use-package dante
-;;   :ensure t
-;;   :commands 'dante-mode
-;;   :init
-;;   (add-hook 'haskell-mode-hook 'dante-mode)
-;;   (add-hook 'haskell-mode-hook 'flycheck-mode))
+(defconst haskell-modes-list '(haskell-mode literate-haskell-mode))
 
-;; (defun matt/hoogle-search-at-point ()
-;;   (interactive "
-
+;; Captures the selected region or symbol at point
+;; and queries hayoo.
+(defun haskell-hayoo-at-point ()
+  (interactive)
+  (let ((thing (selected-or-symbol-at-point)))
+    (when thing (hayoo-query thing))))
 
 (defun haskell-insert-language-extension (ext)
   (interactive "MHaskell Extension: ")
@@ -76,8 +74,6 @@
     (goto-char $from)
     (mapc 'haskell-insert-language-extension formatted-extension-list)
     )))
-
-(defconst haskell-modes-list '(haskell-mode literate-haskell-mode))
 
 (defun haskell-use-stack-p ()
   (locate-dominating-file default-directory "stack.yaml"))
@@ -123,8 +119,6 @@
 (defun haskell-custom-hook ()
   (haskell-indentation-mode)
 
-  ;; (define-key intero-mode-map (kbd "C-`") 'flycheck-list-errors)
-  ;; (define-key intero-mode-map [f12] 'intero-devel-reload)
   (use-package flycheck
     :init (flycheck-mode 1))
 
@@ -134,20 +128,26 @@
   ;; use flycheck-haskell
   (flycheck-haskell-setup)
 
-  (define-key haskell-mode-map (kbd "C-c C-l") #'haskell-interactive-bring)
-  ;; (define-key haskell-mode-map [?\C-c ?\C-z] #'haskell-interactive-switch)
+  (define-key haskell-mode-map (kbd "C-`") 'flycheck-list-errors)
+  ;; (define-key haskell-mode-map (kbd "C-c C-l") #'haskell-interactive-bring)
+  ;; (define-key haskell-mode-map (kbd "C-c C-z") #'haskell-interactive-switch)
   ;; (define-key haskell-mode-map (kbd "C-c C-i") #'haskell-process-do-info)
-  ;; (define-key haskell-mode-map [f8] #'haskell-navigate-imports)
-  ;; (define-key haskell-mode-map "C-c C-h" 'haskell-hoogle)
-  ;; (define-key haskell-mode-map "C-c C-b" 'flycheck-buffer)
-  ;; (define-key haskell-mode-map "M-n" 'flycheck-next-error)
-  ;; (define-key haskell-mode-map "M-p" 'flycheck-previous-error)
+  (define-key haskell-mode-map (kbd "<f8>") #'haskell-navigate-imports)
+  (define-key haskell-mode-map (kbd "C-c C-b") 'flycheck-buffer)
+  (define-key haskell-mode-map (kbd "M-n") 'flycheck-next-error)
+  (define-key haskell-mode-map (kbd "M-p") 'flycheck-previous-error)
 
   ;; (define-key haskell-cabal-mode-map (kbd "C-c C-k") #'haskell-interactive-mode-clear)
   ;; (define-key haskell-cabal-mode-map (kbd "C-c c") #'haskell-process-cabal)
+
+  (define-key haskell-mode-map (kbd "C-c C-h") 'haskell-hoogle)
+  (define-key haskell-mode-map (kbd "C-c C-y") 'haskell-hayoo-at-point)
+
   (define-key haskell-mode-map (kbd "C-c i e") #'haskell-insert-language-extension)
   (define-key haskell-mode-map (kbd "C-c i o") #'haskell-insert-compiler-extension)
   (define-key haskell-mode-map (kbd "C-c i s") #'haskell-format-language-extensions)
+
+  (eval-after-load 'intero-mode '(lambda () (define-key intero-mode-map (kbd "<f12>") 'intero-devel-reload)))
 
   (cond
    ((my-nix-current-sandbox)
@@ -216,9 +216,6 @@
 
   (message "HASKELL: Flycheck checker is %s" flycheck-checker)
 
-  ;;   (custom-set-variables
-  ;; '(haskell-process-use-ghci t)
-  ;;     '(haskell-process-args-ghci '("nix-shell" "--run" "cabal repl")) ; '("ghci" "--with-ghc" "intero" "--no-load" "--no-build"))
   (setq-local haskell-process-suggest-remove-import-lines t)
   (setq-local haskell-process-auto-import-loaded-modules t)
   (setq-local haskell-process-log t)
@@ -247,7 +244,7 @@
 (setq haskell-interactive-popup-error nil)
 
 ;; idk why this was removed from haskell-mode upstream...
-(dolist (mode matt/haskell-modes-list)
+(dolist (mode haskell-modes-list)
   (font-lock-add-keywords mode '(("\\_<\\(error\\|undefined\\)\\_>" 0 'font-lock-warning-face))))
 
 (eval-after-load 'company-mode '(add-to-list 'company-backends 'company-ghc))
