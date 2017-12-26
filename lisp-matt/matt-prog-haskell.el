@@ -28,8 +28,8 @@
 
 (defconst haskell-modes-list '(haskell-mode literate-haskell-mode))
 
-
-(defun matt/haskell-cabal-no-code ()
+;; typecheck *library* only by compiling with -fno-code
+(defun matt/haskell-cabal-typecheck ()
   (interactive)
   (compile "cabal build -j8 --ghc-options=\"-fno-code -fwrite-interface -fforce-recomp\""))
 
@@ -148,7 +148,7 @@
   (define-key haskell-mode-map (kbd "C-c C-h") 'haskell-hoogle)
   (define-key haskell-mode-map (kbd "C-c C-y") 'haskell-hayoo-at-point)
 
-  (define-key haskell-mode-map (kbd "C-c g") #'matt/haskell-cabal-no-code)
+  (define-key haskell-mode-map (kbd "C-c g") #'matt/haskell-cabal-typecheck)
 
   (define-key haskell-mode-map (kbd "C-c i e") #'haskell-insert-language-extension)
   (define-key haskell-mode-map (kbd "C-c i o") #'haskell-insert-compiler-extension)
