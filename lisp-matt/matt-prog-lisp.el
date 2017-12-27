@@ -40,7 +40,12 @@
 
 (setq inferior-lisp-program "sbcl")
 (setq scheme-program-name "racket")
-(setq geiser-racket-binary "/Applications/Racket/bin/racket")
+(when *is-mac*
+  (setq geiser-racket-binary "/Applications/Racket/bin/racket")
+  (setq racket-program "/Applications/Racket/bin/racket")
+  )
+
+(define-key racket-mode-map (kbd "C-c C-l") 'racket-run-and-switch-to-repl)
 
 ;;------------------------------------------------------------------------------
 ;; colourful parens

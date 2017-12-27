@@ -72,7 +72,7 @@
     ))
 (setenv "NIX_PATH" (substitute-in-file-name "$HOME/.nix-defexpr/channels/nixpkgs/"))
 
-;; Set PATHs for Unix-based systems
+;; Set PATHs for Unix-Based systems
 (setenv "PATH" (mapconcat #'identity *my-path-list* ":"))
 (setq exec-path (append exec-path *my-path-list*))
 

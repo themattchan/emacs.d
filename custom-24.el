@@ -123,7 +123,7 @@
  '(flycheck-completion-system (quote ido) t)
  '(flycheck-display-errors-delay 0)
  '(flycheck-display-errors-function (quote flycheck-display-error-messages))
-'(flycheck-executable-find
+ '(flycheck-executable-find
 (function
  (lambda
    (cmd)
@@ -136,7 +136,7 @@
  '(flyspell-issue-message-flag t)
  '(geiser-active-implementations (quote (racket scheme)))
  '(geiser-default-implementation (quote racket))
-'(geiser-implementations-alist
+ '(geiser-implementations-alist
 (quote
  (((regexp "\\.scm$")
    scheme)
@@ -147,7 +147,7 @@
  '(geiser-mode-auto-p nil)
  '(geiser-mode-autodoc-p nil)
  '(haskell-font-lock-symbols nil)
-'(haskell-mode-hook
+ '(haskell-mode-hook
 (quote
  (#[nil "\301\211\207"
         [indent-tabs-mode nil]
@@ -157,7 +157,7 @@
         [electric-indent-mode -1]
         2]
   haskell-indentation-mode)))
-'(haskell-process-args-ghci
+ '(haskell-process-args-ghci
 (quote
  ("ghci" "--with-ghc" "intero" "--no-load" "--no-build")))
  '(haskell-process-auto-import-loaded-modules t)
@@ -166,7 +166,7 @@
  '(haskell-process-suggest-remove-import-lines t)
  '(haskell-process-type (quote cabal-repl))
  '(haskell-process-use-ghci t)
-'(haskell-process-wrapper-function
+ '(haskell-process-wrapper-function
 (function
  (lambda
    (args)
@@ -179,13 +179,13 @@
  '(helm-ag-command-option "--all-text")
  '(helm-ag-insert-at-point (quote symbol))
  '(highlight-changes-colors (quote ("#d33682" "#6c71c4")))
-'(highlight-symbol-colors
+ '(highlight-symbol-colors
 (--map
  (solarized-color-blend it "#fdf6e3" 0.25)
  (quote
   ("#b58900" "#2aa198" "#dc322f" "#6c71c4" "#859900" "#cb4b16" "#268bd2"))))
  '(highlight-symbol-foreground-color "#586e75")
-'(highlight-tail-colors
+ '(highlight-tail-colors
 (quote
  (("#eee8d5" . 0)
   ("#B4C342" . 20)
@@ -195,10 +195,10 @@
   ("#F2804F" . 70)
   ("#F771AC" . 85)
   ("#eee8d5" . 100))))
-'(hl-bg-colors
+ '(hl-bg-colors
 (quote
  ("#7B6000" "#8B2C02" "#990A1B" "#93115C" "#3F4D91" "#00629D" "#00736F" "#546E00")))
-'(hl-fg-colors
+ '(hl-fg-colors
 (quote
  ("#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36")))
  '(hl-sexp-background-color "#1c1f26")
@@ -212,15 +212,15 @@
  '(liquid-tip-mode nil t)
  '(magit-diff-use-overlays nil)
  '(magit-use-overlays nil)
-'(neo-hidden-regexp-list
+ '(neo-hidden-regexp-list
 (quote
  ("^\\." "\\.pyc$" "~$" "^#.*#$" "\\.elc$" "\\.class$")))
-'(notmuch-search-line-faces
+ '(notmuch-search-line-faces
 (quote
  (("unread" :foreground "#aeee00")
   ("flagged" :foreground "#0a9dff")
   ("deleted" :foreground "#ff2c4b" :bold t))))
-'(nrepl-message-colors
+ '(nrepl-message-colors
 (quote
  ("#dc322f" "#cb4b16" "#b58900" "#546E00" "#B4C342" "#00629D" "#2aa198" "#d33682" "#6c71c4")))
  '(olivetti-body-width 100)
@@ -232,7 +232,7 @@
  '(org-indent-mode-turns-on-hiding-stars nil)
  '(org-startup-indented t)
  '(org-startup-truncated nil)
-'(package-selected-packages
+ '(package-selected-packages
 (quote
  (treemacs treemacs-projectile helm-projectile helm-hayoo hayoo fixmee nhexl-mode anzu cmm-mode helm-nixos-options nixos-options nord-theme badwolf-theme define-word typing-game speed-type captain ace-jump-buffer ace-jump-helm-line ace-jump-mode ace-window avy-flycheck avy-menu avy flycheck-haskell-mode dante flycheck-purescript nix-sandbox nix-buffer nix-mode nlinum doom-themes dr-racket-like-unicode helm-hoogle helm-idris lsp-haskell lsp-mode nodejs-repl ecb olivetti intero yaml-mode wc-mode use-package tuareg smartparens sicp shm seti-theme racket-mode pandoc-mode org-journal nginx-mode monokai-theme moe-theme menu-bar+ js2-mode iedit icicles helm-ls-git helm-flyspell helm-company haml-mode git-auto-commit-mode git-annex gist fsharp-mode flycheck-pos-tip flycheck-hdevtools feature-mode expand-region exec-path-from-shell emamux elpy dot-mode django-mode dash-functional zenburn-theme web-mode visual-fill-column spacemacs-theme solarized-theme slime python-mode projectile neotree markdown-mode magit helm-ag helm go-mode furl flycheck swiper find-file-in-project ensime elm-mode ein company-math yasnippet company cider auto-complete docker-tramp scala-outline-popup git-commit-mode flymake-racket clojure-test-mode scala-mode2 znc writeroom-mode writegood-mode wolfram-mode wc-goal-mode w3 utop top-mode tabbar sublime-themes stripe-buffer stack-mode spotify spaces spacegray-theme soft-stone-theme sml-mode smart-mode-line shell-command scheme-complete scf-mode rainbow-delimiters quack psci protobuf-mode paredit osx-plist org-pandoc nose multi-web-mode multi-term memory-usage marmalade load-theme-buffer-local lex latex-preview-pane latex-pretty-symbols keyfreq jtags json-mode jedi-direx impatient-mode image+ igrep idomenu ido-ubiquitous ido-load-library ido-hacks ido-complete-space-or-hyphen ido-at-point hy-mode hippie-expand-slime helm-ls-svn helm-ls-hg helm-gitlab helm-gitignore helm-git helm-ghc helm-flycheck helm-ag-r haskell-emacs-text haskell-emacs-base graphviz-dot-mode gitconfig git-blame git fuzzy fringe-helper framesize fold-dwim-org flyparens flymake-python-pyflakes flymake-hlint flymake-haskell-multi flylisp flycheck-ocaml flycheck-liquidhs flycheck-haskell flycheck-ghcmod flycheck-elm flycheck-color-mode-line flx-ido fill-column-indicator elscreen electric-case display-theme dirtree dired-details+ dired+ ctags-update ctags company-web company-ghci company-ghc company-coq company-cabal company-c-headers company-auctex color-theme coffee-mode cfengine-code-style button-lock bison-mode autopair auto-complete-auctex auctex-lua auctex-latexmk anything-git-grep anything-git-files anything-exuberant-ctags ag adjust-parens ac-slime ac-math ac-ispell ac-haskell-process ac-geiser ac-etags ac-cider ac-c-headers)))
  '(pos-tip-background-color "#073642")
@@ -244,9 +244,10 @@
  '(quack-default-program "mit-scheme")
  '(quack-fontify-style (quote plt))
  '(quack-pretty-lambda-p t)
-'(quack-programs
+ '(quack-programs
 (quote
  ("mit-scheme-x86-64" "bigloo" "csi" "csi -hygienic" "gosh" "gracket" "gsi" "gsi ~~/syntax-case.scm -" "guile" "kawa" "mit-scheme" "racket" "racket -il typed/racket" "rs" "scheme" "scheme48" "scsh" "sisc" "stklos" "sxi")))
+ '(racket-program "/Applications/Racket/bin/racket")
  '(reftex-plug-into-AUCTeX t t)
  '(safe-local-variable-values (quote ((buffer-file-coding-system . utf-8-unix))))
  '(scheme-mit-dialect t)
@@ -260,7 +261,7 @@
  '(term-default-fg-color "#657b83")
  '(undo-tree-visualizer-timestamps t)
  '(vc-annotate-background "#0d0d0d")
-'(vc-annotate-color-map
+ '(vc-annotate-color-map
 (list
  (cons 20 "#b5bd68")
  (cons 40 "#c8c06c")
@@ -281,14 +282,14 @@
  (cons 340 "#5c5e5e")
  (cons 360 "#5c5e5e")))
  '(vc-annotate-very-old-color nil)
-'(weechat-color-list
+ '(weechat-color-list
 (quote
  (unspecified "#fdf6e3" "#eee8d5" "#990A1B" "#dc322f" "#546E00" "#859900" "#7B6000" "#b58900" "#00629D" "#268bd2" "#93115C" "#d33682" "#00736F" "#2aa198" "#657b83" "#839496")))
-'(xterm-color-names
+ '(xterm-color-names
 ["#073642" "#dc322f" "#859900" "#b58900" "#268bd2" "#d33682" "#2aa198" "#eee8d5"])
-'(xterm-color-names-bright
+ '(xterm-color-names-bright
 ["#002b36" "#cb4b16" "#586e75" "#657b83" "#839496" "#6c71c4" "#93a1a1" "#fdf6e3"])
-'(znc-servers
+ '(znc-servers
 (quote
  (("162.248.141.245" 1701 t
    ((matt-znc "mach" "Z2fqfcxgPdJWn8Y"))))) t))
