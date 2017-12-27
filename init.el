@@ -82,7 +82,7 @@
 ;;(setenv "PYTHONPATH" "/usr/local/lib/python2.7/site-packages:")
 
 ;; Show stack trace on error
-(setq debug-on-error t)
+;(setq debug-on-error t)
 
 ;; Set file paths before anything else
 
