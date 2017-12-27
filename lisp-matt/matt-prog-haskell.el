@@ -138,7 +138,7 @@ Returns the project root with a shell.nix file, or NIL if not nix."
         ;; override dynamically bound variables used by 'compile'
         (let ((default-directory (my-nix-current-sandbox))
               (command (haskell-make-bash-nix-ghc-command command)))
-          ad-do-i\t)
+          ad-do-it)
       ad-do-it)))
 
 ;; This is run ONCE when you switch to 'haskell-mode'
