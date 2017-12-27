@@ -113,10 +113,11 @@
 
 ; (require 'matt-packages)
 (let ()
-  (message "%s" "Installing required packages...")
+  (message "Installing required packages...")
   (package-refresh-contents)
   (dolist (pkg package-selected-packages) ; matt/packages)
     (when (not (package-installed-p pkg))
+      (message "  + Installing package: %s" pkg)
       (ignore-errors
         (package-install pkg)))))
 
