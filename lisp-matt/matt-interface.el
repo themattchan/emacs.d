@@ -368,8 +368,48 @@ want to use in the modeline *in lieu of* the original.")
 
 ;;------------------------------------------------------------------------------
 ;; Projectile mode by default
-(projectile-global-mode)
 
+(eval-after-load 'projectile
+  '(lambda ()
+     (setq projectile-globally-ignored-file-suffixes
+           (append
+            '( ".o"
+              ".hi"
+              ".out"
+              ".jar"
+              ".class"
+              ".pyc"
+              ".gz"
+              ".tar.gz"
+              ".tgz"
+              ".zip"
+              ".bak"
+              )
+            projectile-globally-ignored-file-suffixes))
+
+     (setq projectile-globally-ignored-files
+           (append
+            '( ".DS_Store"
+               "*~"
+               "\#*\#"
+               "#*#"
+               )
+            projectile-globally-ignored-files))
+
+     ;; https://github.com/bbatsov/projectile/pull/1153/files
+     ;; "if the directory is prefixed with '*' then ignore all directories matching that name"
+     (setq projectile-globally-ignored-directories
+           (append
+            '("*.liquid" ".stack-work" "dist" "out"
+              "repl" "target" "venv" "tmp"
+              )
+            projectile-globally-ignored-directories))
+     ))
+(projectile-mode)
+
+
+;;------------------------------------------------------------------------------
+;; anzu mode (show current & total matches in isearch)
 
 (global-anzu-mode +1)
 

@@ -45,7 +45,9 @@
   (setq racket-program "/Applications/Racket/bin/racket")
   )
 
-(define-key racket-mode-map (kbd "C-c C-l") 'racket-run-and-switch-to-repl)
+(add-hook 'racket-mode-hook
+          #'(lambda ()
+              (define-key racket-mode-map (kbd "C-c C-l") 'racket-run-and-switch-to-repl)))
 
 ;;------------------------------------------------------------------------------
 ;; colourful parens

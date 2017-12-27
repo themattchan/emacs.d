@@ -1,4 +1,4 @@
-;;; matt-prog-haskell.el --- Haskell mode settings -*- lexical-binding: t -*-
+;;; matt-prog-haskell.el --- Haskell mode settings
 
 ;;; Copyright (c) 2016-2018 Matthew Chan
 ;;; Author: Matthew Chan <matt@parametri.city>
@@ -30,7 +30,7 @@
 ;; Typecheck *library* only by compiling with -fno-code
 (defun matt/haskell-cabal-typecheck ()
   (interactive)
-  (compile "cabal build -j8 --ghc-options=\"-fno-code -fwrite-interface -fforce-recomp\""))
+  (compile "cabal build -j8 --ghc-options=\"-fno-code -fwrite-interface\""))
 
 ;; Captures the selected region or symbol at point
 ;; and queries hayoo.
@@ -137,8 +137,8 @@ Returns the project root with a shell.nix file, or NIL if not nix."
     (if sandbox
         ;; override dynamically bound variables used by 'compile'
         (let ((default-directory (my-nix-current-sandbox))
-              (command (nix-shell-string default-directory command)))
-          ad-do-it)
+              (command (haskell-make-bash-nix-ghc-command command)))
+          ad-do-i\t)
       ad-do-it)))
 
 ;; This is run ONCE when you switch to 'haskell-mode'

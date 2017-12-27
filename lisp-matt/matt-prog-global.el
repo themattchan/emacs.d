@@ -44,7 +44,6 @@
             (flycheck-pos-tip-mode)
 ;;            (whitespace-mode)
             (subword-mode)
-            (projectile-mode 1)
             ;; (define-key ac-mode-map (kbd "<backtab>") 'auto-complete)
             (setq
              ;; tabs are spaces unless specified
@@ -98,44 +97,6 @@
                         ;; :background "LightBlue1"
                         :underline "ForestGreen")
     ))
-
-;;------------------------------------------------------------------------------
-;; Projectile
-
-(setq projectile-globally-ignored-file-suffixes
-      (append
-       '( ".o"
-          ".hi"
-          ".out"
-          ".jar"
-          ".class"
-          ".pyc"
-          ".gz"
-          ".tar.gz"
-          ".tgz"
-          ".zip"
-          ".bak"
-         )
-      projectile-globally-ignored-file-suffixes))
-
-(setq projectile-globally-ignored-files
-      (append
-       '( ".DS_Store"
-          "*~"
-          "\#*\#"
-          "#*#"
-          )
-       projectile-globally-ignored-files))
-
-;; https://github.com/bbatsov/projectile/pull/1153/files
-;; "if the directory is prefixed with '*' then ignore all directories matching that name"
-(setq projectile-globally-ignored-directories
-      (append
-       '("*.liquid" ".stack-work" "dist" "out"
-         "repl" "target" "venv"
-         )
-       projectile-globally-ignored-directories))
-;(projectile-global-mode)
 
 ;;------------------------------------------------------------------------------
 ;; No auto-indent
