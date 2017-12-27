@@ -111,11 +111,11 @@
 (setq package-archive-enable-alist '(("melpa" deft magit)))
 (package-initialize)
 
-(require 'matt-packages)
-(unless (matt/packages-installed-p)
+; (require 'matt-packages)
+(let ()
   (message "%s" "Installing required packages...")
   (package-refresh-contents)
-  (dolist (pkg matt/packages)
+  (dolist (pkg package-selected-packages) ; matt/packages)
     (when (not (package-installed-p pkg))
       (ignore-errors
         (package-install pkg)))))
