@@ -446,19 +446,20 @@ want to use in the modeline *in lieu of* the original.")
          "#*#"
          ))
 
-(setq grep-find-ignored-files
-      (append (mapcar #'(lambda (x) (concat "*" x)) my-globally-ignored-file-suffixes)
-              (append my-globally-ignored-files grep-find-ignored-files)))
-
 (setq my-globally-ignored-directories
       '("*.liquid" ".stack-work" "dist" "out"
         "repl" "target" "venv" "tmp"
         "output" "node_modules" "bower_components"
         ))
 
-(setq grep-find-ignored-directories
-      (append my-globally-ignored-directories
-              grep-find-ignored-directories))
+(eval-after-load 'grep
+  '(progn
+     (setq grep-find-ignored-files
+           (append (mapcar #'(lambda (x) (concat "*" x)) my-globally-ignored-file-suffixes)
+                   (append my-globally-ignored-files grep-find-ignored-files)))
+     (setq grep-find-ignored-directories
+           (append my-globally-ignored-directories
+                   grep-find-ignored-directories))))
 
 (eval-after-load 'projectile
   '(lambda ()
