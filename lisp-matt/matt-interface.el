@@ -94,6 +94,8 @@
      helm-ff-file-name-history-use-recentf t
      helm-quick-update                     t
      helm-bookmark-show-location           t
+     helm-ag-use-grep-ignore-list          t
+     helm-ag-use-agignore                  t
      ;; fuzzy match
      helm-M-x-fuzzy-match                  t
      helm-ag-fuzzy-match                   t
@@ -423,42 +425,58 @@ want to use in the modeline *in lieu of* the original.")
 ;;------------------------------------------------------------------------------
 ;; Projectile mode by default
 
+(setq my-globally-ignored-file-suffixes
+      '( ".o"
+         ".hi"
+         ".out"
+         ".elc"
+         ".jar"
+         ".class"
+         ".pyc"
+         ".gz"
+         ".tar.gz"
+         ".tgz"
+         ".zip"
+         ".bak"
+         ))
+(setq my-globally-ignored-files
+      '( ".DS_Store"
+         "*~"
+         "\#*\#"
+         "#*#"
+         ))
+
+(setq grep-find-ignored-files
+      (append (mapcar #'(lambda (x) (concat "*" x)) my-globally-ignored-file-suffixes)
+              (append my-globally-ignored-files grep-find-ignored-files)))
+
+(setq my-globally-ignored-directories
+      '("*.liquid" ".stack-work" "dist" "out"
+        "repl" "target" "venv" "tmp"
+        "output" "node_modules" "bower_components"
+        ))
+
+(setq grep-find-ignored-directories
+      (append my-globally-ignored-directories
+              grep-find-ignored-directories))
+
 (eval-after-load 'projectile
   '(lambda ()
      (setq projectile-globally-ignored-file-suffixes
            (append
-            '( ".o"
-              ".hi"
-              ".out"
-              ".elc"
-              ".jar"
-              ".class"
-              ".pyc"
-              ".gz"
-              ".tar.gz"
-              ".tgz"
-              ".zip"
-              ".bak"
-              )
+            my-globally-ignored-file-suffixes
             projectile-globally-ignored-file-suffixes))
 
      (setq projectile-globally-ignored-files
            (append
-            '( ".DS_Store"
-               "*~"
-               "\#*\#"
-               "#*#"
-               )
+            my-globally-ignored-files
             projectile-globally-ignored-files))
 
      ;; https://github.com/bbatsov/projectile/pull/1153/files
      ;; "if the directory is prefixed with '*' then ignore all directories matching that name"
      (setq projectile-globally-ignored-directories
            (append
-            '("*.liquid" ".stack-work" "dist" "out"
-              "repl" "target" "venv" "tmp"
-              "output" "node_modules" "bower_components"
-              )
+            my-globally-ignored-directories
             projectile-globally-ignored-directories))
      ))
 (projectile-mode)
