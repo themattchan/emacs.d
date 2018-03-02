@@ -27,6 +27,12 @@
 
 (defconst haskell-modes-list '(haskell-mode literate-haskell-mode))
 
+(defun haskell-make-tags ()
+  (interactive)
+  (let ((default-directory (projectile-project-root)))
+    (shell-command "hasktags --ignore-close-implementation --etags .")
+    (message "[haskell] generated TAGS file")))
+
 ;; Typecheck *library* only by compiling with -fno-code
 (defun matt/haskell-cabal-typecheck ()
   (interactive)
@@ -137,11 +143,20 @@ Returns the project root with a shell.nix file, or NIL if not nix."
     (if sandbox
         ;; override dynamically bound variables used by 'compile'
         (let ((default-directory (my-nix-current-sandbox))
-              (command (haskell-make-bash-nix-ghc-command command)))
+              (command
+               (combine-and-quote-strings `("nix-shell" "-I" ,(substitute-in-file-name "nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs/")
+                 "--run" ,command))))
+
+               ;(nix-shell-string (my-nix-current-sandbox) command))); (s-join " " (haskell-make-bash-nix-ghc-command (list command)))))
           ad-do-it)
       ad-do-it)))
 
-;; This is run ONCE when you switch to 'haskell-mode'
+(defun haskell-compile-in-nix (cmd)
+  (interactive "Mcompile: ")
+  (let ((default-directory (my-nix-current-sandbox)))
+    (compile (nix-shell-string (my-nix-current-sandbox) cmd))))
+
+;; this is run ONCE when you switch to 'haskell-mode'
 (defun haskell-custom-hook ()
 
   ;; Haskell mode keybindings
@@ -248,7 +263,7 @@ Returns the project root with a shell.nix file, or NIL if not nix."
 
     (flycheck-select-checker 'haskell-stack-ghc)
     (flycheck-add-next-checker 'haskell-stack-ghc '(t . haskell-hlint))
-    (intero-mode)
+;    (intero-mode)
     )
 
 
@@ -285,6 +300,11 @@ Returns the project root with a shell.nix file, or NIL if not nix."
   (font-lock-add-keywords mode '(("\\_<\\(error\\|undefined\\)\\_>" 0 'font-lock-warning-face))))
 
 (eval-after-load 'company-mode '(add-to-list 'company-backends 'company-ghc))
+
+;; nix stuff
+(add-hook 'nix-mode-hook
+          (lambda ()
+            (setq-local tab-width 2)))
 
 (provide 'matt-prog-haskell)
 ;; Local Variables:

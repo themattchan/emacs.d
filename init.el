@@ -47,6 +47,7 @@
 (require 'cl-lib)
 
 (setenv "SHELL" "/bin/bash")
+(setenv "TERM" "xterm-256color")
 (setenv "LC_CTYPE" "en_US.UTF-8")
 (setenv "LC_ALL" "en_US.UTF-8")
 (setq shell-file-name "/bin/bash")

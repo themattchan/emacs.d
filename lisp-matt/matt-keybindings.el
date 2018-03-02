@@ -138,13 +138,13 @@
 ;; (bind-key "M-<f1>" 'ag)                 ;C-<f1> doesn't work for some reason
 
 ;; bind to compile
-(bind-key "C-x g" 'compile) ;; todo support nix
+(bind-key "C-x g" 'compile)
 
 ;; (bind-key "C-x C-k" (lambda () (interactive) (kill-buffer (current-buffer))))
 
-;; cycle through split-panes
-(bind-key "C-c n" (lambda () (interactive) (select-window (next-window))))
-(bind-key "C-c p" (lambda () (interactive) (select-window (previous-window))))
+;; ;; cycle through split-panes
+;; (bind-key "C-c n" (lambda () (interactive) (select-window (next-window))))
+;; (bind-key "C-c p" (lambda () (interactive) (select-window (previous-window))))
 
 
 ;; cycle through frames (on the terminal, these fill the screen like tabs)
@@ -191,7 +191,6 @@
      nil 'fullscreen
      (when (not (frame-parameter nil 'fullscreen)) 'fullboth))))
 
-;; TODO: require import globals
 (when *is-linux* (bind-key "<f11>" 'toggle-fullscreen-linux))
 
 ;; Don't need this anymore, use rectangle-mode
@@ -212,9 +211,6 @@
 
 ;; magit
 (bind-key "C-x C-g" 'magit-status)
-
-;; neotree
-(bind-key "<f8>" 'neotree-toggle)
 
 (provide 'matt-keybindings)
 ;; Local Variables:

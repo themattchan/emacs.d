@@ -31,11 +31,11 @@
 
 ;;------------------------------------------------------------------------------
 ;; Kill UI cruft
-(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+(when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 ;; Want menu bar only in GUIs
-(cond ((not window-system)
-       (menu-bar-mode -1)))
+(when (not window-system)
+  (menu-bar-mode -1))
 
 ;; No cursor blink
 (blink-cursor-mode -1)
@@ -88,7 +88,7 @@
      helm-candidate-number-limit           100
      helm-autoresize-max-height            40 ; it is %.
      helm-scroll-amount                    8
-     helm-split-window-in-side-p           t
+     helm-split-window-inside-p            t
      helm-move-to-line-cycle-in-source     t
      helm-ff-search-library-in-sexp        t
      helm-ff-file-name-history-use-recentf t
@@ -250,6 +250,60 @@
 ;; classic(default) ascii arrow icons nerd
 (setq neo-theme 'nerd)
 
+;(bind-key "<f8>" 'neotree-toggle)
+
+;;------------------------------------------------------------------------------
+;; treemacs
+
+(use-package treemacs
+  :ensure t
+  :defer t
+  :init
+  (progn
+    (unbind-key "M-m" global-map))
+
+  :config
+  (progn
+    (setq treemacs-follow-after-init          t
+          treemacs-width                      35
+          treemacs-indentation                2
+          treemacs-collapse-dirs              (if (executable-find "python") 3 0)
+          treemacs-silent-refresh             nil
+          treemacs-change-root-without-asking nil
+          treemacs-sorting                    'alphabetic-desc
+          treemacs-show-hidden-files          t
+          treemacs-never-persist              nil
+          treemacs-is-never-other-window      nil
+          treemacs-goto-tag-strategy          'refetch-index)
+
+    (treemacs-follow-mode t)
+    (treemacs-filewatch-mode t)
+    (pcase (cons (not (null (executable-find "git")))
+                 (not (null (executable-find "python3"))))
+      (`(t . t)
+       (treemacs-git-mode 'extended))
+      (`(t . _)
+       (treemacs-git-mode 'simple))))
+  :bind
+  (:map global-map
+        ([f8]         . treemacs-toggle)
+        ("M-0"        . treemacs-select-window)
+        ("C-c 1"      . treemacs-delete-other-windows)
+        ("M-m ft"     . treemacs-toggle)
+        ("M-m fT"     . treemacs)
+        ("M-m fB"     . treemacs-bookmark)
+        ("M-m f C-t"  . treemacs-find-file)
+        ("M-m f M-t"  . treemacs-find-tag)))
+
+(use-package treemacs-projectile
+  :defer t
+  :ensure t
+  :config
+  (setq treemacs-header-function #'treemacs-projectile-create-header)
+  :bind (:map global-map
+              ("M-m fP" . treemacs-projectile)
+              ("M-m fp" . treemacs-projectile-toggle)))
+
 ;;------------------------------------------------------------------------------
 ;; Fonts (face) customization
 (autoload 'faces "faces")
@@ -376,6 +430,7 @@ want to use in the modeline *in lieu of* the original.")
             '( ".o"
               ".hi"
               ".out"
+              ".elc"
               ".jar"
               ".class"
               ".pyc"
@@ -402,11 +457,11 @@ want to use in the modeline *in lieu of* the original.")
            (append
             '("*.liquid" ".stack-work" "dist" "out"
               "repl" "target" "venv" "tmp"
+              "output" "node_modules" "bower_components"
               )
             projectile-globally-ignored-directories))
      ))
 (projectile-mode)
-
 
 ;;------------------------------------------------------------------------------
 ;; anzu mode (show current & total matches in isearch)

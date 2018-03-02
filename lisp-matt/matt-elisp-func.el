@@ -40,6 +40,11 @@
       (buffer-substring-no-properties (region-beginning) (region-end))
     (thing-at-point 'symbol)))
 
+(defun advice-unadvice (sym)
+  "Remove all advices from symbol SYM."
+  (interactive "aFunction symbol: ")
+  (advice-mapc (lambda (advice _props) (advice-remove sym advice)) sym))
+
 ;;------------------------------------------------------------------------------
 ;; uniquify lines
 ;; http://emacswiki.org/emacs/DuplicateLines

@@ -50,8 +50,23 @@
 ;;   :init
 ;;   (progn
 ;;     (setq multi-term-program "/bin/zsh")))
+(require 'xterm-color)
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-(setenv "ESHELL" "bash")
+;(add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
+(add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
+
+(setenv "ESHELL" "zsh")
+(setq system-uses-terminfo nil)
+(custom-set-faces
+ '(term ((t (:inherit default)))))
+
+(add-hook 'eshell-mode-hook
+          (lambda ()
+            (setq xterm-color-preserve-properties t)))
+(eval-after-load 'eshell
+  '(lambda ()
+     (add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)
+     (setq eshell-output-filter-functions (remove 'eshell-handle-ansi-color eshell-output-filter-functions))))
 
 ;;------------------------------------------------------------------------------
 ;; TRAMP-mode

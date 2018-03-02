@@ -44,6 +44,7 @@
             (flycheck-pos-tip-mode)
 ;;            (whitespace-mode)
             (subword-mode)
+            (fixmee-mode)
             ;; (define-key ac-mode-map (kbd "<backtab>") 'auto-complete)
             (setq
              ;; tabs are spaces unless specified
@@ -73,10 +74,9 @@
     (add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode)
     (add-hook 'flycheck-mode-hook 'flycheck-pos-tip-mode)
 
-    (setq flycheck-disabled-checkers
-          (append flycheck-disabled-checkers
+    (setq-default flycheck-disabled-checkers
                   '(javascript-jshint
-                    emacs-lisp-checkdoc)))
+                    emacs-lisp-checkdoc))
 
     (flycheck-add-mode 'javascript-eslint 'web-mode)
 
@@ -180,6 +180,13 @@
       (whitespace-mode 1)))
 
 (global-set-key (kbd "C-x t l") 'toggle-line-length)
+
+;;------------------------------------------------------------------------------
+;; Language server protocol
+
+(add-hook 'lsp-mode-hook 'lsp-ui-mode)
+(add-hook 'purescript-mode #'lsp-purescript-enable)
+
 
 ;;------------------------------------------------------------------------------
 ;; auto guess tabs or spaces
