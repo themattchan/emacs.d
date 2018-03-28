@@ -39,8 +39,11 @@
  ;; ns-function-modifier 'hyper         ; fn -> super
  ns-function-modifier 'super
  ;; right hand side modifiers
- ns-right-command-modifier 'super       ; R command -> super
- ns-right-option-modifier 'hyper        ; R option -> hyper
+
+ ;; for some reason left command/option is confused with right command/option
+ ;; on the model M
+ ns-right-command-modifier 'meta       ; R command -> super
+ ns-right-option-modifier 'super        ; R option -> hyper
  )
 
 

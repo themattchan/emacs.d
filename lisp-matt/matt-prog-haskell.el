@@ -208,7 +208,12 @@ Returns the project root with a shell.nix file, or NIL if not nix."
 
   ;; Build tool dependent settings
   (cond
-   ((my-nix-current-sandbox)
+   (t
+    ;;=>
+    nil)
+   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;; fuck it this shit is broken
+    ((my-nix-current-sandbox)
     ;; => USE NIX
     (message "HASKELL: found shell.nix")
     (flycheck-haskell-setup)
@@ -300,6 +305,9 @@ Returns the project root with a shell.nix file, or NIL if not nix."
   (font-lock-add-keywords mode '(("\\_<\\(error\\|undefined\\)\\_>" 0 'font-lock-warning-face))))
 
 (eval-after-load 'company-mode '(add-to-list 'company-backends 'company-ghc))
+
+;; auto-fill-mode is fucked in literate haskell
+(add-hook 'literate-haskell-mode-hook (lambda () (auto-fill-mode nil)))
 
 ;; nix stuff
 (add-hook 'nix-mode-hook
