@@ -39,7 +39,7 @@
             (show-paren-mode)
             (hl-line-mode 1)            ; highlight current line
             (auto-fill-mode 1)
-            (flyspell-prog-mode)
+            ;(flyspell-prog-mode)  ;; disabled, really slow...
             (flycheck-mode)
             (flycheck-pos-tip-mode)
 ;;            (whitespace-mode)

@@ -207,81 +207,77 @@ Returns the project root with a shell.nix file, or NIL if not nix."
   ;;    (liquid-types-mode 1)
 
   ;; Build tool dependent settings
-  (cond
-   (t
-    ;;=>
-    nil)
-   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-    ;; fuck it this shit is broken
-    ((my-nix-current-sandbox)
-    ;; => USE NIX
-    (message "HASKELL: found shell.nix")
-    (flycheck-haskell-setup)
-    (flycheck-select-checker 'haskell-ghc)
-    (flycheck-set-checker-executable (nix-ghc-executable))
-    (setq flycheck-haskell-ghc-executable (nix-ghc-executable))
-    (flycheck-add-next-checker 'haskell-ghc '(t . haskell-hlint))
-    (add-to-list 'flycheck-disabled-checkers 'haskell-stack-ghc)
+  (progn ;;cond
+;;    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;     ;; fuck it this shit is broken
+;;     ((my-nix-current-sandbox)
+;;     ;; => USE NIX
+;;     (message "HASKELL: found shell.nix")
+     (flycheck-haskell-setup)
+;;     (flycheck-select-checker 'haskell-ghc)  ;; flycheck-haskell-setup should take care of this
+;;     (flycheck-set-checker-executable (nix-ghc-executable))
+;;     (setq flycheck-haskell-ghc-executable (nix-ghc-executable))
+     (flycheck-add-next-checker 'haskell-ghc '(t . haskell-hlint))
+;;     (add-to-list 'flycheck-disabled-checkers 'haskell-stack-ghc)
 
-    (setq-local haskell-process-type 'cabal-repl)
+     (setq-local haskell-process-type 'cabal-repl)
 
-    (setq-local flycheck-haskell-runghc-command
-                '("runghc" "-i"))
+     (setq-local flycheck-haskell-runghc-command '("runghc" "-i"))
 
-    (setq-local haskell-process-path-ghci "cabal repl")
+     (setq-local haskell-process-path-ghci "cabal repl")
 
-    ;; C-c C-l repl
-    (setq-local haskell-process-wrapper-function
-                #'haskell-make-bash-nix-ghci-repl)
+;;     ;; C-c C-l repl
+;;     (setq-local haskell-process-wrapper-function
+;;                 #'haskell-make-bash-nix-ghci-repl)
 
-    ;; flycheck batch compilation
-    (setq-local flycheck-command-wrapper-function
-                #'(lambda (command) ;; List[String] -> List[String]
-                    (if (and (eq 'haskell-ghc flycheck-checker)
-                             (my-nix-current-sandbox)
-                             (haskell-mode-p))
-                        (progn
-                          (message "[flycheck-haskell] Checking buffer")
-                          (haskell-make-bash-nix-ghc-command command)
-                          )
-                      command)
-                    ))
+;;     ;; flycheck batch compilation
+;;     (setq-local flycheck-command-wrapper-function
+;;                 #'(lambda (command) ;; List[String] -> List[String]
+;;                     (if (and (eq 'haskell-ghc flycheck-checker)
+;;                              (my-nix-current-sandbox)
+;;                              (haskell-mode-p))
+;;                         (progn
+;;                           (message "[flycheck-haskell] Checking buffer")
+;;                           (haskell-make-bash-nix-ghc-command command)
+;;                           )
+;;                       command)
+;;                     ))
 
-    (setq-local flycheck-executable-find
-                #'(lambda (cmd) (nix-executable-find (my-nix-current-sandbox) cmd)))
+;;     (setq-local flycheck-executable-find
+;;                 #'(lambda (cmd) (nix-executable-find (my-nix-current-sandbox) cmd)))
 
-    (message "NIX GHC: %s" (nix-ghc-executable))
-    )
+;;     (message "NIX GHC: %s" (nix-ghc-executable))
+;;     )
 
 
-   ((and (haskell-use-stack-p) (executable-find "stack"))
-    ;; => USE STACK
-    (setq-local haskell-process-type 'stack-ghci)
-    (setq-local flycheck-haskell-runghc-command
-                '("stack"
-                  "--verbosity" "silent"
-                  "runghc"
-                  "--no-ghc-package-path"
-                  "--" "--ghc-arg=-i"))
+;;    ((and (haskell-use-stack-p) (executable-find "stack"))
+;;     ;; => USE STACK
+;;     (setq-local haskell-process-type 'stack-ghci)
+;;     (setq-local flycheck-haskell-runghc-command
+;;                 '("stack"
+;;                   "--verbosity" "silent"
+;;                   "runghc"
+;;                   "--no-ghc-package-path"
+;;                   "--" "--ghc-arg=-i"))
 
-    (setq-local haskell-process-path-ghci "stack")
+;;     (setq-local haskell-process-path-ghci "stack")
 
-    (flycheck-select-checker 'haskell-stack-ghc)
-    (flycheck-add-next-checker 'haskell-stack-ghc '(t . haskell-hlint))
-;    (intero-mode)
-    )
+;;     (flycheck-select-checker 'haskell-stack-ghc)
+;;     (flycheck-add-next-checker 'haskell-stack-ghc '(t . haskell-hlint))
+;; ;    (intero-mode)
+;;     )
 
 
-   (t
-    ;; => DEFAULT GHCI
-    (flycheck-select-checker 'haskell-ghc)
-    (setq-local flycheck-haskell-runghc-command '("runghc" "-i"))
-    (setq-local haskell-process-path-ghci "ghci")
-    )
+;;   (t
+    ;; ;; => DEFAULT GHCI
+    ;; (flycheck-select-checker 'haskell-ghc)
+    ;; (setq-local flycheck-haskell-runghc-command '("runghc" "-i"))
+    ;; (setq-local haskell-process-path-ghci "ghci")
+    ;; )
 
-   ) ;; cond
+     );; cond
 
-  (message "HASKELL: Flycheck checker is %s" flycheck-checker)
+;;  (message "HASKELL: Flycheck checker is %s" flycheck-checker)
   ) ;; haskell-custom-hook
 
 ;;(require 'haskell-interactive-mode)
