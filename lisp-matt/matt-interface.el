@@ -115,7 +115,9 @@
 
     (custom-set-variables
      '(helm-ag-base-command "ag --nocolor --nogroup --ignore-case")
-     '(helm-ag-command-option "--all-text")
+     ;; flags are here
+     ;; https://github.com/ggreer/the_silver_searcher/blob/682ab865e174ce289b7dda5514abfdf21037a2db/doc/ag.1.md
+     '(helm-ag-command-option "--skip-vcs-ignores")
      '(helm-ag-insert-at-point 'symbol))
 
     (global-unset-key (kbd "C-x c"))
@@ -124,7 +126,8 @@
      ("<tab>" . helm-execute-persistent-action) ; rebind tab to run persistent action
      ("C-i"   . helm-execute-persistent-action) ; make TAB works in terminal
      ("C-z"   . helm-select-action)) ; list actions using C-z
-    (bind-key "C-c C-l" 'helm-minibuffer-history minibuffer-local-map))
+    (bind-key "C-c C-l" 'helm-minibuffer-history minibuffer-local-map)
+    ) ;; end init
 
   :bind
   (;; help
@@ -438,12 +441,15 @@ want to use in the modeline *in lieu of* the original.")
          ".tgz"
          ".zip"
          ".bak"
+         ".log"
          ))
 (setq my-globally-ignored-files
       '( ".DS_Store"
          "*~"
          "\#*\#"
          "#*#"
+         "yarn.lock"
+         "package-lock.json"
          ))
 
 (setq my-globally-ignored-directories
@@ -462,7 +468,7 @@ want to use in the modeline *in lieu of* the original.")
                    grep-find-ignored-directories))))
 
 (eval-after-load 'projectile
-  '(lambda ()
+  '(progn
      (setq projectile-globally-ignored-file-suffixes
            (append
             my-globally-ignored-file-suffixes

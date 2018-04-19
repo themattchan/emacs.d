@@ -42,8 +42,8 @@
 
  ;; for some reason left command/option is confused with right command/option
  ;; on the model M
- ns-right-command-modifier 'meta       ; R command -> super
- ns-right-option-modifier 'super        ; R option -> hyper
+ ns-right-command-modifier 'control       ; R command -> super
+ ns-right-option-modifier 'meta        ; R option -> hyper
  )
 
 
@@ -125,8 +125,9 @@
 ;; (bind-key "C-x u" 'undo)
 (when (require 'redo nil 'noerror) (bind-key "C-?" 'redo))
 
-(bind-key "\C-x\C-m" 'execute-extended-command)
-(bind-key "\C-c\C-m" 'execute-extended-command)
+(unbind-key "C-x m")
+(bind-key "\C-x\C-m" 'helm-M-x)
+(bind-key "\C-c\C-m" 'helm-M-x)
 
 ;; rebind normal search to use regex
 (bind-key "C-s" 'isearch-forward-regexp)

@@ -29,6 +29,7 @@
     sml-mode
     haskell-mode
     literate-haskell-mode
+    purescript-mode
     elm-mode
     scala-mode
     scala2-mode
@@ -81,7 +82,7 @@
     (psc-ide-mode)
     (company-mode)
     (flycheck-mode)
-    (turn-on-purescript-indentation)))
+    (purescript-indentation-mode)))
 
 (setq idris-interpreter-path "/usr/local/bin/idris")
 
