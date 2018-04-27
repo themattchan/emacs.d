@@ -37,6 +37,9 @@
       (set-background-color "black"))
   (load-theme 'badwolf t))              ; odersky
 
+
+;; TODO rewrite this using frame configurations
+;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Frames.html#Frames
 (setq DEFAULT-FONT-SIZE (face-attribute 'default :height))
 
 (defun small-fonts ()

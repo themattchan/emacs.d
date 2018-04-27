@@ -56,8 +56,8 @@
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 ;(add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
 (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
-(setq explicit-shell-file-name "/bin/zsh")
-(setenv "ESHELL" "zsh")
+(setq explicit-shell-file-name (executable-find "zsh"))
+(setenv "ESHELL" (executable-find "zsh"))
 (setq system-uses-terminfo nil)
 (custom-set-faces
  '(term ((t (:inherit default)))))
