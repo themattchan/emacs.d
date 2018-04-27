@@ -60,6 +60,33 @@
   ;; (this is cribbed from the definition of toggle-frame-maximized)
   (set-frame-parameter nil 'fullscreen 'maximized))
 
+(defun set-frame-fullscreen ()
+ "Maximize the frame
+(this is cribbed from the definition of toggle-frame-maximized)"
+  (interactive)
+  (let ((fullscreen (frame-parameter nil 'fullscreen)))
+    (when (not (eq fullscreen 'maximized))
+      (set-frame-parameter nil 'fullscreen 'maximized))))
+
+(defun layout-4column ()
+  (interactive)
+  (small-fonts)
+  (delete-other-windows)
+  (dotimes (_ 3) (split-window-right))
+  (balance-windows)
+  (set-frame-fullscreen))
+
+(defun layout-2by4 ()
+  (interactive)
+  (small-fonts)
+  (delete-other-windows)
+  (split-window-below)
+  (dotimes (_ 3) (split-window-right))
+  (other-window -1)
+  (dotimes (_ 3) (split-window-right))
+  (balance-windows)
+  (set-frame-fullscreen))
+
 (provide 'matt-themes)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
