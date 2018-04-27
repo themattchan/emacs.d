@@ -37,6 +37,24 @@
       (set-background-color "black"))
   (load-theme 'badwolf t))              ; odersky
 
+(setq DEFAULT-FONT-SIZE (face-attribute 'default :height))
+
+(defun small-fonts ()
+  (interactive)
+  (set-face-attribute 'default nil :height (truncate (* DEFAULT-FONT-SIZE 0.75))))
+
+(defun normal-fonts ()
+  (interactive)
+  (set-face-attribute  'default nil :height DEFAULT-FONT-SIZE))
+
+(defun layout-4column ()
+  (interactive)
+  (small-fonts)
+  (delete-other-windows)
+  (dotimes (_ 3) (split-window-right))
+  (balance-windows))
+
+
 (provide 'matt-themes)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
