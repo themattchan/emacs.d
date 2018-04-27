@@ -36,9 +36,9 @@
 ;; (add-hook 'dired-mode-hook 'stripe-listify-buffer)
 
 (require 'dired-x)
-(setq-default ; M-o to toggle omit mode
+(setq-default ; C-x M-o to toggle omit mode
  dired-omit-mode t
- dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^\\.")
+ dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^\\.\\|^~")
 
 ;;------------------------------------------------------------------------------
 ;; Terminal
