@@ -52,8 +52,10 @@
   (small-fonts)
   (delete-other-windows)
   (dotimes (_ 3) (split-window-right))
-  (balance-windows))
-
+  (balance-windows)
+  ;; Maximize the frame
+  ;; (this is cribbed from the definition of toggle-frame-maximized)
+  (set-frame-parameter nil 'fullscreen 'maximized))
 
 (provide 'matt-themes)
 ;; Local Variables:
