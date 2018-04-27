@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t -*-
 ;;; matt-utils.el --- Settings for various "app modes"
 
 ;;; Copyright (c) 2013-2016 Matthew Chan
@@ -45,8 +46,9 @@
 ;;   :ensure t
 ;;   :commands (multi-term)
 ;;   :bind (("M-o M-t" . multi-term)
-;;          ("M-[" . multi-term-prev)
-;;          ("M-]" . multi-term-next))
+;;          ;; ("M-[" . multi-term-prev)
+;;          ;; ("M-]" . multi-term-next))
+;;          )
 ;;   :init
 ;;   (progn
 ;;     (setq multi-term-program "/bin/zsh")))
@@ -54,7 +56,7 @@
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 ;(add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
 (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
-
+(setq explicit-shell-file-name "/bin/zsh")
 (setenv "ESHELL" "zsh")
 (setq system-uses-terminfo nil)
 (custom-set-faces
