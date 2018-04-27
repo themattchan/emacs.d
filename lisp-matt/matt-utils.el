@@ -70,6 +70,11 @@
      (add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)
      (setq eshell-output-filter-functions (remove 'eshell-handle-ansi-color eshell-output-filter-functions))))
 
+(defun new-shell ()
+  (interactive)
+  (shell (generate-new-buffer-name "*shell*")))
+(global-set-key (kbd "M-o M-t") #'new-shell)
+
 ;;------------------------------------------------------------------------------
 ;; TRAMP-mode
 (setq tramp-default-method "ssh"

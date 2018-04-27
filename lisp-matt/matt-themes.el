@@ -60,7 +60,7 @@
   ;; (this is cribbed from the definition of toggle-frame-maximized)
   (set-frame-parameter nil 'fullscreen 'maximized))
 
-(defun set-frame-fullscreen ()
+(defun set-frame-maximized ()
  "Maximize the frame
 (this is cribbed from the definition of toggle-frame-maximized)"
   (interactive)
@@ -74,7 +74,7 @@
   (delete-other-windows)
   (dotimes (_ 3) (split-window-right))
   (balance-windows)
-  (set-frame-fullscreen))
+  (set-frame-maximized))
 
 (defun layout-2by4 ()
   (interactive)
@@ -85,7 +85,7 @@
   (other-window -1)
   (dotimes (_ 3) (split-window-right))
   (balance-windows)
-  (set-frame-fullscreen))
+  (set-frame-maximized))
 
 (provide 'matt-themes)
 ;; Local Variables:
