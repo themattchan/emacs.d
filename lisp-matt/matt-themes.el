@@ -40,7 +40,7 @@
 
 ;; TODO rewrite this using frame configurations
 ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Frames.html#Frames
-(setq DEFAULT-FONT-SIZE (face-attribute 'default :height))
+(defconst DEFAULT-FONT-SIZE (face-attribute 'default :height))
 
 (defun small-fonts ()
   (interactive)
@@ -49,16 +49,6 @@
 (defun normal-fonts ()
   (interactive)
   (set-face-attribute  'default nil :height DEFAULT-FONT-SIZE))
-
-(defun layout-4column ()
-  (interactive)
-  (small-fonts)
-  (delete-other-windows)
-  (dotimes (_ 3) (split-window-right))
-  (balance-windows)
-  ;; Maximize the frame
-  ;; (this is cribbed from the definition of toggle-frame-maximized)
-  (set-frame-parameter nil 'fullscreen 'maximized))
 
 (defun set-frame-maximized ()
  "Maximize the frame
