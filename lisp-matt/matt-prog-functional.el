@@ -84,6 +84,15 @@
     (flycheck-mode)
     (purescript-indentation-mode)))
 
+(defun purescript-make-tags ()
+  (interactive)
+  (projectile-with-default-dir (projectile-project-root)
+    (shell-command "purs docs --format etags \"src/**/*.purs\" \"bower_components/*/src/**/*.purs\" >! TAGS")))
+
+(add-hook 'psc-ide-mode-hook
+          (lambda ()
+            (bind-key "M-." find-tag)))
+
 (setq idris-interpreter-path "/usr/local/bin/idris")
 
 (provide 'matt-prog-functional)
