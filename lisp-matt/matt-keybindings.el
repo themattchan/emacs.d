@@ -47,12 +47,6 @@
  )
 
 
-;; type brackets in pairs with Super and right hands's home-row
-;; (bind-key "s-j" (lambda () (interactive) (insert "()" (backward-char 1))))
-;; (bind-key "s-k" (lambda () (interactive) (insert "[]" (backward-char 1))))
-;; (bind-key "s-l" (lambda () (interactive) (insert "{}" (backward-char 1))))
-
-
 (bind-key "C-;" 'comment-or-uncomment-region)
 
 
@@ -64,12 +58,11 @@
 ;; Transpose stuff with M-t
 ;; Put cursor in between <item1> | <item2>
 ;; C-t is transpose-char
-(unbind-key "M-t") ;; which used to be transpose-words
-(bind-key "M-t M-c" 'transpose-char)
-(bind-key "M-t M-l" 'transpose-lines)
+;;(unbind-key "M-t") ;; which used to be transpose-words
+;;(bind-key "M-t M-l" 'transpose-lines)
 ;; (bind-key "M-t M-w" 'transpose-words)
-(bind-key "M-t M-t" 'transpose-words)
-(bind-key "M-t M-s" 'transpose-sexps)
+;;(bind-key "M-t M-t" 'transpose-words)
+;;(bind-key "M-t M-s" 'transpose-sexps)
 
 
 ;; Alignment
@@ -126,8 +119,8 @@
 (when (require 'redo nil 'noerror) (bind-key "C-?" 'redo))
 
 (unbind-key "C-x m")
-(bind-key "\C-x\C-m" 'helm-M-x)
-(bind-key "\C-c\C-m" 'helm-M-x)
+(bind-key "C-x C-m" 'helm-M-x)
+(bind-key "C-c C-m" 'helm-M-x)
 
 ;; rebind normal search to use regex
 (bind-key "C-s" 'isearch-forward-regexp)
@@ -136,10 +129,6 @@
 ;; access normal isearch with meta key (though kind of useless)
 (bind-key "C-M-s" 'isearch-forward)
 (bind-key "C-M-r" 'isearch-backward)
-
-;; silver searcher
-;; (bind-key "<f1>" 'ag-project)
-;; (bind-key "M-<f1>" 'ag)                 ;C-<f1> doesn't work for some reason
 
 ;; bind to compile
 (bind-key "C-x g" 'compile)
@@ -182,7 +171,9 @@
   (bind-key "C-S-p"         'windmove-up)       ; move to upper window
   (bind-key "C-S-n"         'windmove-down)
   (bind-key "C-c b"         'previous-buffer)   ; move to prev buffer
-  (bind-key "C-c n"         'next-buffer))      ; move to next buffer
+  (bind-key "C-c n"         'next-buffer)       ; move to next buffer
+  (bind-key "C-c C-b"       'previous-buffer)   ; move to prev buffer
+  (bind-key "C-c C-n"       'next-buffer))      ; move to next buffer
 
 ;; (bind-key "<wheel-left>"     'previous-buffer)   ; move to prev buffer
 ;; (bind-key "<wheel-right>"     'next-buffer)

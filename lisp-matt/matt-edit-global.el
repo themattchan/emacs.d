@@ -68,6 +68,9 @@
  ;; flyspell
  flyspell-issue-welcome-flag nil
  ispell-list-command "list"
+
+ ;; auto reload TAGS
+ tags-revert-without-query 1
  )
 
 ;;------------------------------------------------------------------------------

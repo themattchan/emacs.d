@@ -91,7 +91,7 @@
 
 (add-hook 'psc-ide-mode-hook
           (lambda ()
-            (bind-key "M-." find-tag)))
+            (bind-key "M-." :map psc-ide-mode-map 'xref-find-definitions)))
 
 (setq idris-interpreter-path "/usr/local/bin/idris")
 

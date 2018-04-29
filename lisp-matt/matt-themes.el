@@ -33,7 +33,7 @@
 (if (not (window-system))
     (progn
       ;; default theme on terminals
-      (load-theme 'monokai t)           ; wombat
+      (load-theme 'wombat t)
       (set-background-color "black"))
   (load-theme 'badwolf t))              ; odersky
 
@@ -50,7 +50,7 @@
   (interactive)
   (set-face-attribute  'default nil :height DEFAULT-FONT-SIZE))
 
-(defun set-frame-maximized ()
+(defun maximize-frame ()
  "Maximize the frame
 (this is cribbed from the definition of toggle-frame-maximized)"
   (interactive)
@@ -64,7 +64,7 @@
   (delete-other-windows)
   (dotimes (_ 3) (split-window-right))
   (balance-windows)
-  (set-frame-maximized))
+  (maximize-frame))
 
 (defun layout-2by4 ()
   (interactive)
@@ -75,7 +75,7 @@
   (other-window -1)
   (dotimes (_ 3) (split-window-right))
   (balance-windows)
-  (set-frame-maximized))
+  (maximize-frame))
 
 (provide 'matt-themes)
 ;; Local Variables:

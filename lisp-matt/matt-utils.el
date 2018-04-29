@@ -52,6 +52,7 @@
 ;;   :init
 ;;   (progn
 ;;     (setq multi-term-program "/bin/zsh")))
+(require 'ansi-color)
 (require 'xterm-color)
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 ;(add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
@@ -138,6 +139,7 @@
 (setq gnus-select-method '(nntp "news.gmane.org"))
 (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
 
+(setq jiralib-url "https://jira.mv.awakenetworks.net/")
 
 (provide 'matt-utils)
 ;; Local Variables:

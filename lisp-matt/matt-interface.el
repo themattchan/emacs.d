@@ -485,6 +485,10 @@ want to use in the modeline *in lieu of* the original.")
            (append
             my-globally-ignored-directories
             projectile-globally-ignored-directories))
+
+     (setq projectile-project-root-files
+           (append '("bower.json" "package.json" "TAGS" "*.cabal")
+                   projectile-project-root-files))
      ))
 (projectile-mode)
 

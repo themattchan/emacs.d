@@ -123,7 +123,6 @@
 (require 'use-package)                  ; also provides bind-key
 (require 'saveplace)                    ; what is this stuff...
 (require 'uniquify)
-(require 'ansi-color)
 (require 'recentf)
 
 ;;==============================================================================
@@ -139,10 +138,10 @@
          matt-elisp-func             ; Require first! Functions get used later
 
          ;; General interface settings
-         matt-keybindings            ; Fix Emacs annoyances, add power
-         matt-interface              ; Fix Emacs annoyances, add power
+         matt-keybindings            ; Fix Emacs annoyances
+         matt-interface              ; Fix Emacs annoyances
          matt-edit-global            ; Tabs, fill, undo, ispell, UTF-8, backups
-         matt-themes                 ; Mostly deprecated
+         matt-themes
 
          ;; Hooks for editing
          ;; Text documents
@@ -159,7 +158,7 @@
          matt-prog-other              ; Other langs: Scala, Python, web stuff
 
          ;; Misc
-         matt-utils                     ; System utilities: terminal, dired...
+         matt-utils                   ; System utilities: terminal, dired...
          )))
 
   (dolist (config matt-configs)
