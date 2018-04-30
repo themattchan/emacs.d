@@ -70,6 +70,7 @@
     (setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages)
     (setq flycheck-highlighting-mode 'symbols) ; 'lines is faster than 'sexps
     (setq flycheck-display-errors-delay 2)   ; seconds
+    (setq flycheck-check-syntax-automatically '(mode-enabled save))
 
     (add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode)
     (add-hook 'flycheck-mode-hook 'flycheck-pos-tip-mode)

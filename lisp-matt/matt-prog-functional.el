@@ -87,7 +87,7 @@
 (defun purescript-make-tags ()
   (interactive)
   (projectile-with-default-dir (projectile-project-root)
-    (shell-command "purs docs --format etags \"src/**/*.purs\" \"bower_components/*/src/**/*.purs\" >! TAGS")))
+    (shell-command "purs docs --format etags \"*.purs\" \"src/**/*.purs\" \"bower_components/*/src/**/*.purs\" >! TAGS")))
 
 (add-hook 'psc-ide-mode-hook
           (lambda ()
