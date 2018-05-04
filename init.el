@@ -96,7 +96,7 @@
       (load-file (concat  (file-name-as-directory default-directory) file))))
   (normal-top-level-add-to-load-path '("flycheck-liquidhs.el" "liquid-types.el")))
 ;; customize.el settings location
-(setq custom-file "~/.emacs.d/custom-24.el")
+(setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 
 ;;==============================================================================

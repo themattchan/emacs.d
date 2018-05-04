@@ -45,6 +45,8 @@
   (setq racket-program "/Applications/Racket/bin/racket")
   )
 
+(add-to-list 'align-lisp-modes 'racket-mode)
+
 (add-hook 'racket-mode-hook
           #'(lambda ()
               (define-key racket-mode-map (kbd "C-c C-l") 'racket-run-and-switch-to-repl)))

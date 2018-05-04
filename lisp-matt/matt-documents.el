@@ -60,6 +60,7 @@
           )
 
 ;; defadvice auto-fill-mode fci-mode
+(setq align-text-modes (append '(fundamental-mode markdown-mode) align-text-modes))
 
 ;;------------------------------------------------------------------------------
 ;; LaTeX and AUCTeX

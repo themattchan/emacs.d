@@ -305,6 +305,24 @@ Returns the project root with a shell.nix file, or NIL if not nix."
 ;; auto-fill-mode is fucked in literate haskell
 (add-hook 'literate-haskell-mode-hook (lambda () (auto-fill-mode nil)))
 
+;; align rules
+(add-to-list 'align-rules-list
+             '(haskell-types
+               (regexp . "\\(\\s-+\\)\\(::\\|∷\\)\\s-+")
+               (modes haskell-modes-list)))
+(add-to-list 'align-rules-list
+             '(haskell-assignment
+               (regexp . "\\(\\s-+\\)=\\s-+")
+               (modes haskell-modes-list)))
+(add-to-list 'align-rules-list
+             '(haskell-arrows
+               (regexp . "\\(\\s-+\\)\\(->\\|→\\)\\s-+")
+               (modes haskell-modes-list)))
+(add-to-list 'align-rules-list
+             '(haskell-left-arrows
+               (regexp . "\\(\\s-+\\)\\(<-\\|←\\)\\s-+")
+               (modes haskell-modes-list)))
+
 ;; nix stuff
 (add-hook 'nix-mode-hook
           (lambda ()
