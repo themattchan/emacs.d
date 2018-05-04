@@ -74,7 +74,6 @@
  )
 
 ;;------------------------------------------------------------------------------
-;; Fuck off, whitespace
 ;;(add-hook 'before-save-hook 'whitespace-cleanup)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
@@ -215,6 +214,13 @@
 
 (add-hook 'after-init-hook 'global-company-mode)
 ;(eval-after-load 'company-mode (lambda () (add-to-list 'company-backends 'company-ghc)))
+
+(defun load-project-tags ()
+  (interactive)
+  (condition-case nil
+      (let ((root (projectile-project-root)))
+        (visit-tags-table (s-concat root "TAGS")))
+    (error nil)))
 
 (provide 'matt-edit-global)
 ;; Local Variables:

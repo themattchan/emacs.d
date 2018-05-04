@@ -129,6 +129,10 @@
     (bind-key "C-c C-l" 'helm-minibuffer-history minibuffer-local-map)
     ) ;; end init
 
+  :config
+  (progn
+    (helm-projectile-on))
+
   :bind
   (;; help
    ("C-h a"     . helm-apropos)
@@ -153,6 +157,11 @@
    ("C-h SPC"   . helm-all-mark-rings)
    ("C-c h M-:" . helm-eval-expression-with-eldoc)
    ("C-c h o"   . helm-occur)
+
+   ;; helm-projectile
+   ;; ("C-c p f"   . helm-projectile-find-file)
+   ;; ("C-c p g"   . helm-projectile-find-file-dwim)
+   ;; ("C-c p s s" . helm-projectile-ag)
 
    ;; silver searcher
    ("M-s s"     . helm-ag)
@@ -368,7 +377,7 @@
 ;; Unclutter mode line
 (autoload 'diminish "diminish")
 
-(defvar mode-line-cleaner-alist
+(defconst mode-line-cleaner-alist
   `((auto-complete-mode         . " α")
     (yas/minor-mode             . " υ")
     (paredit-mode               . " π")

@@ -52,8 +52,6 @@
   (add-hook (intern (format "%s-hook" mode))
             #'matt/functional-programming))
 
-;; Fucking tabs in my Haskell source, be gone!
-;; Also, no tabs in FP in general. yuck.
 (defun matt/untabify-hook ()
   (when (member major-mode (cl-union functional-langs
                                      lisp-modes))
@@ -87,11 +85,12 @@
 (defun purescript-make-tags ()
   (interactive)
   (projectile-with-default-dir (projectile-project-root)
-    (shell-command "purs docs --format etags \"*.purs\" \"src/**/*.purs\" \"bower_components/*/src/**/*.purs\" >! TAGS")))
+    (shell-command "purs docs --format etags \"*.purs\" \"src/**/*.purs\" \"bower_components/*/src/**/*.purs\" >! TAGS"))
+  (load-project-tags))
 
 (add-hook 'psc-ide-mode-hook
           (lambda ()
-            (bind-key "M-." :map psc-ide-mode-map 'xref-find-definitions)))
+            (bind-keys :map psc-ide-mode-map ("M-." . find-tag))))
 
 (setq idris-interpreter-path "/usr/local/bin/idris")
 

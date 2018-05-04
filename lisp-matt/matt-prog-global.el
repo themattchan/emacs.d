@@ -52,7 +52,6 @@
              ;; also, ensure that tabs are 4 spc wide unless specified
              tab-width 4
 
-             flycheck-check-syntax-automatically '(mode-enabled save idle-change)
              flycheck-completion-system 'ido
              show-paren-delay 0
              ;; enable multiline comments
@@ -70,7 +69,8 @@
     (setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages)
     (setq flycheck-highlighting-mode 'symbols) ; 'lines is faster than 'sexps
     (setq flycheck-display-errors-delay 2)   ; seconds
-    (setq flycheck-check-syntax-automatically '(mode-enabled save))
+    (setq flycheck-idle-change-delay 30) ; seconds
+    (setq flycheck-check-syntax-automatically '(mode-enabled save idle-change))
 
     (add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode)
     (add-hook 'flycheck-mode-hook 'flycheck-pos-tip-mode)

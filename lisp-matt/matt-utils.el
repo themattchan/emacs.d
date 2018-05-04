@@ -73,7 +73,8 @@
 
 (defun new-shell ()
   (interactive)
-  (shell (generate-new-buffer-name "*shell*")))
+  (projectile-with-default-dir (projectile-project-root)
+    (shell (generate-new-buffer-name "*shell*"))))
 (global-set-key (kbd "M-o M-t") #'new-shell)
 
 ;;------------------------------------------------------------------------------

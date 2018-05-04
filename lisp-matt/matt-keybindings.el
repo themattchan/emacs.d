@@ -206,7 +206,7 @@
 
 ;; magit
 (bind-key "C-x C-g" 'magit-status)
-
+(bind-key "s-." 'find-tag-other-window)
 (provide 'matt-keybindings)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
