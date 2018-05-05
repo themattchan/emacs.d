@@ -26,9 +26,11 @@
 ;; General text mode
 ;;------------------------------------------------------------------------------
 
-(autoload 'pandoc-mode "pandoc-mode")
-(add-hook 'pandoc-mode-hook 'pandoc-load-default-settings)
-(autoload 'flyspell-mode "flyspell" "On-the-fly spelling checker." t)
+(use-package pandoc-mode
+  :init
+  (add-hook 'pandoc-mode-hook 'pandoc-load-default-settings))
+
+(use-package flyspell)
 
 (add-hook 'text-mode-hook 'ac-ispell-ac-setup)
 (add-hook 'text-mode-hook
@@ -56,52 +58,61 @@
             ;;     (fci-mode 1)
             ;;     (turn-on-auto-fill))
             ;;   (progn
-            ;;     (fci-mode 0)))
+            ;;     (fci-mode 0)))nn
           )
 
-;; defadvice auto-fill-mode fci-mode
-(add-hook 'align-load-hook
-          (lambda ()
-            (setq align-text-modes (append '(fundamental-mode markdown-mode) align-text-modes))))
+(use-package align
+  :init
+  (add-hook 'align-load-hook
+            (lambda ()
+              (setq align-text-modes (append '(fundamental-mode markdown-mode) align-text-modes)))))
 
 ;;------------------------------------------------------------------------------
 ;; LaTeX and AUCTeX
 ;;------------------------------------------------------------------------------
+(use-package auctex
+  :mode ("\\.tex\\'" . TeX-latex-mode))
+(use-package reftex
+  :after auctex
+  :init
+  (add-hook 'reftex-load-hook 'imenu-add-menubar-index)
+  (add-hook 'reftex-mode-hook 'imenu-add-menubar-index))
 
-(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+(use-package latex
+  :after reftex
+  :init
+  (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 
-(add-hook 'LaTeX-mode-hook
-          (lambda ()
-            (setq TeX-auto-save t
-                  TeX-parse-self t
-                  TeX-auto-untabify t
-                  TeX-master nil
-                  TeX-PDF-mode t)))
-
-(add-hook 'reftex-load-hook 'imenu-add-menubar-index)
-(add-hook 'reftex-mode-hook 'imenu-add-menubar-index)
-(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-(add-hook 'LaTeX-mode-hook (setq reftex-plug-into-AUCTeX t))
-
-;; Auto-complete mode
-;; breaks dwim or some shit on Arch
-;; (when *is-mac*  (eval-after-load "LaTeX-mode" (require 'auto-complete-auctex)))
-;; (autoload 'ac-math "ac-math")
-;; (defun ac-latex-mode-setup ()         ; add ac-sources to default ac-sources
-;;   (setq ac-sources
-;;      (append '(ac-source-math-unicode ac-source-math-latex ac-source-latex-commands)
-;;                ac-sources)))
-;; (add-hook 'latex-mode-hook 'ac-latex-mode-setup)
-;; (ac-flyspell-workaround)
-
-(add-hook 'LaTeX-mode-hook (lambda ()
-  (push
-    '("Latexmk" "latexmk -pdf %(mode) %s" TeX-run-TeX nil t
-      :help "Run Latexmk on file")
-    TeX-command-list)))
+  (add-hook 'LaTeX-mode-hook
+            (lambda ()
+              (setq TeX-auto-save t
+                    TeX-parse-self t
+                    TeX-auto-untabify t
+                    TeX-master nil
+                    TeX-PDF-mode t)))
+  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+  (add-hook 'LaTeX-mode-hook (setq reftex-plug-into-AUCTeX t))
 
 
-(add-hook 'LaTeX-mode-hook 'company-auctex-init)
+  ;; Auto-complete mode
+  ;; breaks dwim or some shit on Arch
+  ;; (when *is-mac*  (eval-after-load "LaTeX-mode" (require 'auto-complete-auctex)))
+  ;; (autoload 'ac-math "ac-math")
+  ;; (defun ac-latex-mode-setup ()         ; add ac-sources to default ac-sources
+  ;;   (setq ac-sources
+  ;;      (append '(ac-source-math-unicode ac-source-math-latex ac-source-latex-commands)
+  ;;                ac-sources)))
+  ;; (add-hook 'latex-mode-hook 'ac-latex-mode-setup)
+  ;; (ac-flyspell-workaround)
+
+  (add-hook 'LaTeX-mode-hook (lambda ()
+                               (push
+                                '("Latexmk" "latexmk -pdf %(mode) %s" TeX-run-TeX nil t
+                                  :help "Run Latexmk on file")
+                                TeX-command-list)))
+
+
+  (add-hook 'LaTeX-mode-hook 'company-auctex-init))
 ;; (setq LaTeX-section-hook
 ;;       '(LaTeX-section-heading
 ;;         LaTeX-section-title
@@ -113,43 +124,39 @@
 ;; Markdown
 ;;------------------------------------------------------------------------------
 
-(autoload 'markdown-mode "markdown-mode"
-  "Major mode for editing Markdown files" t)
-(add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
-
-(eval-after-load "markdown-mode"
-  (progn
-     ;; markdown check paren balancing
-     (add-hook 'markdown-mode-hook
+(use-package markdown-mode
+  :mode ("\\.text\\'" "\\.markdown\\'" "\\.md\\'")
+  :init
+  ;;(add-hook 'markdown-mode-hook 'turn-on-pandoc)
+  ;; markdown check paren balancing
+  (add-hook 'markdown-mode-hook
                (lambda ()
                  (when buffer-file-name
                    (add-hook 'after-save-hook
                              'check-parens
-                             nil t))))))
-
-;(add-hook 'markdown-mode-hook 'turn-on-pandoc)
+                             nil t)))))
 
 ;;------------------------------------------------------------------------------
 ;; Org-mode
 ;;------------------------------------------------------------------------------
 
-(setq org-startup-truncated nil
-      org-fontify-whole-heading-line t
-      org-src-fontify-natively t)
+(use-package org
+  :config
+  (setq org-startup-truncated nil
+        org-fontify-whole-heading-line t
+        org-src-fontify-natively t)
+  (add-to-list 'org-latex-packages-alist '("" "minted"))
+  (setq org-latex-listings 'minted)
+  (setq org-latex-pdf-process
+        '("latexmk -pdflatex='xelatex --shell-escape' -pdf %f"))
 
-(use-package ox-latex)
-(add-to-list 'org-latex-packages-alist '("" "minted"))
-(setq org-latex-listings 'minted)
-(setq org-latex-pdf-process
-      '("latexmk -pdflatex='xelatex --shell-escape' -pdf %f"))
+  (add-hook 'org-mode-hook 'turn-on-stripe-table-mode)
 
-(add-hook 'org-mode-hook 'turn-on-stripe-table-mode)
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (set-face-attribute 'org-level-1 nil :height 120))))
 
-(add-hook 'org-mode-hook
-          (lambda ()
-            (set-face-attribute 'org-level-1 nil :height 120)))
+(use-package ox-latex :after org)
 (put 'upcase-region 'disabled nil)
 
 ;; (setq org-export-html-style-include-scripts nil
@@ -202,53 +209,53 @@
 ;; ;(add-hook 'before-save-hook #'matt/org-include-img-from-pdf)
 ;; (add-hook 'org-export-before-processing-hook #'matt/org-include-img-from-pdf)
 
-(defun matt/add-org-publish-config (config)
-  "Register an org-project config"
-  (setq org-publish-project-alist
-        (cons config org-publish-project-alist)))
+;; (defun matt/add-org-publish-config (config)
+;;   "Register an org-project config"
+;;   (setq org-publish-project-alist
+;;         (cons config org-publish-project-alist)))
 
-(defun matt/remove-org-publish-config (config-name)
-  "Remove a config with config-name (string) from the config list"
-  (setq org-publish-project-alist
-        (cl-remove-if (lambda (config) (string= config-name (car config)))
-                      org-publish-project-alist)))
+;; (defun matt/remove-org-publish-config (config-name)
+;;   "Remove a config with config-name (string) from the config list"
+;;   (setq org-publish-project-alist
+;;         (cl-remove-if (lambda (config) (string= config-name (car config)))
+;;                       org-publish-project-alist)))
 
-(setq matt/file-loaded-set '())         ; PRIVATE -- things I've loaded
-(setq matt/org-project-file-name "org-project.el")
+;;(setq matt/file-loaded-set '())         ; PRIVATE -- things I've loaded
+;; (setq matt/org-project-file-name "org-project.el")
 
-(defmacro set-add! (var set)
-  "Lists as Sets"
-  `(progn
-    (setq ,set (delq ,var ,set))
-    (push ,var ,set)))
+;; (defmacro set-add! (var set)
+;;   "Lists as Sets"
+;;   `(progn
+;;     (setq ,set (delq ,var ,set))
+;;     (push ,var ,set)))
 
-(defun matt/file-loaded-p (filename)
-  "Has file been loaded yet?"
-  (memq (intern filename) matt/file-loaded-set))
+;; (defun matt/file-loaded-p (filename)
+;;   "Has file been loaded yet?"
+;;   (memq (intern filename) matt/file-loaded-set))
 
-(defun matt/safe-load-file (filename &rest cl-keys)
-  "Load file only if not loaded yet or if forced by kw-arg"
-  (cl--parsing-keywords ((:force nil)) nil
-    (when (or cl-force
-              (not (matt/file-loaded-p filename)))
-      (load-file filename)
-      (set-add! (intern filename) matt/file-loaded-set))))
+;; (defun matt/safe-load-file (filename &rest cl-keys)
+;;   "Load file only if not loaded yet or if forced by kw-arg"
+;;   (cl--parsing-keywords ((:force nil)) nil
+;;     (when (or cl-force
+;;               (not (matt/file-loaded-p filename)))
+;;       (load-file filename)
+;;       (set-add! (intern filename) matt/file-loaded-set))))
 
-(defun matt/load-org-project-settings (&rest cl-keys)
-  "Keep going up the tree looking for the settings file, then load it"
-  (interactive)
-  (let ((project-dir
-         (locate-dominating-file
-          (file-name-directory (or load-file-name buffer-file-name))
-          matt/org-project-file-name))
-        (force (or (called-interactively-p 'any)
-                    (cl--parsing-keywords ((:force nil)) nil
-                      cl-force))))
-    (when project-dir
-      (let ((filename (concat project-dir matt/org-project-file-name)))
-        (matt/safe-load-file filename :force force)))))
+;; (defun matt/load-org-project-settings (&rest cl-keys)
+;;   "Keep going up the tree looking for the settings file, then load it"
+;;   (interactive)
+;;   (let ((project-dir
+;;          (locate-dominating-file
+;;           (file-name-directory (or load-file-name buffer-file-name))
+;;           matt/org-project-file-name))
+;;         (force (or (called-interactively-p 'any)
+;;                     (cl--parsing-keywords ((:force nil)) nil
+;;                       cl-force))))
+;;     (when project-dir
+;;       (let ((filename (concat project-dir matt/org-project-file-name)))
+;;         (matt/safe-load-file filename :force force)))))
 
-(add-hook 'org-mode-hook 'matt/load-org-project-settings)
+;; (add-hook 'org-mode-hook 'matt/load-org-project-settings)
 
 ;; graphviz
 (add-to-list 'auto-mode-alist '("\\.gv\\'" . graphviz-dot-mode))
@@ -264,7 +271,3 @@
 ;; indent-tabs-mode: nil
 ;; End:
 ;; matt-documents.el ends here
-(setq sample-list '(a b c (4)))
-(delq 'a sample-list)
-sample-list
-(push 'goo sample-list)

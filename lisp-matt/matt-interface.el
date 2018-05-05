@@ -43,16 +43,19 @@
 ;;------------------------------------------------------------------------------
 ;; Load stuff
 (eval-when-compile (require 'cl))
-(autoload 'saveplace "save last loc in file")
-(autoload 'uniquify "unique buffer titles")
+(use-package saveplace "save last loc in file")
 
 ;; dired jump to current file dir (C-x C-j)
-(autoload 'dired-x "dired-x")
+(use-package dired-x)
+
+(use-package uniquify)
+(use-package recentf)
 
 ;;------------------------------------------------------------------------------
 ;; Smart mode line
-(autoload 'smart-mode-line "sml")
-(sml/setup)
+(use-package smart-mode-line
+  :config
+  (sml/setup))
 ;; '(:eval (if (use-region-p)
 ;;     (format "%d"
 ;;       (count-words-region (point) (mark)))

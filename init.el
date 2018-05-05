@@ -125,8 +125,23 @@
   (add-to-list 'load-path (car (directory-files "~/.emacs.d/elpa" nil "use-package-*" nil)))
   (require 'use-package)                  ; also provides bind-key
   )
-(use-package uniquify)
-(use-package recentf)
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
+(require 'use-package)
+
+(setq package-enable-at-startup nil
+      file-name-handler-alist nil
+      message-log-max 16384
+      gc-cons-threshold 402653184
+      gc-cons-percentage 0.6
+      auto-window-vscroll nil)
+
+(add-hook 'after-init-hook
+          `(lambda ()
+             (setq file-name-handler-alist file-name-handler-alist-old
+                   gc-cons-threshold 800000
+                   gc-cons-percentage 0.1)
+             (garbage-collect)) t)
 
 ;;==============================================================================
 ;; Now load my configs
