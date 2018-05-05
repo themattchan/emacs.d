@@ -25,7 +25,7 @@
 
 (use-package haskell-mode :ensure t)
 
-(defconst haskell-modes-list '(haskell-mode literate-haskell-mode))
+(defconst haskell-modes-list '(haskell-mode literate-haskell-mode purescript-mode))
 
 (defun haskell-make-tags ()
   (interactive)
@@ -300,29 +300,31 @@ Returns the project root with a shell.nix file, or NIL if not nix."
 (dolist (mode haskell-modes-list)
   (font-lock-add-keywords mode '(("\\_<\\(error\\|undefined\\)\\_>" 0 'font-lock-warning-face))))
 
-(eval-after-load 'company-mode '(add-to-list 'company-backends 'company-ghc))
+(eval-after-load 'company-mode '(add-to-list company-backends 'company-ghc))
 
 ;; auto-fill-mode is fucked in literate haskell
 (add-hook 'literate-haskell-mode-hook (lambda () (auto-fill-mode nil)))
 
 ;; align rules
-(add-to-list 'align-rules-list
-             '(haskell-types
-               (regexp . "\\(\\s-+\\)\\(::\\|∷\\)\\s-+")
-               (modes haskell-modes-list)))
-(add-to-list 'align-rules-list
-             '(haskell-assignment
-               (regexp . "\\(\\s-+\\)=\\s-+")
-               (modes haskell-modes-list)))
-(add-to-list 'align-rules-list
-             '(haskell-arrows
-               (regexp . "\\(\\s-+\\)\\(->\\|→\\)\\s-+")
-               (modes haskell-modes-list)))
-(add-to-list 'align-rules-list
-             '(haskell-left-arrows
-               (regexp . "\\(\\s-+\\)\\(<-\\|←\\)\\s-+")
-               (modes haskell-modes-list)))
-
+(add-hook 'align-load-hook
+          (lambda ()
+            (add-to-list 'align-rules-list
+                         '(haskell-types
+                           (regexp . "\\(\\s-+\\)\\(::\\|∷\\)\\s-+")
+                           (modes haskell-modes-list)))
+            (add-to-list 'align-rules-list
+                         '(haskell-assignment
+                           (regexp . "\\(\\s-+\\)=\\s-+")
+                           (modes haskell-modes-list)))
+            (add-to-list 'align-rules-list
+                         '(haskell-arrows
+                           (regexp . "\\(\\s-+\\)\\(->\\|→\\)\\s-+")
+                           (modes haskell-modes-list)))
+            (add-to-list 'align-rules-list
+                         '(haskell-left-arrows
+                           (regexp . "\\(\\s-+\\)\\(<-\\|←\\)\\s-+")
+                           (modes haskell-modes-list)))
+))
 ;; nix stuff
 (add-hook 'nix-mode-hook
           (lambda ()

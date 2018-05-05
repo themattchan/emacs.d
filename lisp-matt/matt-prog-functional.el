@@ -76,7 +76,9 @@
 
 (add-hook 'purescript-mode-hook
   (lambda ()
-    (require 'psc-ide)
+    (use-package psc-ide
+      :bind (:map psc-ide-mode-map
+                  ("M-." . find-tag)))
     (psc-ide-mode)
     (company-mode)
     (flycheck-mode)
@@ -87,10 +89,6 @@
   (projectile-with-default-dir (projectile-project-root)
     (shell-command "purs docs --format etags \"*.purs\" \"src/**/*.purs\" \"bower_components/*/src/**/*.purs\" >! TAGS"))
   (load-project-tags))
-
-(add-hook 'psc-ide-mode-hook
-          (lambda ()
-            (bind-keys :map psc-ide-mode-map ("M-." . find-tag))))
 
 (setq idris-interpreter-path "/usr/local/bin/idris")
 

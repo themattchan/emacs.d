@@ -25,7 +25,7 @@
 ;;------------------------------------------------------------------------------
 ;; Dired
 ;; hide the -al stuff, toggle with '(' and ')'
-(require 'dired-details+)
+(use-package dired-details+)
 (setq dired-recursive-deletes 'always
       dired-recursive-copies 'always
       delete-by-moving-to-trash t
@@ -35,7 +35,7 @@
 (add-hook 'dired-mode-hook 'turn-on-stripe-buffer-mode)
 ;; (add-hook 'dired-mode-hook 'stripe-listify-buffer)
 
-(require 'dired-x)
+(use-package dired-x)
 (setq-default ; C-x M-o to toggle omit mode
  dired-omit-mode t
  dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^\\.\\|^~")
@@ -52,8 +52,8 @@
 ;;   :init
 ;;   (progn
 ;;     (setq multi-term-program "/bin/zsh")))
-(require 'ansi-color)
-(require 'xterm-color)
+(use-package ansi-color)
+(use-package xterm-color)
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 ;(add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
 (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
@@ -92,8 +92,8 @@
 
 (defun matt/start-irc ()
   (interactive)
-  (require 'erc)
-  (require 'erc-services)
+  (use-package erc)
+  (use-package erc-services)
   (erc-services-mode 1)
   (eval-after-load 'erc
     '(progn

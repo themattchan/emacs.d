@@ -28,6 +28,8 @@
 ;; likewise, to unbind a key from a map, (unbind-key <key> &<map>)
 
 ;;; Code:
+(require 'bind-key)
+
 (setq lexical-binding t)
 
 ;; Fix modifier keys on Mac GUI

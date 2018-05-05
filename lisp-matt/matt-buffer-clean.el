@@ -39,7 +39,7 @@
 ;; (add-to-list 'desktop-modes-not-to-save 'info-lookup-mode)
 ;; (add-to-list 'desktop-modes-not-to-save 'fundamental-mode)
 
-(require 'midnight)
+(use-package midnight)
 
 (eval-after-load "midnight"
   '(progn

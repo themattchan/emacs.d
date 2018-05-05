@@ -60,7 +60,9 @@
           )
 
 ;; defadvice auto-fill-mode fci-mode
-(setq align-text-modes (append '(fundamental-mode markdown-mode) align-text-modes))
+(add-hook 'align-load-hook
+          (lambda ()
+            (setq align-text-modes (append '(fundamental-mode markdown-mode) align-text-modes))))
 
 ;;------------------------------------------------------------------------------
 ;; LaTeX and AUCTeX
@@ -137,7 +139,7 @@
       org-fontify-whole-heading-line t
       org-src-fontify-natively t)
 
-(require 'ox-latex)
+(use-package ox-latex)
 (add-to-list 'org-latex-packages-alist '("" "minted"))
 (setq org-latex-listings 'minted)
 (setq org-latex-pdf-process

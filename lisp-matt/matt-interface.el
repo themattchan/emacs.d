@@ -71,7 +71,7 @@
 (defalias 'list-buffers 'ibuffer)
 
 ;; isearch buffer switching
-(icomplete-mode 1)
+(use-package icomplete :init (icomplete-mode 1))
 
 ;; helm-mode
 ;; From Bryans's config
@@ -176,13 +176,17 @@
 
 ;;------------------------------------------------------------------------------
 ;; winner-mode
-(winner-mode 1)
+(use-package winner
+  :config
+  (winner-mode 1))
 
 ;;------------------------------------------------------------------------------
 ;; Recent files
-(autoload 'recentf "recentf")
-(recentf-mode 1)
-(setq recentf-max-menu-items 30)
+(use-package recentf
+  :config
+  (setq recentf-max-menu-items 30)
+  (recentf-mode 1))
+
 
 ;;------------------------------------------------------------------------------
 ;; Fix Emacs interface annoyances
@@ -218,6 +222,7 @@
  mouse-wheel-mode t
  echo-keystrokes 0.1
 
+ gc-cons-threshold 500000000 ;; 500 MB
 
  redisplay-dont-pause t
 
@@ -262,9 +267,13 @@
 ;; neotree
 
 ;; classic(default) ascii arrow icons nerd
-(setq neo-theme 'nerd)
+(use-package neotree
+  ;;  :bind
+  ;;(bind-key "<f8>" 'neotree-toggle)
+  :config
+  (setq neo-theme 'nerd))
 
-;(bind-key "<f8>" 'neotree-toggle)
+
 
 ;;------------------------------------------------------------------------------
 ;; treemacs
@@ -320,7 +329,9 @@
 
 ;;------------------------------------------------------------------------------
 ;; Fonts (face) customization
-(autoload 'faces "faces")
+;;(autoload 'faces "faces")
+(use-package faces
+  :config
 ;; default font size is 14pt on carbon emacs
 (when (window-system)
   (cond
@@ -342,6 +353,7 @@
     (set-face-attribute 'default nil
                         :font "Lucida Console 10" ; Consolas is also good
                         :weight 'normal))))
+)
 
 ;;------------------------------------------------------------------------------
 ;; No popups and dialogues. They crash carbon emacs.
@@ -467,44 +479,48 @@ want to use in the modeline *in lieu of* the original.")
         "output" "node_modules" "bower_components"
         ))
 
-(eval-after-load 'grep
-  '(progn
-     (setq grep-find-ignored-files
-           (append (mapcar #'(lambda (x) (concat "*" x)) my-globally-ignored-file-suffixes)
-                   (append my-globally-ignored-files grep-find-ignored-files)))
-     (setq grep-find-ignored-directories
-           (append my-globally-ignored-directories
-                   grep-find-ignored-directories))))
+(use-package grep
+  :config
+  (setq grep-find-ignored-files
+        (append (mapcar #'(lambda (x) (concat "*" x)) my-globally-ignored-file-suffixes)
+                (append my-globally-ignored-files grep-find-ignored-files)))
+  (setq grep-find-ignored-directories
+        (append my-globally-ignored-directories
+                grep-find-ignored-directories))
+  )
 
-(eval-after-load 'projectile
-  '(progn
-     (setq projectile-globally-ignored-file-suffixes
-           (append
-            my-globally-ignored-file-suffixes
-            projectile-globally-ignored-file-suffixes))
+(use-package projectile
+  :ensure t
+  :config
+  (setq projectile-globally-ignored-file-suffixes
+        (append
+         my-globally-ignored-file-suffixes
+         projectile-globally-ignored-file-suffixes))
 
-     (setq projectile-globally-ignored-files
-           (append
-            my-globally-ignored-files
-            projectile-globally-ignored-files))
+  (setq projectile-globally-ignored-files
+        (append
+         my-globally-ignored-files
+         projectile-globally-ignored-files))
 
-     ;; https://github.com/bbatsov/projectile/pull/1153/files
-     ;; "if the directory is prefixed with '*' then ignore all directories matching that name"
-     (setq projectile-globally-ignored-directories
-           (append
-            my-globally-ignored-directories
-            projectile-globally-ignored-directories))
+  ;; https://github.com/bbatsov/projectile/pull/1153/files
+  ;; "if the directory is prefixed with '*' then ignore all directories matching that name"
+  (setq projectile-globally-ignored-directories
+        (append
+         my-globally-ignored-directories
+         projectile-globally-ignored-directories))
 
-     (setq projectile-project-root-files
-           (append '("bower.json" "package.json" "TAGS" "*.cabal")
-                   projectile-project-root-files))
-     ))
-(projectile-mode)
+  (setq projectile-project-root-files
+        (append '("bower.json" "package.json" "TAGS" "*.cabal")
+                projectile-project-root-files))
+
+  (projectile-mode)
+  )
 
 ;;------------------------------------------------------------------------------
 ;; anzu mode (show current & total matches in isearch)
 
-(global-anzu-mode +1)
+(use-package anzu
+  :config (global-anzu-mode +1))
 
 
 (provide 'matt-interface)

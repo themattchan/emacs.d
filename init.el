@@ -110,8 +110,9 @@
 (setq package-archive-enable-alist '(("melpa" deft magit)))
 (package-initialize)
 
-; (require 'matt-packages)
-(let ()
+;; (require 'matt-packages)
+
+(defun matt/install-my-packages ()
   (message "Installing required packages...")
   (package-refresh-contents)
   (dolist (pkg package-selected-packages) ; matt/packages)
@@ -120,10 +121,12 @@
       (ignore-errors
         (package-install pkg)))))
 
-(require 'use-package)                  ; also provides bind-key
-(require 'saveplace)                    ; what is this stuff...
-(require 'uniquify)
-(require 'recentf)
+(eval-when-compile
+  (add-to-list 'load-path (car (directory-files "~/.emacs.d/elpa" nil "use-package-*" nil)))
+  (require 'use-package)                  ; also provides bind-key
+  )
+(use-package uniquify)
+(use-package recentf)
 
 ;;==============================================================================
 ;; Now load my configs

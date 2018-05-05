@@ -45,7 +45,9 @@
   (setq racket-program "/Applications/Racket/bin/racket")
   )
 
-(add-to-list 'align-lisp-modes 'racket-mode)
+(add-hook 'align-load-hook
+          (lambda ()
+            (add-to-list 'align-lisp-modes 'racket-mode)))
 
 (add-hook 'racket-mode-hook
           #'(lambda ()
@@ -53,7 +55,7 @@
 
 ;;------------------------------------------------------------------------------
 ;; colourful parens
-(require 'rainbow-delimiters)
+(use-package rainbow-delimiters)
 ;; (defvar my-paren-dual-colors '("deep pink" "royal blue"))
 ;; ;;'("#a07070" "#7070a0") '("pink" "sky blue")
 
