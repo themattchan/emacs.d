@@ -21,24 +21,14 @@
 
 ;;; Code:
 
-;; highlight 80+ char overflows in programming modes
-(use-package whitespace
-  :diminish
-  :hook (prog-mode))
-;; (add-hook 'prog-mode-hook 'whitespace-mode)
-
-;; highlights, line numbers, etc, common to all programming modes
-;;(add-hook 'prog-mode-hook 'ac-ispell-ac-setup)
-
-;;(autoload 'rainbow-delimiters "rainbow-delimiters" nil t)
-;;(add-hook 'prog-mode-hook 'rainbow-delimiters-autoloads)
-
 (use-package auto-fill
   :diminish
+  :defer 5
   :hook (prog-mode text-mode))
 
 (use-package show-paren
   :diminish
+  :defer 5
   :hook prog-mode)
 
 (add-hook 'prog-mode-hook
@@ -75,12 +65,14 @@
 
 (use-package flycheck-pos-tip
   :diminish
+  :defer t
   :after flycheck
   :config
   (flycheck-pos-tip-mode))
 
 (use-package flycheck
   :diminish
+  :defer t
   :hook prog-mode
   :config
   ;; pos-tip on click
@@ -131,7 +123,9 @@
 ;;------------------------------------------------------------------------------
 (use-package whitespace
   :diminish
+  :defer t
   :bind (("C-x t w" . 'toggle-whitespace-mode))
+  :hook (prog-mode)
   :config
   (defvar only-trailing-whitespace-style '(face lines-tail))
   (defvar whitespace-show-all-mode nil)

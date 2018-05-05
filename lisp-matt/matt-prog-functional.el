@@ -22,7 +22,7 @@
 ;;; Code:
 
 ;; no tabs in functional langs
-(defvar functional-langs
+(defconst functional-langs
   '(tuareg-mode
     sml-lex-mode
     sml-yacc-mode
@@ -36,7 +36,7 @@
     erlang-mode
     fsharp-mode))
 
-(defvar lisp-modes
+(defconst lisp-modes
   '(lisp-mode
     emacs-lisp-mode
     common-lisp-mode

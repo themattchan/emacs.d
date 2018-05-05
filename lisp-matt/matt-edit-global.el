@@ -120,8 +120,8 @@
   ;; (global-set-key (kbd "<S-tab>") 'yas-expand)
 
   :config
-  (yas-global-mode 1)
   (setq yas-prompt-functions '(yas-ido-prompt yas-dropdown-prompt))
+  (yas-global-mode 1)
   )
 
 ;; use shift-tab for yasnippet completion so it doesn't conflict w/ ac-mode

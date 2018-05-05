@@ -25,20 +25,30 @@
 ;;------------------------------------------------------------------------------
 ;; Dired
 ;; hide the -al stuff, toggle with '(' and ')'
-(use-package dired-details+)
-(setq dired-recursive-deletes 'always
+(use-package dired-details+
+  :after dired)
+(use-package dired
+  :defer t
+  :config
+  (setq dired-recursive-deletes 'always
       dired-recursive-copies 'always
       delete-by-moving-to-trash t
       trash-directory "~/.Trash/"
       ;; show sym link targets
       Dired-details-hide-link-targets nil)
-(add-hook 'dired-mode-hook 'turn-on-stripe-buffer-mode)
+  (add-hook 'dired-mode-hook 'turn-on-stripe-buffer-mode)
+  )
+
 ;; (add-hook 'dired-mode-hook 'stripe-listify-buffer)
 
-(use-package dired-x)
-(setq-default ; C-x M-o to toggle omit mode
- dired-omit-mode t
- dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^\\.\\|^~")
+(use-package dired-x
+  :after dired
+  :defer t
+  :config
+  (setq-default ; C-x M-o to toggle omit mode
+   dired-omit-mode t
+   dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^\\.\\|^~"))
+
 
 ;;------------------------------------------------------------------------------
 ;; Terminal
@@ -52,8 +62,10 @@
 ;;   :init
 ;;   (progn
 ;;     (setq multi-term-program "/bin/zsh")))
-(use-package ansi-color)
-(use-package xterm-color)
+(use-package ansi-color
+  :defer t)
+(use-package xterm-color
+  :defer t)
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 ;(add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
 (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
@@ -79,12 +91,15 @@
 
 ;;------------------------------------------------------------------------------
 ;; TRAMP-mode
-(setq tramp-default-method "ssh"
-      tramp-terminal-type "dumb"
-      tramp-default-method-alist '())
-(add-to-list 'tramp-default-method-alist '("ieng9.ucsd.edu" "" "scpx"))
-(eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
-(setq password-cache-expiry nil)
+(use-package tramp
+  :defer t
+  :config
+  (setq tramp-default-method "ssh"
+        tramp-terminal-type "dumb"
+        tramp-default-method-alist '())
+  (add-to-list 'tramp-default-method-alist '("ieng9.ucsd.edu" "" "scpx"))
+  (setenv "SHELL" "/bin/bash")
+  (setq password-cache-expiry nil))
 
 ;;------------------------------------------------------------------------------
 ;; IRC

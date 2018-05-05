@@ -43,13 +43,12 @@
 ;;------------------------------------------------------------------------------
 ;; Load stuff
 (eval-when-compile (require 'cl))
-(use-package saveplace)
+(use-package saveplace :defer t)
 
 ;; dired jump to current file dir (C-x C-j)
-(use-package dired-x)
+(use-package dired-x :defer t)
 
-(use-package uniquify)
-(use-package recentf)
+(use-package uniquify :defer t)
 
 ;;------------------------------------------------------------------------------
 ;; Smart mode line
@@ -74,7 +73,9 @@
 (defalias 'list-buffers 'ibuffer)
 
 ;; isearch buffer switching
-(use-package icomplete :init (icomplete-mode 1))
+(use-package icomplete
+  :defer t
+  :config (icomplete-mode 1))
 
 ;; helm-mode
 ;; From Bryans's config
@@ -181,6 +182,7 @@
 ;;------------------------------------------------------------------------------
 ;; winner-mode
 (use-package winner
+  :defer t
   :config
   (winner-mode 1))
 
@@ -272,6 +274,7 @@
 (use-package neotree
   ;;  :bind
   ;;(bind-key "<f8>" 'neotree-toggle)
+  :defer t
   :config
   (setq neo-theme 'nerd))
 
@@ -433,6 +436,7 @@
         ))
 
 (use-package grep
+  :defer 5
   :config
   (setq grep-find-ignored-files
         (append (mapcar #'(lambda (x) (concat "*" x)) my-globally-ignored-file-suffixes)
@@ -444,6 +448,7 @@
 
 (use-package projectile
   :diminish
+  :defer 5
   :ensure t
   :config
   (setq projectile-globally-ignored-file-suffixes
@@ -474,6 +479,7 @@
 ;; anzu mode (show current & total matches in isearch)
 
 (use-package anzu
+  :defer 10
   :diminish
   :config (global-anzu-mode +1))
 
