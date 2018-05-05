@@ -36,30 +36,29 @@
 ))
 
 ;; Python
-(autoload 'python-mode "python-mode" "Python Mode." t)
-(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
-(add-hook 'python-mode-hook
-          (lambda()
-            (elpy-enable)
-            (setq-default indent-tabs-mode nil
-                          tab-width 4
-                          ;;tab-stop-list (number-sequence 2 120 2)
-                          ;;py-indent-offset 4
-                          ;;python-indent-offset 2
-                          )))
+(use-package python-mode
+  :mode ("\\.py\\'" . python-mode)
+  :config
+  (add-hook 'python-mode-hook
+            (lambda()
+              (elpy-enable)
+              (setq-default indent-tabs-mode nil
+                            tab-width 4
+                            ;;tab-stop-list (number-sequence 2 120 2)
+                            ;;py-indent-offset 4
+                            ;;python-indent-offset 2
+                            ))))
 
 ;; Ampl mode
-(setq auto-mode-alist
-      (cons '("\\.mod$" . ampl-mode) auto-mode-alist))
-(setq auto-mode-alist
-      (cons '("\\.dat$" . ampl-mode) auto-mode-alist))
-(setq auto-mode-alist
-      (cons '("\\.ampl$" . ampl-mode) auto-mode-alist))
-(setq interpreter-mode-alist
-      (cons '("ampl" . ampl-mode)
-            interpreter-mode-alist))
 
-(autoload 'ampl-mode "ampl-mode" "Ampl editing mode." t)
+(use-package ampl-mode
+  :mode (("\\.mod$" . ampl-mode)
+         ("\\.dat$" . ampl-mode)
+         ("\\.ampl$" . ampl-mode))
+  :config
+  (setq interpreter-mode-alist
+      (cons '("ampl" . ampl-mode)
+            interpreter-mode-alist)))
 
 ;; CSE 131
 ;; (load-file "~/Dropbox/cse131/cse131.el/cse131.el")

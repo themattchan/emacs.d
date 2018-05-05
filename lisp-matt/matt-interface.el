@@ -390,7 +390,7 @@
 
 ;;------------------------------------------------------------------------------
 ;; Unclutter mode line
-(autoload 'diminish "diminish")
+(use-package diminish)
 
 (defconst mode-line-cleaner-alist
   `((auto-complete-mode         . " α")

@@ -81,7 +81,7 @@
 
 ;; Common Lisp
 ;; Setup load-path and autoloads
-(autoload 'slime-autoloads "slime-autoloads")
+(use-package slime-autoloads)
 
 (add-hook 'slime-mode-hook
           (progn
@@ -97,7 +97,7 @@
 ;;(setq scheme-program-name "mit-scheme")
 ;;(eval-after-load "geiser" '(require quack))
 
-;; (autoload 'ac-geiser "ac-geiser")
+;; (use-package ac-geiser)
 ;; (add-hook 'geiser-mode-hook 'ac-geiser-setup)
 ;; (add-hook 'geiser-repl-mode-hook 'ac-geiser-setup)
 

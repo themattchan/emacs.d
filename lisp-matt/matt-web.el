@@ -22,28 +22,28 @@
 ;;; Code:
 
 
-(autoload 'web-mode "web-mode" "" t)
-(add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
-
-(add-to-list 'auto-mode-alist '("\\.scala.html\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.scss\\'" . web-mode))
-
-(add-hook 'web-mode-hook
-          (lambda ()
-            (setq indent-tabs-mode nil
-                  tab-width 2
-                  web-mode-variable-offset 2
-                  web-mode-html-offset 2
-                  web-mode-markup-indent-offset 2
-                  web-mode-css-indent-offset 2
-                  web-mode-code-indent-offset 2
-                  web-mode-engines-alist '(("razor" . "\\.scala.html\\'")
-                                           ("blade" . "\\.blade\\.")))))
-
+(use-package web-mode
+  :mode
+  (("\\.html$" . web-mode)
+   ("\\.scala.html\\'" . web-mode)
+   ("\\.css\\'" . web-mode)
+   ("\\.scss\\'" . web-mode)
+   ("\\.jsx$" . web-mode))
+  :config
+  (add-hook 'web-mode-hook
+            (lambda ()
+              (setq indent-tabs-mode nil
+                    tab-width 2
+                    web-mode-variable-offset 2
+                    web-mode-html-offset 2
+                    web-mode-markup-indent-offset 2
+                    web-mode-css-indent-offset 2
+                    web-mode-code-indent-offset 2
+                    web-mode-engines-alist '(("razor" . "\\.scala.html\\'")
+                                             ("blade" . "\\.blade\\.")))))
+  )
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js3-mode))
 (add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode))
-(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
 
 (setq json-reformat:indent-width 2)
 (setq js-indent-level 2)

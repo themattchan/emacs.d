@@ -22,7 +22,7 @@
 ;;; Code:
 
 ;; highlight 80+ char overflows in programming modes
-(autoload 'whitespace-mode "whitespace" "whitespace-mode" t nil)
+(use-package whitespace-mode)
 ;; (add-hook 'prog-mode-hook 'whitespace-mode)
 
 ;; highlights, line numbers, etc, common to all programming modes

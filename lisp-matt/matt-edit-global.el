@@ -92,17 +92,18 @@
 
 ;;------------------------------------------------------------------------------
 ;; line numbers
-(autoload 'linum "linum-mode")
-(eval-after-load "linum"
-  ;; always one space separation, even in terminal
+(use-package linum
+  :config
   (setq linum-format "%d "))
 
 ;;------------------------------------------------------------------------------
 ;; unto tree (what is this...)
-(autoload 'undo-tree "undo-tree")
-(global-undo-tree-mode)
-(setq undo-tree-visualizer-timestamps t)
-(setq undo-tree-visualizer-diff t)
+(use-package undo-tree
+  :config
+  (setq undo-tree-visualizer-timestamps t)
+  (setq undo-tree-visualizer-diff t)
+
+  (global-undo-tree-mode))
 
 ;;------------------------------------------------------------------------------
 ;; yasnippet
