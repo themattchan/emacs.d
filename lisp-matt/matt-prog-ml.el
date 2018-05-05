@@ -1,4 +1,4 @@
-;;; matt-prog-ml.el --- Settings for the ML-like languages.
+;;; matt-prog-ml.el --- Settings for the ML-like languages.-
 
 ;;; Copyright (c) 2013-2015 Matthew Chan
 ;;; Author: Matthew Chan <matt@parametri.city>
@@ -40,10 +40,11 @@
 (setq merlin-error-after-save nil)
 
 
-(use-package tuareg-mode
+(use-package tuareg
+  :diminish "λOCaml"
   :config
   (add-hook 'tuareg-mode-hook (lambda ()  (setq indent-tabs-mode nil))))
-(use-package camldebug :after tuareg-mode)
+(use-package camldebug :after tuareg)
 
 
 ;; Add opam emacs directory to the load-path

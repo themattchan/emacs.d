@@ -23,72 +23,46 @@
 
 ;;; Code:
 
-;; (defvar lisp-power-map (make-keymap))
-;; (define-minor-mode lisp-power-mode "Fix keybindings; add power."
-;;   :lighter " (power)"
-;;   :keymap lisp-power-map
-;;   )
-;; (define-key lisp-power-map [delete] 'paredit-forward-delete)
-;; (define-key lisp-power-map [backspace] 'paredit-backward-delete)
-
-;; (defun matt/engage-lisp-power ()
-;;   (lisp-power-mode t))
-
-;; (dolist (mode lisp-modes)
-;;   (add-hook (intern (format "%s-hook" mode))
-;;             #'matt/engage-lisp-power))
-
 (setq inferior-lisp-program "sbcl")
 (setq scheme-program-name "racket")
 (when *is-mac*
   (setq geiser-racket-binary "/Applications/Racket/bin/racket")
-  (setq racket-program "/Applications/Racket/bin/racket")
   )
 
 (add-hook 'align-load-hook
           (lambda ()
             (add-to-list 'align-lisp-modes 'racket-mode)))
 
-(add-hook 'racket-mode-hook
-          #'(lambda ()
-              (define-key racket-mode-map (kbd "C-c C-l") 'racket-run-and-switch-to-repl)))
-
 ;;------------------------------------------------------------------------------
 ;; colourful parens
-(use-package rainbow-delimiters)
-;; (defvar my-paren-dual-colors '("deep pink" "royal blue"))
-;; ;;'("#a07070" "#7070a0") '("pink" "sky blue")
+(use-package rainbow-delimiters
+  :hook lisp-modes
+  :config
+  (cl-loop
+   for index from 1 to rainbow-delimiters-max-face-count
+   do
+   (set-face-attribute
+    (intern (format "rainbow-delimiters-depth-%d-face" index))
+    nil
+    :weight 'bold))
+  (set-face-attribute 'rainbow-delimiters-unmatched-face nil
+                      :foreground 'unspecified
+                      :inherit 'error
+                      :strike-through t)
+  )
 
-(cl-loop
- for index from 1 to rainbow-delimiters-max-face-count
- do
- (set-face-attribute
-  (intern (format "rainbow-delimiters-depth-%d-face" index))
-  nil
-  :weight 'bold))
-  ;(elt my-paren-dual-colors
-   ;    (if (cl-evenp index) 0 1))))
-
-
-(set-face-attribute 'rainbow-delimiters-unmatched-face nil
-                    :foreground 'unspecified
-                    :inherit 'error
-                    :strike-through t)
-
-(dolist (mode lisp-modes)
-  (add-hook (intern (format "%s-hook" mode))
-            'rainbow-delimiters-mode))
 
 ;; Common Lisp
 ;; Setup load-path and autoloads
-(use-package slime-autoloads)
+(use-package slime
+  :config
+  ;; Set lisp system and some contribs
+  (setq inferior-lisp-program (shell-command-to-string "which clisp"))
+  (setq slime-contribs '(slime-fancy slime-scratch slime-editing-commands)))
 
-(add-hook 'slime-mode-hook
-          (progn
-            ;; Set lisp system and some contribs
-            (setq inferior-lisp-program (shell-command-to-string "which clisp"))
-            (setq slime-contribs '(slime-fancy slime-scratch slime-editing-commands))
-            ))
+(use-package slime-autoloads :after slime)
+
+
 
 ;; Scheme
 
@@ -101,7 +75,14 @@
 ;; (add-hook 'geiser-mode-hook 'ac-geiser-setup)
 ;; (add-hook 'geiser-repl-mode-hook 'ac-geiser-setup)
 
-(add-to-list 'auto-mode-alist '("\\.rkt\\'" . racket-mode))
+(use-package racket
+  :diminish (racket-mode . "(λr)")
+  :mode "\\.rkt\\'"
+  :bind
+  (:map racket-mode-map
+        ("C-c C-l" . 'racket-run-and-switch-to-repl))
+  :config
+  (when *is-mac* (setq racket-program "/Applications/Racket/bin/racket")))
 
 ;; Clojure
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)

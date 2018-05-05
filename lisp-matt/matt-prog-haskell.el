@@ -23,7 +23,9 @@
 
 ;;; Code:
 
-(use-package haskell-mode :ensure t)
+(use-package haskell-mode
+  :diminish "λ"
+  :ensure t)
 
 (defconst haskell-modes-list '(haskell-mode literate-haskell-mode purescript-mode))
 
@@ -186,6 +188,7 @@ Returns the project root with a shell.nix file, or NIL if not nix."
 
   ;; Haskell mode GLOBAL settings
   (use-package flycheck
+    :diminish
     :init (flycheck-mode 1))
 
   (use-package flycheck-haskell

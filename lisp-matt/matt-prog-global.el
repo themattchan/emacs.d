@@ -22,7 +22,9 @@
 ;;; Code:
 
 ;; highlight 80+ char overflows in programming modes
-(use-package whitespace-mode)
+(use-package whitespace
+  :diminish
+  :hook (prog-mode))
 ;; (add-hook 'prog-mode-hook 'whitespace-mode)
 
 ;; highlights, line numbers, etc, common to all programming modes
@@ -31,17 +33,25 @@
 ;;(autoload 'rainbow-delimiters "rainbow-delimiters" nil t)
 ;;(add-hook 'prog-mode-hook 'rainbow-delimiters-autoloads)
 
+(use-package auto-fill
+  :diminish
+  :hook (prog-mode text-mode))
+
+(use-package show-paren
+  :diminish
+  :hook prog-mode)
+
 (add-hook 'prog-mode-hook
           (lambda()
             ;;(matt/load-theme 'adwaita)
             (electric-indent-mode 1)    ; auto indent
 ;            (linum-mode 1)
-            (show-paren-mode)
+;;            (show-paren-mode)
             (hl-line-mode 1)            ; highlight current line
-            (auto-fill-mode 1)
+;;            (auto-fill-mode 1)
             ;(flyspell-prog-mode)  ;; disabled, really slow...
-            (flycheck-mode)
-            (flycheck-pos-tip-mode)
+;;            (flycheck-mode)
+;;            (flycheck-pos-tip-mode)
 ;;            (whitespace-mode)
             (subword-mode)
             (fixmee-mode)
@@ -63,41 +73,48 @@
 ;;------------------------------------------------------------------------------
 ;; flycheck
 
-(eval-after-load 'flycheck
-  (lambda ()
-    ;; pos-tip on click
-    (setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages)
-    (setq flycheck-highlighting-mode 'symbols) ; 'lines is faster than 'sexps
-    (setq flycheck-display-errors-delay 2)   ; seconds
-    (setq flycheck-idle-change-delay 30) ; seconds
-    (setq flycheck-check-syntax-automatically '(mode-enabled save idle-change))
+(use-package flycheck-pos-tip
+  :diminish
+  :after flycheck
+  :config
+  (flycheck-pos-tip-mode))
 
-    (add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode)
-    (add-hook 'flycheck-mode-hook 'flycheck-pos-tip-mode)
+(use-package flycheck
+  :diminish
+  :hook prog-mode
+  :config
+  ;; pos-tip on click
+  (setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages)
+  (setq flycheck-highlighting-mode 'symbols) ; 'lines is faster than 'sexps
+  (setq flycheck-display-errors-delay 2)   ; seconds
+  (setq flycheck-idle-change-delay 30) ; seconds
+  (setq flycheck-check-syntax-automatically '(mode-enabled save idle-change))
+  (add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode)
+  (add-hook 'flycheck-mode-hook 'flycheck-pos-tip-mode)
 
-    (setq-default flycheck-disabled-checkers
-                  '(javascript-jshint
-                    emacs-lisp-checkdoc))
+  (setq-default flycheck-disabled-checkers
+                '(javascript-jshint
+                  emacs-lisp-checkdoc))
 
-    (flycheck-add-mode 'javascript-eslint 'web-mode)
+  (flycheck-add-mode 'javascript-eslint 'web-mode)
 
-    ;; colours at http://raebear.net/comp/emacscolors.html
-    (set-face-attribute 'flycheck-error nil
-                        :foreground "red"
-                        :background "pink"
-                        :underline "red")
+  ;; colours at http://raebear.net/comp/emacscolors.html
+  (set-face-attribute 'flycheck-error nil
+                      :foreground "red"
+                      :background "pink"
+                      :underline "red")
 
-    (set-face-attribute 'flycheck-warning nil
-                        :foreground "black"
-                        :background "cornsilk"
-                        :underline "maroon")
+  (set-face-attribute 'flycheck-warning nil
+                      :foreground "black"
+                      :background "cornsilk"
+                      :underline "maroon")
 
-    (set-face-attribute 'flycheck-info nil
-                        ;; info highlights are annoying as hell
-                        ;; :foreground "blue4"
-                        ;; :background "LightBlue1"
-                        :underline "ForestGreen")
-    ))
+  (set-face-attribute 'flycheck-info nil
+                      ;; info highlights are annoying as hell
+                      ;; :foreground "blue4"
+                      ;; :background "LightBlue1"
+                      :underline "ForestGreen")
+  )
 
 ;;------------------------------------------------------------------------------
 ;; No auto-indent
@@ -112,75 +129,77 @@
                 (electric-pair-mode -1)))))
 
 ;;------------------------------------------------------------------------------
-;; whitespace-mode
-(defvar only-trailing-whitespace-style '(face lines-tail))
-(add-hook 'prog-mode-hook
-          (lambda()
-            (setq
-             ;; highlight 80 char overflows
-             whitespace-line-column fill-column
-             whitespace-style only-trailing-whitespace-style)))
+(use-package whitespace
+  :diminish
+  :bind (("C-x t w" . 'toggle-whitespace-mode))
+  :config
+  (defvar only-trailing-whitespace-style '(face lines-tail))
+  (defvar whitespace-show-all-mode nil)
+  (setq
+   ;; highlight 80 char overflows
+   whitespace-line-column fill-column
+   whitespace-style only-trailing-whitespace-style)
 
-(setq whitespace-display-mappings
-      '((space-mark   32 [183] [46])
-        (newline-mark 10 [182 10])      ; pilcrow
-        (tab-mark     9  [9655 9 ] [92 9])))
 
-;; adapted from  https://github.com/expez/.emacs.d/blob/master/init-whitespace.el
-(defvar whitespace-show-all-mode nil)
-(defun* toggle-whitespace-mode ()
-  "Toggles whitespace modes between modes where some whitespace
+  (setq whitespace-display-mappings
+        '((space-mark   32 [183] [46])
+          (newline-mark 10 [182 10])      ; pilcrow
+          (tab-mark     9  [9655 9 ] [92 9])))
+
+  ;; adapted from  https://github.com/expez/.emacs.d/blob/master/init-whitespace.el
+  (defun* toggle-whitespace-mode ()
+    "Toggles whitespace modes between modes where some whitespace
    is highligted and all whitespace is highlighted.
    With a prefix argument whitespace-mode is turned off.
    C-u <prefix> M-x toggle-whitespace-mode"
 
-  (interactive)
-  (when current-prefix-arg
-    (if whitespace-mode
-        (progn
-          (whitespace-mode 0)
-          (message "Whitespace mode off"))
-      (whitespace-mode 1)
-      (message "Whitespace mode on"))
-    (return-from toggle-whitespace-mode))
-
-  (if whitespace-show-all-mode
-      (progn
-        (setq whitespace-style only-trailing-whitespace-style)
-        (setq whitespace-show-all-mode nil)
-        (whitespace-mode 0)
+    (interactive)
+    (when current-prefix-arg
+      (if whitespace-mode
+          (progn
+            (whitespace-mode 0)
+            (message "Whitespace mode off"))
         (whitespace-mode 1)
-        (message "Highlighting overflow only"))
-    (setq whitespace-style
-          '(face tabs spaces trailing lines-tail space-before-tab newline
-                 indentation empty space-after-tab space-mark tab-mark
-                 newline-mark))
-    (setq whitespace-show-all-mode t)
-    (whitespace-mode 0)
-    (whitespace-mode 1)
-    (message "Highlighting all whitespace")))
+        (message "Whitespace mode on"))
+      (return-from toggle-whitespace-mode))
 
-(global-set-key (kbd "C-x t w") 'toggle-whitespace-mode)
+    (if whitespace-show-all-mode
+        (progn
+          (setq whitespace-style only-trailing-whitespace-style)
+          (setq whitespace-show-all-mode nil)
+          (whitespace-mode 0)
+          (whitespace-mode 1)
+          (message "Highlighting overflow only"))
+      (setq whitespace-style
+            '(face tabs spaces trailing lines-tail space-before-tab newline
+                   indentation empty space-after-tab space-mark tab-mark
+                   newline-mark))
+      (setq whitespace-show-all-mode t)
+      (whitespace-mode 0)
+      (whitespace-mode 1)
+      (message "Highlighting all whitespace")))
+  )
+
 
 ;;------------------------------------------------------------------------------
 ;; column width
 ;; ring of line lengths
-(defvar line-lens (make-ring 5))
-(mapc (lambda (obj) (ring-insert line-lens obj))
-      (reverse '(80 100 120)))          ; rotate properly
+;; (defvar line-lens (make-ring 5))
+;; (mapc (lambda (obj) (ring-insert line-lens obj))
+;;       (reverse '(80 100 120)))          ; rotate properly
 
-;; rotate through line lengths
-(defun toggle-line-length ()
-  "Change from 80 to 100 chars and v.v."
-  (interactive)
-  (let ((next-line-len (ring-ref line-lens
-                                 (+ 1 (ring-ref line-lens fill-column)))))
-      (set-fill-column next-line-len)
-      (setq whitespace-line-column next-line-len)
-      (whitespace-mode 0)
-      (whitespace-mode 1)))
+;; ;; rotate through line lengths
+;; (defun toggle-line-length ()
+;;   "Change from 80 to 100 chars and v.v."
+;;   (interactive)
+;;   (let ((next-line-len (ring-ref line-lens
+;;                                  (+ 1 (ring-ref line-lens fill-column)))))
+;;       (set-fill-column next-line-len)
+;;       (setq whitespace-line-column next-line-len)
+;;       (whitespace-mode 0)
+;;       (whitespace-mode 1)))
 
-(global-set-key (kbd "C-x t l") 'toggle-line-length)
+;; (global-set-key (kbd "C-x t l") 'toggle-line-length)
 
 ;;------------------------------------------------------------------------------
 ;; Language server protocol

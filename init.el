@@ -110,8 +110,6 @@
 (setq package-archive-enable-alist '(("melpa" deft magit)))
 (package-initialize)
 
-;; (require 'matt-packages)
-
 (defun matt/install-my-packages ()
   (message "Installing required packages...")
   (package-refresh-contents)
@@ -121,26 +119,26 @@
       (ignore-errors
         (package-install pkg)))))
 
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
+
 (eval-when-compile
   (add-to-list 'load-path (car (directory-files "~/.emacs.d/elpa" nil "use-package-*" nil)))
   (require 'use-package)                  ; also provides bind-key
   )
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
-(require 'use-package)
+(require 'diminish)
+(require 'bind-key)
 
 ;; from John Wiegley's setup
-(setq package-enable-at-startup nil
-      file-name-handler-alist nil
-      message-log-max 16384
-      gc-cons-threshold 402653184
-      gc-cons-percentage 0.6
-      auto-window-vscroll nil)
+(setq
+ message-log-max 16384
+ gc-cons-threshold 402653184
+ gc-cons-percentage 0.6
+ )
 
 (add-hook 'after-init-hook
           `(lambda ()
-             (setq file-name-handler-alist file-name-handler-alist-old
-                   gc-cons-threshold 800000
+             (setq gc-cons-threshold 800000
                    gc-cons-percentage 0.1)
              (garbage-collect)) t)
 

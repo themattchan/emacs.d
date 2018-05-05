@@ -93,12 +93,14 @@
 ;;------------------------------------------------------------------------------
 ;; line numbers
 (use-package linum
+  :diminish
   :config
   (setq linum-format "%d "))
 
 ;;------------------------------------------------------------------------------
 ;; unto tree (what is this...)
 (use-package undo-tree
+  :diminish
   :config
   (setq undo-tree-visualizer-timestamps t)
   (setq undo-tree-visualizer-diff t)
@@ -109,14 +111,20 @@
 ;; yasnippet
 ;; load before auto-complete, so TAB expands snippet before completing
 ;;(require 'yasnippet)
-(yas-global-mode 1)
-(setq yas-prompt-functions '(yas-ido-prompt yas-dropdown-prompt))
+(use-package yasnippet
+  :diminish (yas-minor-mode . "")
+  :bind (:map yas-minor-mode-map
+              ("<tab>" . nil)
+              ("TAB" . nil)
+              ("<S-tab>" . yas-expand))
+  ;; (global-set-key (kbd "<S-tab>") 'yas-expand)
+
+  :config
+  (yas-global-mode 1)
+  (setq yas-prompt-functions '(yas-ido-prompt yas-dropdown-prompt))
+  )
 
 ;; use shift-tab for yasnippet completion so it doesn't conflict w/ ac-mode
-(define-key yas-minor-mode-map (kbd "<tab>") nil)
-(define-key yas-minor-mode-map (kbd "TAB") nil)
-(define-key yas-minor-mode-map (kbd "<S-tab>") 'yas-expand)
-(global-set-key (kbd "<S-tab>") 'yas-expand)
 
 ;;------------------------------------------------------------------------------
 ;; auto-complete mode
@@ -212,8 +220,11 @@
 
 ;;------------------------------------------------------------------------------
 ;; company mode
-
-(add-hook 'after-init-hook 'global-company-mode)
+(use-package company
+  :diminish
+  :config
+  (global-company-mode))
+;;(add-hook 'after-init-hook 'global-company-mode)
 ;(eval-after-load 'company-mode (lambda () (add-to-list 'company-backends 'company-ghc)))
 
 (defun load-project-tags ()

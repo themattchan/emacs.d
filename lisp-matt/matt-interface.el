@@ -80,6 +80,7 @@
 ;; From Bryans's config
 ;; https://github.com/bryangarza/dot-emacs/blob/master/bryan/bryan-helm.el
 (use-package helm
+  :diminish
   :init
   (progn
     (require 'helm-config)
@@ -333,28 +334,28 @@
 ;;(autoload 'faces "faces")
 (use-package faces
   :config
-;; default font size is 14pt on carbon emacs
-(when (window-system)
-  (cond
-   (*is-mac*
-    (set-face-attribute 'default nil
-                        :font "Monaco"
-                        :height 160    ; default font size is 12pt on carbon emacs
-                        :weight 'normal
-                        :width 'normal))
+  ;; default font size is 14pt on carbon emacs
+  (when (window-system)
+    (cond
+     (*is-mac*
+      (set-face-attribute 'default nil
+                          :font "Monaco"
+                          :height 160    ; default font size is 12pt on carbon emacs
+                          :weight 'normal
+                          :width 'normal))
 
-   (*is-linux*
-    (set-face-attribute 'default nil
-                        :font "Monospace-13"
-                        :height 150
-                        :weight 'normal
-                        :width 'normal))
+     (*is-linux*
+      (set-face-attribute 'default nil
+                          :font "Monospace-13"
+                          :height 150
+                          :weight 'normal
+                          :width 'normal))
 
-   (*is-windows*
-    (set-face-attribute 'default nil
-                        :font "Lucida Console 10" ; Consolas is also good
-                        :weight 'normal))))
-)
+     (*is-windows*
+      (set-face-attribute 'default nil
+                          :font "Lucida Console 10" ; Consolas is also good
+                          :weight 'normal))))
+  )
 
 ;;------------------------------------------------------------------------------
 ;; No popups and dialogues. They crash carbon emacs.
@@ -380,72 +381,23 @@
 ;; (xterm-mouse-mode)
 
 ;;------------------------------------------------------------------------------
-;; M-x aliases
-(defalias 'ct 'load-theme)
-(defalias 'sb 'sr-speedbar-toggle)
-(defalias 'rs 'replace-string)
-(defalias 'rex 'replace-regexp)
-
-;;------------------------------------------------------------------------------
 ;; Unclutter mode line
-(use-package diminish)
 
-(defconst mode-line-cleaner-alist
-  `((auto-complete-mode         . " α")
-    (yas/minor-mode             . " υ")
-    (paredit-mode               . " π")
-    (eldoc-mode                 . ""  )
-    (abbrev-mode                . ""  )
-    (smartparens-mode           . ""  )
-    (undo-tree-mode             . ""  )
-    (auto-highlight-symbol-mode . ""  )
-    (whitespace-global-mode     . ""  )
-    (whitespace-mode            . ""  )
-    (auto-fill-mode             . ""  )
-    (flyspell-mode              . ""  )
-    (flycheck-mode              . ""  )
-    (subword-mode               . ""  )
-    (yas-minor-mode             . ""  )
-    (helm-mode                  . ""  )
-    (company-mode               . ""  )
-    (projectile-mode            . ""  )
-    (anzu-mode                  . ""  )
-    (captain-mode               . ""  )
-
-    ;; Major modes
-    (lisp-interaction-mode      . "λeval" )
-    (lisp-mode                  . "(())"  )
-    (scheme-mode                . "(λ)"   )
-    (racket-mode                . "(λr)"  )
-    (clojure-mode               . "(λclj)")
-    (emacs-lisp-mode            . "(λel)" )
-    (common-lisp-mode           . "(λcl)" )
-
-    (haskell-mode               . "λ"     )
-    (tuareg-mode                . "λOCaml")
-
-    (hi-lock-mode               . ""  )
-    (python-mode                . "py")
-    (nxhtml-mode                . "nx"))
-  "Alist for 'clean-mode-line'.
-
-When you add a new element to the alist, keep in mind that you
-must pass the correct minor/major mode symbol and a string you
-want to use in the modeline *in lieu of* the original.")
-
-(defun clean-mode-line ()
-  (interactive)
-  (loop for cleaner in mode-line-cleaner-alist
-        do (let* ((mode (car cleaner))
-                 (mode-str (cdr cleaner))
-                 (old-mode-str (cdr (assq mode minor-mode-alist))))
-             (when old-mode-str
-                 (setcar old-mode-str mode-str))
-               ;; major mode
-             (when (eq mode major-mode)
-               (setq mode-name mode-str)))))
-(add-hook 'init-hook 'clean-mode-line)
-(add-hook 'after-change-major-mode-hook 'clean-mode-line)
+;; diminish settings without a home in use-package defns.
+(diminish 'lisp-interaction-mode "λeval" )
+(diminish 'lisp-mode "(())"  )
+(diminish 'scheme-mode "(λ)"   )
+(diminish 'clojure-mode "(λclj)")
+(diminish 'emacs-lisp-mode "(λel)" )
+(diminish 'common-lisp-mode "(λcl)" )
+(diminish 'auto-complete-mode " α")
+(diminish 'paredit-mode " π")
+(diminish 'eldoc-mode "")
+(diminish 'abbrev-mode "")
+(diminish 'smartparens-mode "")
+(diminish 'auto-highlight-symbol-mode "")
+(diminish 'subword-mode "")
+(diminish 'nxhtml-mode "nx")
 
 ;;------------------------------------------------------------------------------
 ;; Projectile mode by default
@@ -491,6 +443,7 @@ want to use in the modeline *in lieu of* the original.")
   )
 
 (use-package projectile
+  :diminish
   :ensure t
   :config
   (setq projectile-globally-ignored-file-suffixes
@@ -521,6 +474,7 @@ want to use in the modeline *in lieu of* the original.")
 ;; anzu mode (show current & total matches in isearch)
 
 (use-package anzu
+  :diminish
   :config (global-anzu-mode +1))
 
 

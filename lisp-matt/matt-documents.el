@@ -30,16 +30,18 @@
   :init
   (add-hook 'pandoc-mode-hook 'pandoc-load-default-settings))
 
-(use-package flyspell)
+(use-package flyspell
+  :diminish
+  :hook (text-mode . flyspell-mode))
+
+(use-package captain
+  :diminish
+  :hook (text-mode . global-captain-mode))
 
 (add-hook 'text-mode-hook 'ac-ispell-ac-setup)
 (add-hook 'text-mode-hook
           (lambda ()
-            (linum-mode 0)
             (visual-line-mode 1)
-            (flyspell-mode 1)
-            ;;(pandoc-mode 1)
-            ;(turn-on-pandoc)
             (setq
              ;; tabs to spaces in text mode
              indent-tabs-mode nil
@@ -48,18 +50,7 @@
              ;; default insert is also 4 and inc of 4
              ;; got to specify this or it will continue to expand to 8 spc
              tab-stop-list (number-sequence 4 120 4)
-             )
-            (global-captain-mode)
-
-            (turn-on-auto-fill))
-            ;; ask to turn on hard line wrapping
-            ;; (if (y-or-n-p "Hard wrap text?")
-            ;;   (progn
-            ;;     (fci-mode 1)
-            ;;     (turn-on-auto-fill))
-            ;;   (progn
-            ;;     (fci-mode 0)))nn
-          )
+             )))
 
 (use-package align
   :init

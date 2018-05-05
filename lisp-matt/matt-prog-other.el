@@ -37,6 +37,7 @@
 
 ;; Python
 (use-package python-mode
+  :diminish "py"
   :mode ("\\.py\\'" . python-mode)
   :config
   (add-hook 'python-mode-hook
