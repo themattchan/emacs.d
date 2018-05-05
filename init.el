@@ -129,6 +129,7 @@
   (package-install 'use-package))
 (require 'use-package)
 
+;; from John Wiegley's setup
 (setq package-enable-at-startup nil
       file-name-handler-alist nil
       message-log-max 16384

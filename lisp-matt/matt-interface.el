@@ -43,7 +43,7 @@
 ;;------------------------------------------------------------------------------
 ;; Load stuff
 (eval-when-compile (require 'cl))
-(use-package saveplace "save last loc in file")
+(use-package saveplace)
 
 ;; dired jump to current file dir (C-x C-j)
 (use-package dired-x)
@@ -224,8 +224,6 @@
  ;; use wheel
  mouse-wheel-mode t
  echo-keystrokes 0.1
-
- gc-cons-threshold 500000000 ;; 500 MB
 
  redisplay-dont-pause t
 
