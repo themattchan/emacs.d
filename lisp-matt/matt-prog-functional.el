@@ -32,6 +32,7 @@
 (use-package coq
   :defer t
   :after proof-site
+  :load-path (lambda () (concat user-emacs-directory "lisp/PG/coq"))
   :config
   (if *is-mac* (setq coq-prog-name "/usr/local/bin/coqtop"))
 

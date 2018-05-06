@@ -10,7 +10,7 @@
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
-;; (at your option) any later version.
+;; (at your option) any latern version.
 
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -133,12 +133,8 @@
   ;; bind to compile
   (bind-key "C-x g" 'compile)
 
-  ;; (bind-key "C-x C-k" (lambda () (interactive) (kill-buffer (current-buffer))))
-
-  ;; ;; cycle through split-panes
-  ;; (bind-key "C-c n" (lambda () (interactive) (select-window (next-window))))
-  ;; (bind-key "C-c p" (lambda () (interactive) (select-window (previous-window))))
-
+  ;; to kill something else, C-u C-x k
+  ;;(bind-key "C-x C-k" (lambda () (interactive) (kill-buffer (current-buffer))))
 
   ;; cycle through frames (on the terminal, these fill the screen like tabs)
   ;; C-x 5 2 make new frame
@@ -190,8 +186,8 @@
   ;; WARNING: lexical-binding must be on
   (dotimes (i 4)
     (let ((i (+ 1 i)))
-      (bind-key (kbd (format "<f%d>"   i)) (lambda () (jump-to-register  i)))
-      (bind-key (kbd (format "<S-f%d>" i)) (lambda () (point-to-register i)))))
+      (bind-key (kbd (format "<f%d>"   i)) (lambda () (interactive) (jump-to-register  i)))
+      (bind-key (kbd (format "<S-f%d>" i)) (lambda () (interactive) (point-to-register i)))))
 
   ;; TAGS
   (bind-key "s-." 'find-tag-other-window)

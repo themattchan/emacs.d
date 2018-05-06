@@ -35,7 +35,8 @@
     (setq package-enable-at-startup nil)
     (setq package-archives
           '(("melpa" . "https://melpa.org/packages/")
-            ("gnu" . "https://elpa.gnu.org/packages/")))
+            ("gnu" . "https://elpa.gnu.org/packages/")
+            ("marmalade" . "https://marmalade-repo.org/packages/")))
     (setq package-user-dir (concat user-emacs-directory "elpa/"))
     (setq package-archive-enable-alist '(("melpa" deft magit)))
     (package-initialize nil))
@@ -116,24 +117,24 @@
 (setenv "LC_CTYPE" "en_US.UTF-8")
 (setenv "LC_ALL" "en_US.UTF-8")
 
-(setq *my-path-list*
-      `("~/.nix-profile/bin"
-        "~/.nix-profile/sbin"
-        "/opt/"
-        "/opt/local/bin"
-        "/opt/local/sbin"
-        "/opt/X11/bin"
-        "/usr/local/bin"
-        "/usr/local/sbin"
-        "/usr/texbin"
-        "/usr/bin"
-        "/usr/sbin"
-        "/bin"
-        "/sbin"
-        ,(substitute-in-file-name "$HOME/Library/Haskell/bin") ; for hdevtools, ghc-mod
-        ,(substitute-in-file-name "$HOME/.local/bin")          ; stack install dir
-        "/Library/TeX/texbin"
-        ))
+(defconst *my-path-list*
+  `("~/.nix-profile/bin"
+    "~/.nix-profile/sbin"
+    "/opt/"
+    "/opt/local/bin"
+    "/opt/local/sbin"
+    "/opt/X11/bin"
+    "/usr/local/bin"
+    "/usr/local/sbin"
+    "/usr/texbin"
+    "/usr/bin"
+    "/usr/sbin"
+    "/bin"
+    "/sbin"
+    ,(substitute-in-file-name "$HOME/Library/Haskell/bin") ; for hdevtools, ghc-mod
+    ,(substitute-in-file-name "$HOME/.local/bin")          ; stack install dir
+    "/Library/TeX/texbin"
+    ))
 (setenv "NIX_PATH" (substitute-in-file-name "$HOME/.nix-defexpr/channels/nixpkgs/"))
 
 ;; Set PATHs for Unix-Based systems
