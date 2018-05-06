@@ -38,35 +38,24 @@
   :config
   (show-paren-mode 1))
 
+(use-package fixmee
+  :diminish
+  :defer t
+  :init
+  (add-hook 'prog-mode-hook #'fixmee-mode))
+
 (add-hook 'makefile-mode (lambda () (setq indent-tabs-mode t)))
 
 (add-hook 'prog-mode-hook
           (lambda()
-            ;;(matt/load-theme 'adwaita)
             (electric-indent-mode 1)    ; auto indent
-;            (linum-mode 1)
-;;            (show-paren-mode)
             (hl-line-mode 1)            ; highlight current line
-;;            (auto-fill-mode 1)
-            ;(flyspell-prog-mode)  ;; disabled, really slow...
-           ;; (flycheck-mode)
-           ;; (flycheck-pos-tip-mode)
-;;            (whitespace-mode)
             (subword-mode)
-            (fixmee-mode)
-            ;; (define-key ac-mode-map (kbd "<backtab>") 'auto-complete)
             (setq
-             ;; tabs are spaces unless specified
-             indent-tabs-mode nil
-             ;; also, ensure that tabs are 4 spc wide unless specified
-             tab-width 4
-
              flycheck-completion-system 'ido
-             show-paren-delay 0
              ;; enable multiline comments
              comment-multi-line t
              comment-auto-fill-only-comments t
-             grep-highlight-matches t   ; grep in colour
              )))
 
 ;;------------------------------------------------------------------------------
@@ -194,7 +183,7 @@
 (use-package lsp-mode
   :defer t
   :config
-  (add-hook lsp-mode-hook'lsp-ui-mode))
+  (add-hook lsp-mode-hook 'lsp-ui-mode))
 ;;(add-hook 'purescript-mode #'lsp-purescript-enable)
 
 ;;------------------------------------------------------------------------------

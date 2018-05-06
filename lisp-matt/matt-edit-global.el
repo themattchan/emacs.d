@@ -53,6 +53,7 @@
  ;; tab-stop-list (number-sequence 4 120 4)
  ;; highlight the whole expression when closing par ens
  ;; show-paren-style 'expression
+ show-paren-delay 0
 
  next-line-add-newlines nil             ; No newlines at end of buffer unless I hit return
  sentence-end-double-space nil          ; sentences end with one space only.

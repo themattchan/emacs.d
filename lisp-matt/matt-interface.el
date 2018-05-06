@@ -421,6 +421,7 @@
 (use-package grep
   :defer 5
   :config
+  (setq grep-highlight-matches t)   ; grep in colour
   (setq grep-find-ignored-files
         (append (mapcar #'(lambda (x) (concat "*" x)) my-globally-ignored-file-suffixes)
                 (append my-globally-ignored-files grep-find-ignored-files)))
@@ -462,8 +463,9 @@
 ;; anzu mode (show current & total matches in isearch)
 
 (use-package anzu
-  :demand t
   :diminish
+  :ensure t
+  :demand t
   :config
   (global-anzu-mode +1))
 
