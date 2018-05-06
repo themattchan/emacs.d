@@ -201,9 +201,6 @@
     (require config)
     (message "+ Loaded %s" config)))
 
-(message "Emacs started in %s." (emacs-init-time))
-
-
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; End:

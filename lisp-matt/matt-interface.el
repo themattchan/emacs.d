@@ -91,7 +91,8 @@
 
 ;; Redefine startup messasge
 (defun startup-echo-area-message ()
-  "By your command...")
+  ;;"By your command..."
+  (format "Emacs started in %s." (emacs-init-time)))
 
 ;; y/n prompts instead of yes/no
 (defalias 'yes-or-no-p 'y-or-n-p)
