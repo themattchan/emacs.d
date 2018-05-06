@@ -33,13 +33,15 @@
 
 (eval-and-compile
   (defun matt/install-my-packages ()
+    (interactive)
     (message "Installing required packages...")
     (package-refresh-contents)
     (dolist (pkg package-selected-packages)
       (when (not (package-installed-p pkg))
         (message "  + Installing package: %s" pkg)
         (ignore-errors
-          (package-install pkg))))))
+          (package-install pkg))))
+    (message "All required packages installed.")))
 
 ;; disable file handlers for startup
 (defvar file-name-handler-alist-old file-name-handler-alist)
