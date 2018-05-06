@@ -21,6 +21,17 @@
 
 ;;; Code:
 
+;; from John Wiegley's setup
+(setq message-log-max 16384
+      gc-cons-threshold 402653184
+      gc-cons-percentage 0.6)
+
+(add-hook 'after-init-hook
+          `(lambda ()
+             (setq gc-cons-threshold 800000
+                   gc-cons-percentage 0.1)
+             (garbage-collect)) t)
+
 (eval-and-compile
   (defun matt/recompile-settings ()
     (interactive)
@@ -42,10 +53,45 @@
 (defconst *is-windows* (member system-type '(ms-dos windows-nt cygwin)))
 
 ;;==============================================================================
+;; Packages
+;;==============================================================================
+
+(require 'package)
+(setq package-enable-at-startup nil)
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(setq package-archive-enable-alist '(("melpa" deft magit)))
+(package-initialize nil) ; no-activate
+
+(eval-and-compile
+  (defun matt/install-my-packages ()
+    (message "Installing required packages...")
+    (package-refresh-contents)
+    (dolist (pkg package-selected-packages) ; matt/packages)
+      (when (not (package-installed-p pkg))
+        (message "  + Installing package: %s" pkg)
+        (ignore-errors
+          (package-install pkg))))))
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(eval-when-compile (require 'cl))       ; use common lisp (macros only)
+(eval-when-compile
+  (add-to-list 'load-path (car (directory-files "~/.emacs.d/elpa" nil "use-package-*" nil)))
+  (require 'use-package)                  ; also provides bind-key
+  )
+
+(use-package diminish :ensure t)
+(use-package bind-key :ensure t)
+(use-package cl-lib :defer t)
+(use-package f :defer t)
+(use-package s :defer t)
+
+;;==============================================================================
 ;; Setup paths
 ;;==============================================================================
-(eval-when-compile (require 'cl))       ; use common lisp (macros only)
-(require 'cl-lib)
 
 (setenv "SHELL" "/bin/bash")
 (setenv "TERM" "xterm-256color")
@@ -97,51 +143,9 @@
 ;;       (load-file (concat  (file-name-as-directory default-directory) file))))
 ;;   (normal-top-level-add-to-load-path '("flycheck-liquidhs.el" "liquid-types.el")))
 
-;; customize.el settings location
+;; customize.el
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
-
-;;==============================================================================
-;; And packages
-;;==============================================================================
-
-(require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/") t)
-(setq package-archive-enable-alist '(("melpa" deft magit)))
-(package-initialize nil)
-
-(eval-and-compile
-  (defun matt/install-my-packages ()
-    (message "Installing required packages...")
-    (package-refresh-contents)
-    (dolist (pkg package-selected-packages) ; matt/packages)
-      (when (not (package-installed-p pkg))
-        (message "  + Installing package: %s" pkg)
-        (ignore-errors
-          (package-install pkg))))))
-
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-
-(eval-when-compile
-  (add-to-list 'load-path (car (directory-files "~/.emacs.d/elpa" nil "use-package-*" nil)))
-  (require 'use-package)                  ; also provides bind-key
-  )
-(use-package diminish :ensure t)
-(use-package bind-key :ensure t)
-
-;; from John Wiegley's setup
-(setq message-log-max 16384
-      gc-cons-threshold 402653184
-      gc-cons-percentage 0.6)
-
-(add-hook 'after-init-hook
-          `(lambda ()
-             (setq gc-cons-threshold 800000
-                   gc-cons-percentage 0.1)
-             (garbage-collect)) t)
 
 ;;==============================================================================
 ;; Now load my configs
@@ -156,9 +160,9 @@
          matt-elisp-func             ; Require first! Functions get used later
 
          ;; General interface settings
-         matt-keybindings            ; Fix Emacs annoyances
-         matt-interface              ; Fix Emacs annoyances
-         matt-edit-global            ; Tabs, fill, undo, ispell, UTF-8, backups
+         matt-keybindings
+         matt-interface
+         matt-edit-global
          matt-themes
 
          ;; Hooks for editing

@@ -23,13 +23,15 @@
 
 ;;------------------------------------------------------------------------------
 ;; Show time on the mode line
-(display-time)
+(use-package display-time
+  :defer 5
+  :config
+  (display-time))
 
 ;;------------------------------------------------------------------------------
 ;; Kill UI cruft
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-;; Want menu bar only in GUIs
 (when (not window-system) (menu-bar-mode -1))
 
 ;; No cursor blink
@@ -39,16 +41,13 @@
 ;; Load stuff
 (eval-when-compile (require 'cl))
 (use-package saveplace :defer t)
-
-;; dired jump to current file dir (C-x C-j)
-(use-package dired-x :defer t)
-
-(use-package uniquify :defer t)
+(use-package uniquify :defer 10)
 
 ;;------------------------------------------------------------------------------
 ;; Smart mode line
 (use-package smart-mode-line
   :config
+  (setq mode-line-format (delq 'mode-line-position mode-line-format))
   (sml/setup))
 ;; '(:eval (if (use-region-p)
 ;;     (format "%d"

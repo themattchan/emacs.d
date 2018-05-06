@@ -22,24 +22,23 @@
 ;;; Code:
 
 (setq lexical-binding t)
-;; the filesystem manipulation library
-(use-package f)
 
-(let ((themes (f-entries (f-join user-emacs-directory "themes")
-                         #'file-directory-p)))
-  (dolist (theme themes)
-    (add-to-list 'custom-theme-load-path theme)))
+;; (let ((themes (f-entries (f-join user-emacs-directory "themes")
+;;                          #'file-directory-p)))
+;;   (dolist (theme themes)
+;;     (add-to-list 'custom-theme-load-path theme)))
 
-(if (not (window-system))
-    (progn
-      ;; default theme on terminals
-      (load-theme 'wombat t)
-      (set-background-color "black"))
-  (load-theme 'badwolf t))              ; odersky
+(if (window-system)
+    (load-theme 'badwolf t) ; odersky
+  (progn
+    ;; default theme on terminals
+    (load-theme 'wombat t)
+    (set-background-color "black")))
 
 
 ;; TODO rewrite this using frame configurations
 ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Frames.html#Frames
+(eval-and-compile
 (defconst DEFAULT-FONT-SIZE (face-attribute 'default :height))
 
 (defun small-fonts ()
@@ -76,6 +75,7 @@
   (dotimes (_ 3) (split-window-right))
   (balance-windows)
   (maximize-frame))
+);; eval-and-compile
 
 (provide 'matt-themes)
 ;; Local Variables:
