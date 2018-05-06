@@ -349,8 +349,8 @@
 
      (*is-linux*
       (set-face-attribute 'default nil
-                          :font "Monospace-13"
-                          :height 150
+                          :font "Monospace-12"
+                          :height 120
                           :weight 'normal
                           :width 'normal))
 

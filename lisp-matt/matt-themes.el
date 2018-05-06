@@ -22,13 +22,13 @@
 ;;; Code:
 
 (setq lexical-binding t)
-(use-package f)                            ; the filesystem manipulation library
+;; the filesystem manipulation library
+(use-package f)
 
 (let ((themes (f-entries (f-join user-emacs-directory "themes")
                          #'file-directory-p)))
   (dolist (theme themes)
     (add-to-list 'custom-theme-load-path theme)))
-
 
 (if (not (window-system))
     (progn
