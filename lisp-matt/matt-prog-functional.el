@@ -27,7 +27,8 @@
   :defer t
   :load-path (lambda () (concat user-emacs-directory "lisp/PG/generic"))
   :mode ("\\.v\\'" . coq-mode)
-  :init (setq proof-splash-enable nil))
+  :init
+  (setq proof-splash-enable nil))
 
 (use-package coq
   :defer t
@@ -47,6 +48,10 @@
   :after (proof-site coq)
   :config
   (setq company-coq-disabled-features '(prettify-symbols)))
+
+;; Idris
+
+(setq idris-interpreter-path "/usr/local/bin/idris")
 
 ;;  Purescript
 
@@ -69,7 +74,6 @@
       (shell-command "purs docs --format etags \"*.purs\" \"src/**/*.purs\" \"bower_components/*/src/**/*.purs\" >! TAGS"))
     (load-project-tags)))
 
-(setq idris-interpreter-path "/usr/local/bin/idris")
 
 (provide 'matt-prog-functional)
 ;; Local Variables:

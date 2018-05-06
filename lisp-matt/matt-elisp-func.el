@@ -1,3 +1,4 @@
+;;; -*- byte-compile-dynamic: t -*-
 ;;; matt-elisp-func.el --- Emacs Lisp functions.
 
 ;;; Copyright (c) 2013-2015 Matthew Chan
