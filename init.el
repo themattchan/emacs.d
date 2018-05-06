@@ -32,8 +32,20 @@
     ))
 
 (eval-and-compile
+  (defsubst matt/initialise-packages ()
+    (require 'package)
+    (setq package-enable-at-startup nil)
+    (setq package-archives
+          '(("melpa" . "https://melpa.org/packages/")
+            ("gnu" . "https://elpa.gnu.org/packages/")))
+    (setq package-user-dir (concat user-emacs-directory "elpa/"))
+    (setq package-archive-enable-alist '(("melpa" deft magit)))
+    (package-initialize nil))
+
   (defun matt/install-my-packages ()
     (interactive)
+    (message "Initialising package.el...")
+    (matt/initialise-packages)
     (message "Installing required packages...")
     (package-refresh-contents)
     (dolist (pkg package-selected-packages)
@@ -78,14 +90,7 @@
 ;; (let ((default-directory "~/.emacs.d/elpa"))
 ;;   (normal-top-level-add-subdirs-to-load-path))
 ;; TODO defer this
-(require 'package)
-(setq package-enable-at-startup nil)
-(setq package-archives
-      '(("melpa" . "https://melpa.org/packages/")
-        ("gnu" . "https://elpa.gnu.org/packages/")))
-(setq package-user-dir (concat user-emacs-directory "elpa/"))
-(setq package-archive-enable-alist '(("melpa" deft magit)))
-(package-initialize nil)
+(matt/initialise-packages)
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
