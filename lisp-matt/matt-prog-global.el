@@ -20,6 +20,7 @@
 ;;; Commentary:
 
 ;;; Code:
+(eval-when-compile (require 'use-package))
 
 (use-package auto-fill
   :diminish
@@ -31,7 +32,7 @@
 
 (use-package paren
   :diminish
-  :demand t
+  :defer 1
   ;; :hook ((prog-mode . 'show-paren-mode)
   ;;        (text-mode . 'show-paren-mode))
   :config

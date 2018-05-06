@@ -28,6 +28,8 @@
 ;; likewise, to unbind a key from a map, (unbind-key <key> &<map>)
 
 ;;; Code:
+(eval-when-compile (require 'use-package))
+(eval-when-compile (require 'bind-key))
 (require 'bind-key)
 
 (setq lexical-binding t)

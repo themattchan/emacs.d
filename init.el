@@ -23,21 +23,21 @@
 
 ;; from John Wiegley's setup
 (setq message-log-max 16384
-      gc-cons-threshold 402653184
+      gc-cons-threshold 500000000       ; 500mb
       gc-cons-percentage 0.6)
 
 (add-hook 'after-init-hook
           `(lambda ()
-             (setq gc-cons-threshold 800000
+             (setq gc-cons-threshold 50000000 ; 50mb
                    gc-cons-percentage 0.1)
              (garbage-collect)) t)
 
 (eval-and-compile
   (defun matt/recompile-settings ()
     (interactive)
-    (byte-recompile-file "~/.emacs.d/init.el" 0)
-    (byte-recompile-file "~/.emacs.d/custom-24.el" 0)
-    (byte-recompile-directory "~/.emacs.d/lisp-matt" 0)
+    (byte-recompile-file "~/.emacs.d/init.el" t 0)
+    (byte-recompile-file "~/.emacs.d/custom.el" t 0)
+    (byte-recompile-directory "~/.emacs.d/lisp-matt/" 0 t)
     (load-file user-init-file)
     ))
 
@@ -55,13 +55,16 @@
 ;;==============================================================================
 ;; Packages
 ;;==============================================================================
+(setq load-prefer-newer t)           ; Load latest bytecode
 
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+             '(("melpa" . "http://melpa.org/packages/")
+               ("gnu" . "httpL//elpa.gnu.org/packages/")))
+(setq package-user-dir (concat user-emacs-directory "elpa/"))
 (setq package-archive-enable-alist '(("melpa" deft magit)))
-(package-initialize nil) ; no-activate
+(package-initialize nil)
 
 (eval-and-compile
   (defun matt/install-my-packages ()
@@ -80,14 +83,17 @@
 (eval-when-compile (require 'cl))       ; use common lisp (macros only)
 (eval-when-compile
   (add-to-list 'load-path (car (directory-files "~/.emacs.d/elpa" nil "use-package-*" nil)))
-  (require 'use-package)                  ; also provides bind-key
-  )
+  ;; also provides bind-key
+  (require 'use-package))
 
-(use-package diminish :ensure t)
-(use-package bind-key :ensure t)
-(use-package cl-lib :defer t)
-(use-package f :defer t)
-(use-package s :defer t)
+(setq use-package-always-ensure nil)
+(setq use-package-always-defer t)
+
+(use-package diminish :ensure t :demand t :defer nil)
+(use-package bind-key :ensure t :demand t :defer nil)
+(use-package cl-lib :ensure t)
+(use-package f :ensure t)      ; filesystem utils
+(use-package s :ensure t)      ; string utils
 
 ;;==============================================================================
 ;; Setup paths
@@ -150,7 +156,6 @@
 ;;==============================================================================
 ;; Now load my configs
 ;;==============================================================================
-(setq load-prefer-newer t)           ; Load latest bytecode
 (let ((private "~/.emacs.d/private.el"))
   (when (file-exists-p private)
     (load-file private)))

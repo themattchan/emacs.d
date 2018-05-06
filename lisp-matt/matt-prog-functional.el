@@ -20,6 +20,7 @@
 ;;; Commentary:
 
 ;;; Code:
+(eval-when-compile (require 'use-package))
 
 ;; Proof General and Coq
 (use-package proof-site

@@ -23,11 +23,6 @@
 
 (setq lexical-binding t)
 
-;; (let ((themes (f-entries (f-join user-emacs-directory "themes")
-;;                          #'file-directory-p)))
-;;   (dolist (theme themes)
-;;     (add-to-list 'custom-theme-load-path theme)))
-
 (if (window-system)
     (load-theme 'badwolf t) ; odersky
   (progn

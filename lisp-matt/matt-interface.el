@@ -136,6 +136,7 @@
   :bind
   (:map minibuffer-local-map
         ("C-c C-l" . helm-minibuffer-history))
+
   :bind
   (;; help
    ("C-h a"     . helm-apropos)
@@ -149,7 +150,6 @@
    ("s-F"       . helm-occur)
 
    ;; rebind common keys, searching + browsing
-   ("C-c h"     . helm-command-prefix)
    ("M-x"       . helm-M-x)
    ("M-y"       . helm-show-kill-ring)
    ("C-x b"     . helm-mini)
@@ -158,8 +158,10 @@
    ("C-x C-d"   . helm-browse-project)
 
    ("C-h SPC"   . helm-all-mark-rings)
-   ("C-c h M-:" . helm-eval-expression-with-eldoc)
-   ("C-c h o"   . helm-occur)
+
+   ;; ("C-c h"     . helm-command-prefix)
+   ;; ("C-c h M-:" . helm-eval-expression-with-eldoc)
+   ;; ("C-c h o"   . helm-occur)
 
    ;; helm-projectile
    ;; ("C-c p f"   . helm-projectile-find-file)
