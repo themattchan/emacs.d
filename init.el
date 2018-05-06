@@ -28,7 +28,7 @@
     (byte-recompile-file "~/.emacs.d/init.el" t 0)
     (byte-recompile-file "~/.emacs.d/custom.el" t 0)
     (byte-recompile-directory "~/.emacs.d/lisp-matt/" 0 t)
-    (load-file user-init-file)
+    (load user-init-file)
     ))
 
 (eval-and-compile
@@ -39,8 +39,7 @@
     (dolist (pkg package-selected-packages)
       (when (not (package-installed-p pkg))
         (message "  + Installing package: %s" pkg)
-        (ignore-errors
-          (package-install pkg))))
+        (ignore-errors (package-install pkg))))
     (message "All required packages installed.")))
 
 ;; disable file handlers for startup
