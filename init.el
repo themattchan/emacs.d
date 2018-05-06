@@ -104,30 +104,31 @@
 ;;==============================================================================
 
 (require 'package)
-
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (setq package-archive-enable-alist '(("melpa" deft magit)))
-(package-initialize)
+(package-initialize nil)
 
-(defun matt/install-my-packages ()
-  (message "Installing required packages...")
-  (package-refresh-contents)
-  (dolist (pkg package-selected-packages) ; matt/packages)
-    (when (not (package-installed-p pkg))
-      (message "  + Installing package: %s" pkg)
-      (ignore-errors
-        (package-install pkg)))))
+(eval-and-compile
+  (defun matt/install-my-packages ()
+    (message "Installing required packages...")
+    (package-refresh-contents)
+    (dolist (pkg package-selected-packages) ; matt/packages)
+      (when (not (package-installed-p pkg))
+        (message "  + Installing package: %s" pkg)
+        (ignore-errors
+          (package-install pkg))))))
 
 (unless (package-installed-p 'use-package)
+  (package-refresh-contents)
   (package-install 'use-package))
 
 (eval-when-compile
   (add-to-list 'load-path (car (directory-files "~/.emacs.d/elpa" nil "use-package-*" nil)))
   (require 'use-package)                  ; also provides bind-key
   )
-(require 'diminish)
-(require 'bind-key)
+(use-package diminish :ensure t)
+(use-package bind-key :ensure t)
 
 ;; from John Wiegley's setup
 (setq

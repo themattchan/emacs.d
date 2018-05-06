@@ -24,12 +24,18 @@
 (use-package auto-fill
   :diminish
   :defer 5
-  :hook (prog-mode text-mode))
+  :commands auto-fill-mode
+  :init
+  (add-hook 'prog-mode-hook #'auto-fill-mode)
+  (add-hook 'text-mode #'auto-fill-mode))
 
-(use-package show-paren
+(use-package paren
   :diminish
-  :defer 5
-  :hook prog-mode)
+  :demand t
+  ;; :hook ((prog-mode . 'show-paren-mode)
+  ;;        (text-mode . 'show-paren-mode))
+  :config
+  (show-paren-mode 1))
 
 (add-hook 'prog-mode-hook
           (lambda()
@@ -40,8 +46,8 @@
             (hl-line-mode 1)            ; highlight current line
 ;;            (auto-fill-mode 1)
             ;(flyspell-prog-mode)  ;; disabled, really slow...
-;;            (flycheck-mode)
-;;            (flycheck-pos-tip-mode)
+           ;; (flycheck-mode)
+           ;; (flycheck-pos-tip-mode)
 ;;            (whitespace-mode)
             (subword-mode)
             (fixmee-mode)
@@ -63,17 +69,12 @@
 ;;------------------------------------------------------------------------------
 ;; flycheck
 
-(use-package flycheck-pos-tip
-  :diminish
-  :defer t
-  :after flycheck
-  :config
-  (flycheck-pos-tip-mode))
-
 (use-package flycheck
   :diminish
+  :ensure t
   :defer t
-  :hook prog-mode
+  :commands (flycheck-mode)
+  :hook (prog-mode . flycheck-mode)
   :config
   ;; pos-tip on click
   (setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages)
@@ -81,12 +82,12 @@
   (setq flycheck-display-errors-delay 2)   ; seconds
   (setq flycheck-idle-change-delay 30) ; seconds
   (setq flycheck-check-syntax-automatically '(mode-enabled save idle-change))
+
   (add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode)
   (add-hook 'flycheck-mode-hook 'flycheck-pos-tip-mode)
 
   (setq-default flycheck-disabled-checkers
-                '(javascript-jshint
-                  emacs-lisp-checkdoc))
+                '(javascript-jshint emacs-lisp-checkdoc))
 
   (flycheck-add-mode 'javascript-eslint 'web-mode)
 
@@ -108,6 +109,13 @@
                       :underline "ForestGreen")
   )
 
+(use-package flycheck-pos-tip
+  :diminish
+  :defer t
+  :after flycheck
+  :config
+  (flycheck-pos-tip-mode))
+
 ;;------------------------------------------------------------------------------
 ;; No auto-indent
 (let ((whitespace-langs '(python-mode
@@ -125,22 +133,11 @@
   :diminish
   :defer t
   :bind (("C-x t w" . 'toggle-whitespace-mode))
-  :hook (prog-mode)
-  :config
+  ;; :hook (prog-mode )
+  :init
   (defvar only-trailing-whitespace-style '(face lines-tail))
   (defvar whitespace-show-all-mode nil)
-  (setq
-   ;; highlight 80 char overflows
-   whitespace-line-column fill-column
-   whitespace-style only-trailing-whitespace-style)
 
-
-  (setq whitespace-display-mappings
-        '((space-mark   32 [183] [46])
-          (newline-mark 10 [182 10])      ; pilcrow
-          (tab-mark     9  [9655 9 ] [92 9])))
-
-  ;; adapted from  https://github.com/expez/.emacs.d/blob/master/init-whitespace.el
   (defun* toggle-whitespace-mode ()
     "Toggles whitespace modes between modes where some whitespace
    is highligted and all whitespace is highlighted.
@@ -172,28 +169,22 @@
       (whitespace-mode 0)
       (whitespace-mode 1)
       (message "Highlighting all whitespace")))
-  )
+
+  :config
+  (setq
+   ;; highlight 80 char overflows
+   whitespace-line-column fill-column
+   whitespace-style only-trailing-whitespace-style)
 
 
-;;------------------------------------------------------------------------------
-;; column width
-;; ring of line lengths
-;; (defvar line-lens (make-ring 5))
-;; (mapc (lambda (obj) (ring-insert line-lens obj))
-;;       (reverse '(80 100 120)))          ; rotate properly
+  (setq whitespace-display-mappings
+        '((space-mark   32 [183] [46])
+          (newline-mark 10 [182 10])      ; pilcrow
+          (tab-mark     9  [9655 9 ] [92 9])))
 
-;; ;; rotate through line lengths
-;; (defun toggle-line-length ()
-;;   "Change from 80 to 100 chars and v.v."
-;;   (interactive)
-;;   (let ((next-line-len (ring-ref line-lens
-;;                                  (+ 1 (ring-ref line-lens fill-column)))))
-;;       (set-fill-column next-line-len)
-;;       (setq whitespace-line-column next-line-len)
-;;       (whitespace-mode 0)
-;;       (whitespace-mode 1)))
+  ;; adapted from  https://github.com/expez/.emacs.d/blob/master/lisp/init-whitespace.el
 
-;; (global-set-key (kbd "C-x t l") 'toggle-line-length)
+  ) ;; use-package whitespace
 
 ;;------------------------------------------------------------------------------
 ;; Language server protocol
@@ -201,64 +192,27 @@
 (add-hook 'lsp-mode-hook 'lsp-ui-mode)
 (add-hook 'purescript-mode #'lsp-purescript-enable)
 
-
-;;------------------------------------------------------------------------------
-;; auto guess tabs or spaces
-;; (autoload 'prog-mode "guess-style" "guess-style.el." t)
-;;  (add-hook 'prog-mode-hook guess-style-guess-tabs-mode)
-;;    (add-hook 'prog-mode-hook (lambda ()
-;;                                   (when indent-tabs-mode
-;;                                     (guess-style-guess-tab-width)))
-
-;; compilation
-;; Get compilation to understand javac/ant errors
-;; (eval-after-load "compile"
-;;   '(setq compilation-error-regexp-alist
-;;          (append (list
-;;                   ;; works for jikes
-;;                   '("^\\s-*\\[[^]]*\\]\\s-*\\(.+\\):\\([0-9]+\\):\\([0-9]+\\):[0-9]+:[0-9]+:" 1 2 3)
-;;                   ;; works for javac
-;;                   '("^\\s-*\\[[^]]*\\]\\s-*\\(.+\\):\\([0-9]+\\):" 1 2))
-;;                  compilation-error-regexp-alist)))
-
-;;(global-set-key (kbd "TAB") 'self-insert-command)
-
-;;------------------------------------------------------------------------------
-;; ctags
-;; doesn't work on mac, xcode hijacks the path to macports ctags
-;; (defun create-tags (dir-name)
-;;   "Create tags file."
-;;   (interactive "Directory: ")
-;;   (shell-command
-;;    (format "/opt/local/bin/ctags -e -R %s" (directory-file-name dir-name)))
-;;   )
-
-;;------------------------------------------------------------------------------
-;; use etags
-;; (defun create-tags (dir-name)
-;;   "Create tags file."
-;;   (interactive "Directory: ")
-;;   (eshell-command
-;;    (format "find %s -type f -name \"*.[ch]\" | etags -" dir-name)))
-
 ;;------------------------------------------------------------------------------
 ;; Emacs code browser
-;; (require 'ecb)
+(use-package ecb
+  :defer t
+  :bind
+  (("C-x C-;" . ecb-activate)
+   ("C-x C-'" . ecb-deactivate)
+   ;; show/hide ecb window
+   ("C-;" . ecb-show-ecb-windows)
+   ("C-'" . ecb-hide-ecb-windows)
+   ;; quick navigation between ecb windows
+   ("C-)" . ecb-goto-window-edit1)
+   ("C-!" . ecb-goto-window-directories)
+   ("C-@" . ecb-goto-window-sources)
+   ("C-#" . ecb-goto-window-methods)
+   ("C-$" . ecb-goto-window-compilation))
 
-;; ;;; activate and deactivate ecb
-;; (setq ecb-show-sources-in-directories-buffer 'always)
-;; (setq ecb-compile-window-height 12)
-;; (global-set-key (kbd "C-x C-;") 'ecb-activate)
-;; (global-set-key (kbd "C-x C-'") 'ecb-deactivate)
-;; ;;; show/hide ecb window
-;; (global-set-key (kbd "C-;") 'ecb-show-ecb-windows)
-;; (global-set-key (kbd "C-'") 'ecb-hide-ecb-windows)
-;; ;;; quick navigation between ecb windows
-;; (global-set-key (kbd "C-)") 'ecb-goto-window-edit1)
-;; (global-set-key (kbd "C-!") 'ecb-goto-window-directories)
-;; (global-set-key (kbd "C-@") 'ecb-goto-window-sources)
-;; (global-set-key (kbd "C-#") 'ecb-goto-window-methods)
-;; (global-set-key (kbd "C-$") 'ecb-goto-window-compilation)
+  :config
+  ;; activate and deactivate ecb
+  (setq ecb-show-sources-in-directories-buffer 'always)
+  (setq ecb-compile-window-height 12))
 
 (provide 'matt-prog-global)
 ;; Local Variables:

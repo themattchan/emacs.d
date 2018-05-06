@@ -24,16 +24,20 @@
 
 ;; Scala
 ;; scala2-mode handles tabs to 2 spaces by default
-(add-to-list 'auto-mode-alist '("\.scala" . scala-mode) '("\.sbt\'" . scala-mode))
-
-(add-hook 'scala-mode-hook
-          (lambda ()
-             (local-set-key (kbd "RET")
-                 '(lambda ()
-                    (interactive)
-                    (newline-and-indent)
-                    (scala-indent:insert-asterisk-on-multiline-comment)))
-))
+(use-package scala-mode
+  :defer t
+  :mode
+  (("\.scala" . scala-mode)
+   ("\.sbt\'" . scala-mode))
+  :config
+  (add-hook 'scala-mode-hook
+            (lambda ()
+              (local-set-key (kbd "RET")
+                             '(lambda ()
+                                (interactive)
+                                (newline-and-indent)
+                                (scala-indent:insert-asterisk-on-multiline-comment)))
+              )))
 
 ;; Python
 (use-package python-mode

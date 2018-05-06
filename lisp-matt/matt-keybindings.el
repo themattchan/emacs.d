@@ -195,8 +195,8 @@
 ;; (cua-selection-mode 1)
 
 ;; avy
-(avy-setup-default)
-(global-set-key (kbd "C-'") 'avy-goto-char-timer)
+;; (avy-setup-default)
+;; (global-set-key (kbd "C-'") 'avy-goto-char-timer)
 
 ;; jump buffers
 
@@ -207,7 +207,11 @@
     (bind-key (kbd (format "<S-f%d>" i)) (lambda () (interactive) (point-to-register i)))))
 
 ;; magit
-(bind-key "C-x C-g" 'magit-status)
+(use-package magit
+  :defer 10
+  :bind
+  ("C-x C-g" . magit-status))
+
 (bind-key "s-." 'find-tag-other-window)
 
 (provide 'matt-keybindings)

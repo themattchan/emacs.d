@@ -29,150 +29,158 @@
 
 ;;; Code:
 
-(defun matt/c-indent (width tabs)
-  ;; use setq-local, its supposedly more hygienic
-  ;; set correct backspace behaviour.
-  (setq-local c-backspace-function 'backward-delete-char)
+(eval-and-compile
+  (defun matt/c-indent (width tabs)
+    ;; use setq-local, its supposedly more hygienic
+    ;; set correct backspace behaviour.
+    (setq-local c-backspace-function 'backward-delete-char)
 
-  ;; c-type lang specifics. want 4-space width tab tabs
-  (setq-local c-basic-offset width)
-  (setq-local tab-width width)
-  ;; (setq-local c-indent-level 4)
+    ;; c-type lang specifics. want 4-space width tab tabs
+    (setq-local c-basic-offset width)
+    (setq-local tab-width width)
+    ;; (setq-local c-indent-level 4)
 
-  ;;(setq-local c-indent-tabs-mode t)           ; tabs please
-  (setq-local c-tab-always-indent tabs)          ; t for tabs, nil for spaces
-  (setq-local indent-tabs-mode tabs)
+    ;;(setq-local c-indent-tabs-mode t)           ; tabs please
+    (setq-local c-tab-always-indent tabs)          ; t for tabs, nil for spaces
+    (setq-local indent-tabs-mode tabs)
 
-  ;;(setq-local tab-stop-list (number-sequence 8 120 8))
-  )
+    ;;(setq-local tab-stop-list (number-sequence 8 120 8))
+    ))
+
+(use-package cc-mode
+  :defer t
+  :init
+  ;;------------------------------------------------------------------------------
+  ;; c-initialization-hook, run once on cc-mode init
+  ;; (add-hook 'c-initialization-hook )
+
+  ;;------------------------------------------------------------------------------
+  ;; c-mode-common-hook, run before lang hooks
+  (add-hook 'c-mode-common-hook
+            (lambda ()
+              ;; (add-to-list 'ac-sources 'ac-source-c-headers)
+              ;; (add-to-list 'ac-sources 'ac-source-c-header-symbols t)
+
+              ;;            (matt/c-indent)
+
+              (add-to-list 'c-cleanup-list 'comment-close-slash)
+
+              (setq c-default-style '((c-mode    . "linux")
+                                      (c++-mode  . "stroustrup")
+                                      (java-mode . "java")
+                                      (awk-mode  . "awk")
+                                      (other     . "free-group-style")))
+
+              ;; (setq show-paren-style 'expression) ; highlight blocks
+
+              ;; use /law
+              (c-toggle-electric-state 1)
+              ;;(c-toggle-auto-newline 0)
+
+              ;; subword editing and movement to deal with CamelCase
+              (subword-mode 1)
+
+              ;; changed my mind, this is annoying as hell
+              (electric-pair-mode 0)
+
+              ;; Do real-time syntax highlighting, not the delayed stuff.
+              (setq font-lock-support-mode 'jit-lock-mode)
+              ;;(setq lazy-lock-defer-contextually t)
+              ;;(setq lazy-lock-defer-time 0)
+
+              ;; Left-align all pound defines
+              (setq c-electric-pound-behavior '(alignleft))
+
+              ;; Don't force indentation of labels to be 1.
+              (setq c-label-minimum-indentation 0)))
 
 
-;;------------------------------------------------------------------------------
-;; c-initialization-hook, run once on cc-mode init
-;; (add-hook 'c-initialization-hook )
-
-;;------------------------------------------------------------------------------
-;; c-mode-common-hook, run before lang hooks
-(add-hook 'c-mode-common-hook
-          (lambda ()
-            ;; (add-to-list 'ac-sources 'ac-source-c-headers)
-            ;; (add-to-list 'ac-sources 'ac-source-c-header-symbols t)
-
-            ;;            (matt/c-indent)
-
-            (add-to-list 'c-cleanup-list 'comment-close-slash)
-
-            (setq c-default-style '((c-mode    . "linux")
-                                    (c++-mode  . "stroustrup")
-                                    (java-mode . "java")
-                                    (awk-mode  . "awk")
-                                    (other     . "free-group-style")))
-
-            ;; (setq show-paren-style 'expression) ; highlight blocks
-
-            ;; use /law
-            (c-toggle-electric-state 1)
-            ;;(c-toggle-auto-newline 0)
-
-            ;; subword editing and movement to deal with CamelCase
-            (subword-mode 1)
-
-            ;; changed my mind, this is annoying as hell
-            (electric-pair-mode 0)
-
-            ;; Do real-time syntax highlighting, not the delayed stuff.
-            (setq font-lock-support-mode 'jit-lock-mode)
-            ;;(setq lazy-lock-defer-contextually t)
-            ;;(setq lazy-lock-defer-time 0)
-
-            ;; Left-align all pound defines
-            (setq c-electric-pound-behavior '(alignleft))
-
-            ;; Don't force indentation of labels to be 1.
-            (setq c-label-minimum-indentation 0)))
-
-;;------------------------------------------------------------------------------
-;; Assembly
-(add-hook 'asm-mode-hook
-          (lambda ()
-            (auto-complete-mode 0)
-            ;; for SPARC asm
-            (when (string-equal "s" (file-name-extension (buffer-name)))
-              (setq-local asm-comment-char ?\!))
-            (setq-local tab-width 8)
-            (setq-local tab-stop-list (number-sequence 8 120 8))
-            (setq-local indent-tabs-mode t)))
-
-;;------------------------------------------------------------------------------
-;; C
+  ;;------------------------------------------------------------------------------
+  ;; C
                                         ;(autoload 'ac-c-headers "ac-c-headers")
-(add-hook 'c-mode-hook (lambda () (matt/c-indent 8 t)))
+  (add-hook 'c-mode-hook (lambda () (matt/c-indent 8 t)))
 
-;;------------------------------------------------------------------------------
-;; C++
-(add-hook 'c++-mode-hook
-          (lambda ()
-            (matt/c-indent 2 nil)
-            (c-set-offset 'statement-case-open 0)
-            ;; don't indent curly for if...
-            (c-set-offset 'substatement-open 0)
-            ;; don't indent curly for inline method def
-            (c-set-offset 'inline-open 0)
-            (setq-default flycheck-gcc-language-standard "c++11"
-                          flycheck-clang-language-standard "c++11")
-            ))
+  ;;------------------------------------------------------------------------------
+  ;; C++
+  (add-hook 'c++-mode-hook
+            (lambda ()
+              (matt/c-indent 2 nil)
+              (c-set-offset 'statement-case-open 0)
+              ;; don't indent curly for if...
+              (c-set-offset 'substatement-open 0)
+              ;; don't indent curly for inline method def
+              (c-set-offset 'inline-open 0)
+              (setq-default flycheck-gcc-language-standard "c++11"
+                            flycheck-clang-language-standard "c++11")
+              ))
 
-(add-hook 'protobuf-mode-hook
-            (lambda () (matt/c-indent 2 nil)))
-
-;;------------------------------------------------------------------------------
-;; Java
+  ;;------------------------------------------------------------------------------
+  ;; Java
                                         ;(autoload 'jtags-mode "jtags" "Toggle jtags mode." t)
                                         ;(require 'eclim)
                                         ;(require 'eclimd)
 
 
-;; (defvar eclimd-port nil
-;;   "The active eclimd port number")
+  ;; (defvar eclimd-port nil
+  ;;   "The active eclimd port number")
 
-(custom-set-variables
- '(eclim-eclipse-dirs '("/Applications/eclipse"))
- '(eclim-executable "/Applications/eclipse/eclim"))
+  ;; (custom-set-variables
+  ;;  '(eclim-eclipse-dirs '("/Applications/eclipse"))
+  ;;  '(eclim-executable "/Applications/eclipse/eclim"))
 
-;; add the emacs-eclim source
-;; (require 'ac-emacs-eclim-source)
-;; (ac-emacs-eclim-config)
-                                        ;
-(defun matt/java-hooks ()
-  ;; Treat Java 1.5 @-style annotations as comments.
-  (setq c-comment-start-regexp "(@|/(/|[*][*]?))")
-  (modify-syntax-entry ?@ "< b" java-mode-syntax-table)
+  ;; add the emacs-eclim source
+  ;; (require 'ac-emacs-eclim-source)
+  ;; (ac-emacs-eclim-config)
 
-  (jtags-mode)
+  (defun matt/java-hooks ()
+    ;; Treat Java 1.5 @-style annotations as comments.
+    (setq c-comment-start-regexp "(@|/(/|[*][*]?))")
+    (modify-syntax-entry ?@ "< b" java-mode-syntax-table)
+
+    (jtags-mode)
                                         ; (eclim-mode)
                                         ;  (setq eclim-auto-save t)
 
-  ;; Don't newline open curly
-  (setq c-hanging-braces-alist
-        (append '((defun-open after)
-                  (defun-close before after)
-                  (class-open after)
-                  (class-close before after)
-                  (namespace-open after)
-                  (inline-open after)
-                  (inline-close before after)
-                  (block-open after)
-                  (block-close . c-snug-do-while)
-                  (extern-lang-open after)
-                  (extern-lang-close after)
-                  (statement-case-open after)
-                  (substatement-open after))
-                'c-hanging-braces-alist)))
+    ;; Don't newline open curly
+    (setq c-hanging-braces-alist
+          (append '((defun-open after)
+                    (defun-close before after)
+                    (class-open after)
+                    (class-close before after)
+                    (namespace-open after)
+                    (inline-open after)
+                    (inline-close before after)
+                    (block-open after)
+                    (block-close . c-snug-do-while)
+                    (extern-lang-open after)
+                    (extern-lang-close after)
+                    (statement-case-open after)
+                    (substatement-open after))
+                  'c-hanging-braces-alist)))
 
 
-(add-hook 'java-mode-hook 'matt/java-hooks)
-(add-hook 'java-mode-hook (lambda () (matt/c-indent 4)))
-(add-hook 'java-mode-hook (lambda ()  (c-set-offset 'substatement-open 0)))
+  (add-hook 'java-mode-hook 'matt/java-hooks)
+  (add-hook 'java-mode-hook (lambda () (matt/c-indent 4)))
+  (add-hook 'java-mode-hook (lambda ()  (c-set-offset 'substatement-open 0)))
+  );; use-package cc-mode
+
+;;------------------------------------------------------------------------------
+;; Assembly
+(use-package asm-mode
+  :defer t
+  :config
+  (auto-complete-mode 0)
+  ;; for SPARC asm
+  (when (string-equal "s" (file-name-extension (buffer-name)))
+    (setq-local asm-comment-char ?\!))
+  (setq-local tab-width 8)
+  (setq-local tab-stop-list (number-sequence 8 120 8))
+  (setq-local indent-tabs-mode t))
+
+(use-package protobuf-mode
+  :defer t
+  :config
+  (matt/c-indent 2 nil))
 
 (provide 'matt-prog-cc)
 ;; Local Variables:

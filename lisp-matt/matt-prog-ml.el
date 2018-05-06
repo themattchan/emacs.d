@@ -27,23 +27,21 @@
 ;; OCaml
 ;; ----------------------------------------------------------------------
 
-(add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)
-(setq auto-mode-alist
-      (append '(("\\.ml[ily]?$" . tuareg-mode)
-                ("\\.topml$" . tuareg-mode))
-              auto-mode-alist))
 (add-to-list 'auto-mode-alist '("\\.mll\\'" . sml-lex-mode))
 (add-to-list 'auto-mode-alist '("\\.mly\\'" . sml-yacc-mode))
 
 ;(autoload 'utop-setup-ocaml-buffer "utop" "Toplevel for OCaml" t)
 ;(add-hook 'tuareg-mode-hook 'utop-setup-ocaml-buffer)
-(setq merlin-error-after-save nil)
 
 
 (use-package tuareg
   :diminish "λOCaml"
+  :mode (("\\.ml[ily]?$" . tuareg-mode)
+         ("\\.topml$" . tuareg-mode))
   :config
-  (add-hook 'tuareg-mode-hook (lambda ()  (setq indent-tabs-mode nil))))
+  (add-hook 'tuareg-mode-hook (lambda ()  (setq indent-tabs-mode nil)))
+  (add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)
+  (add-hook 'tuareg-mode-hook 'merlin-mode t))
 (use-package camldebug :after tuareg)
 
 
@@ -51,14 +49,16 @@
 ;(setq opam-share (substring (shell-command-to-string "opam config var share 2> /dev/null") 0 -1))
 ;(add-to-list 'load-path (concat (file-name-directory opam-share) "/emacs/site-lisp"))
 ;; Load merlin-mode
-(use-package merlin)
-;; Start merlin on ocaml files
-(add-hook 'tuareg-mode-hook 'merlin-mode t)
+(use-package merlin
+  :defer t
+  :config
+  (setq merlin-error-after-save nil)
+  ;; Enable auto-complete
+  (setq merlin-use-auto-complete-mode 'easy)
+  ;; Use opam switch to lookup ocamlmerlin binary
+  (setq merlin-command 'opam))
+
 (add-hook 'caml-mode-hook 'merlin-mode t)
-;; Enable auto-complete
-(setq merlin-use-auto-complete-mode 'easy)
-;; Use opam switch to lookup ocamlmerlin binary
-(setq merlin-command 'opam)
 
 
 ;; (with-eval-after-load 'merlin
@@ -71,8 +71,11 @@
 ;; F#
 ;; ----------------------------------------------------------------------
 
-(setq inferior-fsharp-program "/usr/local/bin/fsharpi --readline-")
-(setq fsharp-compiler "/usr/local/bin/fsharpc")
+(use-package fsharp-mode
+  :defer t
+  :config
+  (setq inferior-fsharp-program "/usr/local/bin/fsharpi --readline-")
+  (setq fsharp-compiler "/usr/local/bin/fsharpc"))
 
 
 (provide 'matt-prog-ml)

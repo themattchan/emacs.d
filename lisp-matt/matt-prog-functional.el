@@ -60,15 +60,28 @@
 
 ;; Proof General and Coq
 ;; TODO: autoload
-(if *is-mac* (setq coq-prog-name "/usr/local/bin/coqtop"))
+(use-package proof-site
+  ;;  :defer t
+  :load-path (lambda () (concat user-emacs-directory "lisp/PG/generic"))
+  :mode ("\\.v\\'" . coq-mode)
+  :init (setq proof-splash-enable nil))
+(use-package company-coq
+  :commands (company-coq-mode)
+  :init (add-hook 'coq-mode-hook 'company-coq-mode t)
+  :config
+  (setq company-coq-disabled-features '(prettify-symbols)))
+(use-package coq
+  :defer t
+  :config
+  (if *is-mac* (setq coq-prog-name "/usr/local/bin/coqtop"))
 
-(setq coq-default-undo-limit 10000)
-(setq proof-general-directory "~/.emacs.d/lisp/PG")
-(setq company-coq-disabled-features '(prettify-symbols))
+  (setq coq-default-undo-limit 10000)
+  ;;    (setq proof-general-directory "~/.emacs.d/lisp/PG")
+  )
 
-(if (file-accessible-directory-p proof-general-directory)
-    (load (concat (file-name-as-directory proof-general-directory)
-                  "generic/proof-site")))
+;; (if (file-accessible-directory-p proof-general-directory)
+;;     (load (concat (file-name-as-directory proof-general-directory)
+;;                   "generic/proof-site")))
 
 ;;(add-hook 'coq-mode-hook #'company-coq-mode)
 

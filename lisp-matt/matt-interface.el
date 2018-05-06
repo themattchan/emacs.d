@@ -82,9 +82,10 @@
 ;; https://github.com/bryangarza/dot-emacs/blob/master/bryan/bryan-helm.el
 (use-package helm
   :diminish
+  :defer 2
   :init
   (progn
-    (require 'helm-config)
+    (use-package helm-config)
     (when (executable-find "curl")
       (setq helm-net-prefer-curl t))
     (setq
@@ -113,11 +114,6 @@
      helm-imenu-fuzzy-match                t
      helm-lisp-fuzzy-completion            t)
 
-    (helm-mode)
-    (add-to-list 'helm-sources-using-default-as-input 'helm-source-man-pages)
-    (ido-mode -1) ; just in case
-    (helm-autoresize-mode t)
-
     (custom-set-variables
      '(helm-ag-base-command "ag --nocolor --nogroup --ignore-case")
      ;; flags are here
@@ -126,18 +122,26 @@
      '(helm-ag-insert-at-point 'symbol))
 
     (global-unset-key (kbd "C-x c"))
-
-    (bind-keys :map helm-map
-     ("<tab>" . helm-execute-persistent-action) ; rebind tab to run persistent action
-     ("C-i"   . helm-execute-persistent-action) ; make TAB works in terminal
-     ("C-z"   . helm-select-action)) ; list actions using C-z
-    (bind-key "C-c C-l" 'helm-minibuffer-history minibuffer-local-map)
     ) ;; end init
 
   :config
   (progn
-    (helm-projectile-on))
+    (ido-mode -1) ; just in case
+    (helm-mode)
+    (helm-projectile-on)
+    (helm-autoresize-mode t)
+    (add-to-list 'helm-sources-using-default-as-input 'helm-source-man-pages)
+    )
 
+  :bind
+  (:map helm-map
+     ("<tab>" . helm-execute-persistent-action) ; rebind tab to run persistent action
+     ("C-i"   . helm-execute-persistent-action) ; make TAB works in terminal
+     ("C-z"   . helm-select-action)) ; list actions using C-z
+
+  :bind
+  (:map minibuffer-local-map
+        ("C-c C-l" . helm-minibuffer-history))
   :bind
   (;; help
    ("C-h a"     . helm-apropos)
@@ -189,6 +193,7 @@
 ;;------------------------------------------------------------------------------
 ;; Recent files
 (use-package recentf
+  :defer 3
   :config
   (setq recentf-max-menu-items 30)
   (recentf-mode 1))
@@ -336,6 +341,7 @@
 ;; Fonts (face) customization
 ;;(autoload 'faces "faces")
 (use-package faces
+  :demand t
   :config
   ;; default font size is 14pt on carbon emacs
   (when (window-system)

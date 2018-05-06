@@ -38,7 +38,7 @@
   :diminish
   :hook (text-mode . global-captain-mode))
 
-(add-hook 'text-mode-hook 'ac-ispell-ac-setup)
+;(add-hook 'text-mode-hook 'ac-ispell-ac-setup)
 (add-hook 'text-mode-hook
           (lambda ()
             (visual-line-mode 1)
@@ -62,15 +62,18 @@
 ;; LaTeX and AUCTeX
 ;;------------------------------------------------------------------------------
 (use-package auctex
+  :defer t
   :mode ("\\.tex\\'" . TeX-latex-mode))
 (use-package reftex
   :after auctex
+  :defer t
   :init
   (add-hook 'reftex-load-hook 'imenu-add-menubar-index)
   (add-hook 'reftex-mode-hook 'imenu-add-menubar-index))
 
 (use-package latex
   :after reftex
+  :defer t
   :init
   (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 
@@ -117,6 +120,7 @@
 
 (use-package markdown-mode
   :mode ("\\.text\\'" "\\.markdown\\'" "\\.md\\'")
+  :defer t
   :init
   ;;(add-hook 'markdown-mode-hook 'turn-on-pandoc)
   ;; markdown check paren balancing
@@ -132,6 +136,7 @@
 ;;------------------------------------------------------------------------------
 
 (use-package org
+  :defer t
   :config
   (setq org-startup-truncated nil
         org-fontify-whole-heading-line t
@@ -150,107 +155,12 @@
 (use-package ox-latex :after org)
 (put 'upcase-region 'disabled nil)
 
-;; (setq org-export-html-style-include-scripts nil
-;;       org-export-html-style-include-default nil)
-
-
-;; (defun get-string-from-file (filePath)
-;;   "Return filePath's file content."
-;;   (with-temp-buffer
-;;     (insert-file-contents filePath)
-;;     (buffer-string)))
-
-;; (setq matt/org-export-default-css
-;;       (format "<style>%s</style>" (get-string-from-file "~/.emacs.d/org-style.css")))
-
-;; (setq org-export-html-style matt/org-export-default-css)
-
-;; (defun matt/org-include-img-from-pdf (&rest ignore)
-;;   "Convert the pdf files to image files.
-
-;; Only looks at #HEADER: lines that have \":convertfrompdf t\".
-;; This function does nothing if not in org-mode, so you can safely
-;; add it to `before-save-hook'."
-;;   (interactive)
-;;   (when (derived-mode-p 'org-mode)
-;;     (save-excursion
-;;       (goto-char (point-min))
-;;       (while (search-forward-regexp
-;;               "^\\s-*#\\+HEADER:.*\\s-:convertfrompdf\\s-+t"
-;;               nil 'noerror)
-;;         (let* (filenoext imgext imgfile pdffile cmd)
-;;           ;; Keep on going on to the next line till it finds a line with
-;;           ;; `[[FILE]]'
-;;           (while (progn
-;;                    (forward-line 1)
-;;                    (not (looking-at "\\[\\[\\(.*\\)\\.\\(.*\\)\\]\\]"))))
-;;           (when (looking-at "\\[\\[\\(.*\\)\\.\\(.*\\)\\]\\]")
-;;             (setq filenoext (match-string-no-properties 1))
-;;             (setq imgext (match-string-no-properties 2))
-;;             (setq imgfile (expand-file-name (concat filenoext "." imgext)))
-;;             (setq pdffile (expand-file-name (concat filenoext "." "pdf")))
-;;             (setq cmd (concat "convert -density 96 -quality 85 "
-;;                               pdffile " " imgfile))
-;;             (when (file-newer-than-file-p pdffile imgfile)
-;;               ;; This block is executed only if pdffile is newer than imgfile
-;;               ;; or if imgfile does not exist
-;;               ;; Source: https://www.gnu.org/software/emacs/manual/html_node/elisp/Testing-Accessibility.html
-;;               (message "%s" cmd)
-;;               (shell-command cmd))))))))
-;; ;(add-hook 'before-save-hook #'matt/org-include-img-from-pdf)
-;; (add-hook 'org-export-before-processing-hook #'matt/org-include-img-from-pdf)
-
-;; (defun matt/add-org-publish-config (config)
-;;   "Register an org-project config"
-;;   (setq org-publish-project-alist
-;;         (cons config org-publish-project-alist)))
-
-;; (defun matt/remove-org-publish-config (config-name)
-;;   "Remove a config with config-name (string) from the config list"
-;;   (setq org-publish-project-alist
-;;         (cl-remove-if (lambda (config) (string= config-name (car config)))
-;;                       org-publish-project-alist)))
-
-;;(setq matt/file-loaded-set '())         ; PRIVATE -- things I've loaded
-;; (setq matt/org-project-file-name "org-project.el")
-
-;; (defmacro set-add! (var set)
-;;   "Lists as Sets"
-;;   `(progn
-;;     (setq ,set (delq ,var ,set))
-;;     (push ,var ,set)))
-
-;; (defun matt/file-loaded-p (filename)
-;;   "Has file been loaded yet?"
-;;   (memq (intern filename) matt/file-loaded-set))
-
-;; (defun matt/safe-load-file (filename &rest cl-keys)
-;;   "Load file only if not loaded yet or if forced by kw-arg"
-;;   (cl--parsing-keywords ((:force nil)) nil
-;;     (when (or cl-force
-;;               (not (matt/file-loaded-p filename)))
-;;       (load-file filename)
-;;       (set-add! (intern filename) matt/file-loaded-set))))
-
-;; (defun matt/load-org-project-settings (&rest cl-keys)
-;;   "Keep going up the tree looking for the settings file, then load it"
-;;   (interactive)
-;;   (let ((project-dir
-;;          (locate-dominating-file
-;;           (file-name-directory (or load-file-name buffer-file-name))
-;;           matt/org-project-file-name))
-;;         (force (or (called-interactively-p 'any)
-;;                     (cl--parsing-keywords ((:force nil)) nil
-;;                       cl-force))))
-;;     (when project-dir
-;;       (let ((filename (concat project-dir matt/org-project-file-name)))
-;;         (matt/safe-load-file filename :force force)))))
-
-;; (add-hook 'org-mode-hook 'matt/load-org-project-settings)
-
 ;; graphviz
-(add-to-list 'auto-mode-alist '("\\.gv\\'" . graphviz-dot-mode))
-(add-to-list 'auto-mode-alist '("\\.dot\\'" . graphviz-dot-mode))
+(use-package graphviz-dot-mode
+  :defer t
+  :mode
+  (("\\.gv\\'" . graphviz-dot-mode)
+   ("\\.dot\\'" . graphviz-dot-mode)))
 
 ;; open info files in the interactive browser
 (add-to-list 'auto-mode-alist '("\\.info\\'" . info-mode))

@@ -94,6 +94,7 @@
 ;; line numbers
 (use-package linum
   :diminish
+  :defer t
   :config
   (setq linum-format "%d "))
 
@@ -101,6 +102,7 @@
 ;; unto tree (what is this...)
 (use-package undo-tree
   :diminish
+  :defer t
   :config
   (setq undo-tree-visualizer-timestamps t)
   (setq undo-tree-visualizer-diff t)
@@ -113,10 +115,13 @@
 ;;(require 'yasnippet)
 (use-package yasnippet
   :diminish (yas-minor-mode . "")
-  :bind (:map yas-minor-mode-map
-              ("<tab>" . nil)
-              ("TAB" . nil)
-              ("<S-tab>" . yas-expand))
+  :defer t
+  :bind
+  (:map yas-minor-mode-map
+        ("<tab>" . nil)
+        ("TAB" . nil)
+        ;; use shift-tab for yasnippet completion so it doesn't conflict w/ ac-mode
+        ("<S-tab>" . yas-expand))
   ;; (global-set-key (kbd "<S-tab>") 'yas-expand)
 
   :config
@@ -124,104 +129,12 @@
   (yas-global-mode 1)
   )
 
-;; use shift-tab for yasnippet completion so it doesn't conflict w/ ac-mode
-
-;;------------------------------------------------------------------------------
-;; auto-complete mode
-;; (require 'auto-complete)
-;; (require 'auto-complete-config)
-
-;; (defvar my-default-ac-sources
-;;   ;; list of all sources for reference
-;;   '(;; ac-source-abbrev
-;;     ;; ac-source-dictionary
-;;     ac-source-eclim
-;;     ;; ac-source-features
-;;     ;; ac-source-files-in-current-dir
-;;     ac-source-functions
-;;     ;; ac-source-gtags
-;;     ;; ac-source-imenu
-;;     ;; ac-source-ispell
-;;     ;; ac-source-rcodetools
-;;     ;; ac-source-semantic
-;;     ;; ac-source-symbols
-;;     ;; ac-source-variables
-;;     ;; ac-source-words-in-all-buffer
-;;     ac-source-words-in-buffer
-;;     ;; ac-source-words-in-same-mode-buffers
-;;     ;; ac-source-yasnippet
-;;     ac-source-filename
-;;     ))
-
-;; (setq-default ac-sources my-default-ac-sources)
-
-;; (defun ac-text-mode-setup ()
-;;   (setq ac-sources (append
-;;                     '(ac-source-dictionary
-;;                       ac-source-ispell)
-;;                     ac-sources)))
-
-;; (add-hook 'text-mode-hook 'ac-text-mode-setup)
-
-;; (defun ac-prog-mode-setup ()
-;;   (setq ac-sources (append
-;;                     '(;; ac-source-words-in-same-mode-buffers
-;;                       ac-source-files-in-current-dir)
-;;                     ac-sources)))
-
-;; (add-hook 'prog-mode-hook 'ac-prog-mode-setup)
-
-;; (defun ac-emacs-lisp-mode-setup ()
-;;   (setq ac-sources (append
-;;                     '(ac-source-features
-;;                       ac-source-functions
-;;                       ac-source-variables
-;;                       ac-source-symbols) ac-sources))
-
-;;   (setq ac-omni-completion-sources
-;;         '(("\\<featurep\s+'" ac+-source-elisp-features)
-;;           ("\\<require\s+'"  ac+-source-elisp-features)
-;;           ("\\<load\s+\""    ac-source-emacs-lisp-features))))
-
-;; (add-hook 'emacs-lisp-mode-hook 'ac-emacs-lisp-mode-setup)
-
-;; (defun ac-c-mode-setup ()
-;;   (setq ac-sources (append '(ac-source-gtags ac-source-semantic) ac-sources))
-;;   (setq ac-omni-completion-sources (cons "\\." '(ac-source-semantic)))
-;;   (setq ac-omni-completion-sources (cons "\\->" '(ac-source-semantic))))
-
-;; (add-hook 'c-mode-common-hook 'ac-c-mode-setup)
-
-;; (setq ac-auto-start 3
-;;       ;; ac-auto-show-menu 0.1
-;;       ac-use-menu-map t
-;;       ac-expand-on-auto-complete t
-;;       ac-use-quick-help t
-;;       ac-dwim t) ; To get pop-ups with docs even if a word is uniquely completed
-
-;; ;; Keybindings
-;; (ac-set-trigger-key "TAB")
-;; (define-key ac-completing-map (kbd "C-n") 'ac-next)
-;; (define-key ac-completing-map (kbd "C-p") 'ac-previous)
-;; ;; (define-key ac-completing-map [return] nil)
-;; (define-key ac-completing-map "\t" 'ac-complete)
-;; (define-key ac-completing-map "\r" nil)
-
-;; (ac-config-default)
-
-;; (add-to-list 'ac-modes 'geiser-repl-mode)
-;; (add-to-list 'ac-modes 'LaTeX-mode)
-
-;; ;(global-auto-complete-mode t)           ; turn it on
-
-;; ;; (eval-after-load "auto-complete"
-;; ;;   '(progn
-;; ;;      (ac-ispell-setup)))
 
 ;;------------------------------------------------------------------------------
 ;; company mode
 (use-package company
   :diminish
+  :defer 10
   :config
   (global-company-mode))
 ;;(add-hook 'after-init-hook 'global-company-mode)
