@@ -198,6 +198,19 @@
 ;;(add-hook 'purescript-mode #'lsp-purescript-enable)
 
 ;;------------------------------------------------------------------------------
+;; magit
+
+(use-package magit
+  :defer 10
+  :bind
+  ("C-x C-g" . magit-status))
+
+(use-package magithub
+  :after magit
+  :config
+  (magithub-feature-autoinject t))
+
+;;------------------------------------------------------------------------------
 ;; Emacs code browser
 (use-package ecb
   :defer t

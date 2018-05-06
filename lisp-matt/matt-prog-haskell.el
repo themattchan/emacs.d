@@ -159,22 +159,14 @@ Returns the project root with a shell.nix file, or NIL if not nix."
 
 (eval-after-load 'company-mode '(add-to-list company-backends 'company-ghc))
 
-(use-package literate-haskell-mode
-  :diminish (literate-haskell-mode . "λ")
-  :ensure t
-  :defer 30
-  :mode ("\\.lhs\\'" . literate-haskell-mode)
-  :config
-  ;; auto-fill-mode is fucked in literate haskell
-  (auto-fill-mode nil))
-
 (use-package haskell-mode
   :diminish (haskell-mode . "λ")
   :ensure t
   :defer 30
   :mode (("\\.hs\\'"    . haskell-mode)
          ("\\.cabal\\'" . haskell-cabal-mode)
-         ("\\.hcr\\'"   . haskell-core-mode))
+         ("\\.hcr\\'"   . haskell-core-mode)
+         ("\\.lhs\\'" . literate-haskell-mode))
   :bind
   (:map haskell-mode-map
 
@@ -271,6 +263,10 @@ Returns the project root with a shell.nix file, or NIL if not nix."
   ;; ;; so we can actually see our writings
   (setq haskell-literate-comment-face 'default)
   (setq haskell-interactive-popup-error nil)
+;; auto-fill-mode is fucked in literate haskell
+  (add-hook 'literate-haskell-mode-hook
+            (lambda ()
+              (auto-fill-mode nil)))
 
   ;; idk why this was removed from haskell-mode upstream...
   (dolist (mode haskell-modes-list)

@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 ;;; init.el --- Top-level initialisation.
 
 ;;; Copyright (c) 2013-2015 Matthew Chan
@@ -21,17 +22,6 @@
 
 ;;; Code:
 
-;; from John Wiegley's setup
-(setq message-log-max 16384
-      gc-cons-threshold 500000000       ; 500mb
-      gc-cons-percentage 0.6)
-
-(add-hook 'after-init-hook
-          `(lambda ()
-             (setq gc-cons-threshold 50000000 ; 50mb
-                   gc-cons-percentage 0.4)
-             (garbage-collect)) t)
-
 (eval-and-compile
   (defun matt/recompile-settings ()
     (interactive)
@@ -40,6 +30,32 @@
     (byte-recompile-directory "~/.emacs.d/lisp-matt/" 0 t)
     (load-file user-init-file)
     ))
+
+(eval-and-compile
+  (defun matt/install-my-packages ()
+    (message "Installing required packages...")
+    (package-refresh-contents)
+    (dolist (pkg package-selected-packages)
+      (when (not (package-installed-p pkg))
+        (message "  + Installing package: %s" pkg)
+        (ignore-errors
+          (package-install pkg))))))
+
+;; disable file handlers for startup
+(defvar file-name-handler-alist-old file-name-handler-alist)
+(setq file-name-handler-alist nil)
+
+;; from John Wiegley's setup
+(setq message-log-max 16384
+      gc-cons-threshold 500000000       ; 500mb
+      gc-cons-percentage 0.6)
+
+(add-hook 'after-init-hook
+          `(lambda ()
+             (setq gc-cons-threshold 50000000 ; 50mb
+                   gc-cons-percentage 0.4
+                   file-name-handler-alist file-name-handler-alist-old)
+             (garbage-collect)) t)
 
 ;;==============================================================================
 ;; Personalisations and globals
@@ -55,26 +71,20 @@
 ;;==============================================================================
 ;; Packages
 ;;==============================================================================
+
 (setq load-prefer-newer t)           ; Load latest bytecode
 
+;; (let ((default-directory "~/.emacs.d/elpa"))
+;;   (normal-top-level-add-subdirs-to-load-path))
+;; TODO defer this
 (require 'package)
 (setq package-enable-at-startup nil)
-(add-to-list 'package-archives
-             '(("melpa" . "http://melpa.org/packages/")
-               ("gnu" . "httpL//elpa.gnu.org/packages/")))
+(setq package-archives
+      '(("melpa" . "https://melpa.org/packages/")
+        ("gnu" . "http://elpa.gnu.org/packages/")))
 (setq package-user-dir (concat user-emacs-directory "elpa/"))
 (setq package-archive-enable-alist '(("melpa" deft magit)))
 (package-initialize nil)
-
-(eval-and-compile
-  (defun matt/install-my-packages ()
-    (message "Installing required packages...")
-    (package-refresh-contents)
-    (dolist (pkg package-selected-packages)
-      (when (not (package-installed-p pkg))
-        (message "  + Installing package: %s" pkg)
-        (ignore-errors
-          (package-install pkg))))))
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -83,11 +93,9 @@
 (eval-when-compile (require 'cl))       ; use common lisp (macros only)
 (eval-when-compile
   (add-to-list 'load-path (car (directory-files "~/.emacs.d/elpa" nil "use-package-*" nil)))
-  ;; also provides bind-key
   (require 'use-package))
-
 (setq use-package-always-ensure nil)
-;(setq use-package-always-defer t)
+;;(setq use-package-always-defer t)
 
 (use-package diminish :ensure t :demand t :defer nil)
 (use-package bind-key :ensure t :demand t :defer nil)
@@ -194,6 +202,7 @@
     (message "+ Loaded %s" config)))
 
 (message "Emacs started in %s." (emacs-init-time))
+
 
 ;; Local Variables:
 ;; indent-tabs-mode: nil
