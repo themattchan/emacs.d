@@ -31,6 +31,12 @@
     racket-mode
     clojure-mode))
 
+(diminish-major-mode lisp-mode "(())")
+(diminish-major-mode scheme-mode "(λ)")
+(diminish-major-mode clojure-mode "(λclj)")
+(diminish-major-mode emacs-lisp-mode"(λel)")
+(diminish-major-mode common-lisp-mode "(λcl)")
+
 (setq inferior-lisp-program "sbcl")
 (setq scheme-program-name "racket")
 (when *is-mac*

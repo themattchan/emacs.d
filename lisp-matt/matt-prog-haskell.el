@@ -120,6 +120,8 @@
 
 
   :config
+  (diminish-major-mode haskell-mode "λ")
+  (diminish-major-mode literate-haskell-mode "λ")
   (remove-hook 'haskell-mode-hook 'stack-mode)
   (add-hook 'haskell-mode-hook 'haskell-doc-mode)
   (add-hook 'haskell-mode-hook 'haskell-decl-scan-mode)

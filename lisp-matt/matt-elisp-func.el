@@ -1,4 +1,3 @@
-;;; -*- byte-compile-dynamic: t -*-
 ;;; matt-elisp-func.el --- Emacs Lisp functions.
 
 ;;; Copyright (c) 2013-2015 Matthew Chan
@@ -24,6 +23,14 @@
 
 (eval-and-compile
   (eval-when-compile (require 'cl))
+
+  (defmacro diminish-minor-mode (mode str)
+    `(eval-after-load ,(symbol-name mode)
+       (diminish (quote ,mode) ,str)))
+
+  (defmacro diminish-major-mode (mode str)
+    `(eval-after-load ,(symbol-name mode)
+       (setq mode-name ,str)))
 
   ;; expand filled paragraph to a line
   (defun unfill-paragraph ()

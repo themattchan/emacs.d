@@ -40,8 +40,8 @@
  disabled-command-function nil          ; Don't second-guess advanced commands
 
  ;; mode line customizations
- display-battery-mode t
- battery-mode-line-format " [%L: %b%p%%] " ; %t for time
+ ;; display-battery-mode t
+ ;; battery-mode-line-format " [%L: %b%p%%] " ; %t for time
 
  line-number-mode t
  column-number-mode t
@@ -124,18 +124,21 @@
 (use-package uniquify :defer 10)
 
 ;;------------------------------------------------------------------------------
-;; Show time on the mode line
-(use-package display-time
-  :defer 5
-  :config
-  (display-time))
+;; ;; Show time on the mode line
+;; (use-package display-time
+;;   :defer 5
+;;   :config
+;;   (display-time))
 
 ;;------------------------------------------------------------------------------
 ;; Smart mode line
 (use-package smart-mode-line
   :demand t
   :config
-  (setq mode-line-format (delq 'mode-line-position mode-line-format))
+  (setq
+    mode-line-format (delq 'mode-line-position mode-line-format)
+    sml/theme 'respectful
+    sml/shorten-modes t)
   (sml/setup))
 ;; '(:eval (if (use-region-p)
 ;;     (format "%d"
@@ -143,11 +146,28 @@
 ;;   (format "%d"
 ;;     (count-words-region (point-min) (point-max)))))
 ;; show battery
+
 ;; (add-hook 'after-init-hook #'fancy-battery-mode)
 ;; (fancy-battery-mode)
 ;; (setq-default fancy-battery-show-percentage t)
 ;; Start the server
 ;; (server-start)
+
+;;------------------------------------------------------------------------------
+;; Unclutter mode line
+
+;; diminish settings without a home in use-package defns.
+(diminish-minor-mode lisp-interaction-mode "λeval")
+(diminish-minor-mode auto-complete-mode " α")
+(diminish-minor-mode paredit-mode " π")
+(diminish-minor-mode eldoc-mode "")
+(diminish-minor-mode abbrev-mode "")
+(diminish-minor-mode smartparens-mode "")
+(diminish-minor-mode auto-highlight-symbol-mode "")
+(diminish-minor-mode subword-mode "")
+(diminish-minor-mode nxhtml-mode "nx")
+(diminish-minor-mode button-lock-mode "")
+(diminish-minor-mode subword-mode "")
 
 ;;------------------------------------------------------------------------------
 ;; Completion modes, etc
@@ -365,25 +385,6 @@
                           :font "Lucida Console 10" ; Consolas is also good
                           :weight 'normal))))
   )
-
-;;------------------------------------------------------------------------------
-;; Unclutter mode line
-
-;; diminish settings without a home in use-package defns.
-(diminish 'lisp-interaction-mode "λeval" )
-(diminish 'lisp-mode "(())"  )
-(diminish 'scheme-mode "(λ)"   )
-(diminish 'clojure-mode "(λclj)")
-(diminish 'emacs-lisp-mode "(λel)" )
-(diminish 'common-lisp-mode "(λcl)" )
-(diminish 'auto-complete-mode " α")
-(diminish 'paredit-mode " π")
-(diminish 'eldoc-mode "")
-(diminish 'abbrev-mode "")
-(diminish 'smartparens-mode "")
-(diminish 'auto-highlight-symbol-mode "")
-(diminish 'subword-mode "")
-(diminish 'nxhtml-mode "nx")
 
 ;;------------------------------------------------------------------------------
 ;; Projectile mode by default

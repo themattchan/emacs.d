@@ -179,9 +179,8 @@
 
          ;; General interface settings
          matt-keybindings
-         matt-themes                    ; load theme first, o/w smart mode line
-                                        ; does not show the right colours
          matt-interface
+         matt-themes
          matt-edit-global
 
          ;; Hooks for editing
