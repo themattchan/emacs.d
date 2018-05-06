@@ -86,10 +86,11 @@
   (add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)
   (setq eshell-output-filter-functions (remove 'eshell-handle-ansi-color eshell-output-filter-functions)))
 
-(defun new-shell ()
-  (interactive)
-  (projectile-with-default-dir (projectile-project-root)
-    (shell (generate-new-buffer-name "*shell*"))))
+(eval-and-compile
+  (defun new-shell ()
+    (interactive)
+    (projectile-with-default-dir (projectile-project-root)
+      (shell (generate-new-buffer-name "*shell*")))))
 
 (global-set-key (kbd "M-o M-t") #'new-shell)
 
