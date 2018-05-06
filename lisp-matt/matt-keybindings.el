@@ -184,16 +184,6 @@
 
 ;; (bind-key "<wheel-left>"     'previous-buffer)   ; move to prev buffer
 ;; (bind-key "<wheel-right>"     'next-buffer)
-(eval-and-compile
-  (defun toggle-fullscreen-linux ()
-    "Toggle full screen on X11."
-    (interactive)
-    (when (eq window-system 'x)
-      (set-frame-parameter
-       nil 'fullscreen
-       (when (not (frame-parameter nil 'fullscreen)) 'fullboth)))))
-
-(when *is-linux* (bind-key "<f11>" 'toggle-fullscreen-linux))
 
 ;; Don't need this anymore, use rectangle-mode
 ;; cua rectangle selection is good.

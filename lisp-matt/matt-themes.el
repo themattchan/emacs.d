@@ -58,6 +58,9 @@
     (when (not (eq fullscreen 'maximized))
       (set-frame-parameter nil 'fullscreen 'maximized))))
 
+;; default-frame-alist affects ALL frames
+(add-to-list 'initial-frame-alist '(fullscreen . maximized))
+
 (defun layout-4column ()
   (interactive)
   (small-fonts)

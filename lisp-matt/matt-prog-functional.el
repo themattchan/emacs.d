@@ -31,6 +31,7 @@
 
 (use-package coq
   :defer t
+  :after proof-site
   :config
   (if *is-mac* (setq coq-prog-name "/usr/local/bin/coqtop"))
 
@@ -42,7 +43,7 @@
   :commands (company-coq-mode)
   :init (add-hook 'coq-mode-hook 'company-coq-mode t)
   :defer t
-  :after coq
+  :after (proof-site coq)
   :config
   (setq company-coq-disabled-features '(prettify-symbols)))
 
