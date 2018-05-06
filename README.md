@@ -36,60 +36,19 @@ M-x matt/recompile-settings
 
 ## How do I use this?
 
-Look [here](http://themattchan.com/docs/emacs-beginner.pdf) for an intro to Emacs.
+See [this](http://themattchan.com/docs/emacs-beginner.pdf) for an intro to Emacs.
 
-Here's a list of my keybindings:
+## Related / credits
 
-- Modifiers on the Mac (graphical)
+Look here for more inspiration
 
-    ```
-    Caps Lock     -> C
-    Left Command  -> M
-    Left Option   -> s
-    Left Fn       -> s
-    Right Command -> s
-    Right Option  -> H
-    ```
-- align-regexp  `C-x a r`
-
-- Transpose `M-t M-<thing>` where `<thing>` is
-    - `c` for character
-    - `t` for words
-    - `l` for line
-    - `s` for s-exprs
-
-- Buffer navigation:
-    - `s-<left/right>` in GUI
-
-- Window navigation:
-    - `s-S-<arrow>` in GUI
-    - `C-c <arrow>` in CLI
-
-- Functions keys:
-    - `<f8>` toggles neotree
-    - `<f11>` toggles fullscreen on Linux
-
-- Magit: `C-c C-g` brings up the status window
-
-- Compile: `C-x g`
-
-- Silver searcher: `M-<f1>`
-
-
-
-## Related
-
-My configs are mostly a hodgepodge of good things taken from others, look here
-for more inspiration
-
-- https://github.com/bryangarza/dot-emacs
+- https://github.com/jwiegley/dot-emacs
 - http://pages.sachachua.com/.emacs.d/Sacha.html
-
-
+- https://github.com/bryangarza/dot-emacs
 
 ## License
 
-Copyright (C) 2013-2015 Matthew Chan
+Copyright (C) 2013-2018 Matthew Chan
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
