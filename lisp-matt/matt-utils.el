@@ -24,31 +24,30 @@
 
 ;;------------------------------------------------------------------------------
 ;; Dired
-;; hide the -al stuff, toggle with '(' and ')'
-(use-package dired-details+
-  :after dired)
+
 (use-package dired
   :defer t
   :config
   (setq dired-recursive-deletes 'always
-      dired-recursive-copies 'always
-      delete-by-moving-to-trash t
-      trash-directory "~/.Trash/"
-      ;; show sym link targets
-      Dired-details-hide-link-targets nil)
+        dired-recursive-copies 'always
+        delete-by-moving-to-trash t
+        trash-directory "~/.Trash/"
+        ;; show sym link targets
+        Dired-details-hide-link-targets nil)
   (add-hook 'dired-mode-hook 'turn-on-stripe-buffer-mode)
+;; (add-hook 'dired-mode-hook 'stripe-listify-buffer)
   )
 
-;; (add-hook 'dired-mode-hook 'stripe-listify-buffer)
+;; hide the -al stuff, toggle with '(' and ')'
+(use-package dired-details+
+  :after dired)
 
 (use-package dired-x
   :after dired
-  :defer t
   :config
   (setq-default ; C-x M-o to toggle omit mode
    dired-omit-mode t
    dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^\\.\\|^~"))
-
 
 ;;------------------------------------------------------------------------------
 ;; Terminal
@@ -63,30 +62,35 @@
 ;;   (progn
 ;;     (setq multi-term-program "/bin/zsh")))
 (use-package ansi-color
-  :defer t)
+  :defer t
+  :init
+  (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on))
 (use-package xterm-color
-  :defer t)
-(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-;(add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
-(add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
-(setq explicit-shell-file-name (executable-find "zsh"))
-(setenv "ESHELL" (executable-find "zsh"))
-(setq system-uses-terminfo nil)
-(custom-set-faces
- '(term ((t (:inherit default)))))
+  :defer t
+  :init
+  (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
+  :config
+  (setq xterm-color-preserve-properties t))
 
-(add-hook 'eshell-mode-hook
-          (lambda ()
-            (setq xterm-color-preserve-properties t)))
-(eval-after-load 'eshell
-  '(lambda ()
-     (add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)
-     (setq eshell-output-filter-functions (remove 'eshell-handle-ansi-color eshell-output-filter-functions))))
+                                        ;(add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
+
+(setq explicit-shell-file-name (executable-find "zsh"))
+(setq system-uses-terminfo nil)
+
+(setenv "ESHELL" (executable-find "zsh"))
+(custom-set-faces '(term ((t (:inherit default)))))
+
+(use-package eshell
+  :defer t
+  :config
+  (add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)
+  (setq eshell-output-filter-functions (remove 'eshell-handle-ansi-color eshell-output-filter-functions)))
 
 (defun new-shell ()
   (interactive)
   (projectile-with-default-dir (projectile-project-root)
     (shell (generate-new-buffer-name "*shell*"))))
+
 (global-set-key (kbd "M-o M-t") #'new-shell)
 
 ;;------------------------------------------------------------------------------
@@ -105,49 +109,52 @@
 ;; IRC
 ;; mostly from https://github.com/bryangarza/dot-emacs/blob/master/init.el#L1273
 
-(defun matt/start-irc ()
-  (interactive)
-  (use-package erc)
-  (use-package erc-services)
-  (erc-services-mode 1)
-  (eval-after-load 'erc
-    '(progn
-       (setq erc-server-coding-system '(utf-8 . utf-8)
 
-             erc-prompt-for-nickserv-password nil
+(use-package erc
+  :defer t
+  :config
 
-             erc-timestamp-format "[%I:%M %p]"
-             erc-hide-timestamps t
-             erc-echo-timestamps nil
-             erc-echo-timestamp-format "TS'd %A, %I:%M:%S %p"
+  (use-package erc-services
+    :config
+    (erc-services-mode 1))
 
-             erc-track-showcount t
-             erc-track-enable-keybindings t
-             erc-track-use-faces t
-             erc-track-exclude-types '("JOIN" "PART" "QUIT" "NICK" "MODE")
+  (use-package znc)
 
-             erc-join-buffer 'bury
+  (setq erc-server-coding-system '(utf-8 . utf-8)
 
-             erc-part-reason-various-alist '(("^$" "Leaving"))
-             erc-quit-reason-various-alist '(("^$" "Leaving"))
-             erc-quit-reason 'erc-part-reason-various
-             erc-part-reason 'erc-quit-reason-various
+        erc-prompt-for-nickserv-password nil
 
-             erc-hide-list '("JOIN" "PART" "QUIT" "NICK" "MODE" "324" "329" "332" "333" "353"  "477")
-             erc-lurker-hide-list '("JOIN" "PART" "QUIT" "NICK" "MODE")
-             )
-       (setq erc-autojoin-channels-alist
-             '(("freenode.net"
-                "#haskell" "#haskell-lens" "#haskell-in-depth" "#haskell-beginners" "#xmonad"
-                "#idris" "#categorytheory"
-                )))
-       (erc :server "irc.freenode.net" :port 6667 :nick matt/irc-username :password matt/freenode-pass)
-       (setq erc-nickserv-passwords
-             '((freenode     ((matt/irc-username . matt/freenode-pass))))
-             )
+        erc-timestamp-format "[%I:%M %p]"
+        erc-hide-timestamps t
+        erc-echo-timestamps nil
+        erc-echo-timestamp-format "TS'd %A, %I:%M:%S %p"
 
-       (add-to-list 'erc-modules 'scrolltobottom)
-       )))
+        erc-track-showcount t
+        erc-track-enable-keybindings t
+        erc-track-use-faces t
+        erc-track-exclude-types '("JOIN" "PART" "QUIT" "NICK" "MODE")
+
+        erc-join-buffer 'bury
+
+        erc-part-reason-various-alist '(("^$" "Leaving"))
+        erc-quit-reason-various-alist '(("^$" "Leaving"))
+        erc-quit-reason 'erc-part-reason-various
+        erc-part-reason 'erc-quit-reason-various
+
+        erc-hide-list '("JOIN" "PART" "QUIT" "NICK" "MODE" "324" "329" "332" "333" "353"  "477")
+        erc-lurker-hide-list '("JOIN" "PART" "QUIT" "NICK" "MODE")
+
+        erc-autojoin-channels-alist
+        '(("freenode.net"
+           "#haskell" "#haskell-lens" "#haskell-in-depth" "#haskell-beginners" "#xmonad"
+           "#idris" "#categorytheory"
+           ))
+        erc-nickserv-passwords
+        '((freenode     ((matt/irc-username . matt/freenode-pass)))))
+  (erc :server "irc.freenode.net" :port 6667 :nick matt/irc-username :password matt/freenode-pass)
+
+  (add-to-list 'erc-modules 'scrolltobottom)
+  )
 
 ;;------------------------------------------------------------------------------
 ;; GNUS RSS
