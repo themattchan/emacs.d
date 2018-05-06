@@ -73,12 +73,6 @@
               (c-toggle-electric-state 1)
               ;;(c-toggle-auto-newline 0)
 
-              ;; subword editing and movement to deal with CamelCase
-              (subword-mode 1)
-
-              ;; changed my mind, this is annoying as hell
-              (electric-pair-mode 0)
-
               ;; Do real-time syntax highlighting, not the delayed stuff.
               (setq font-lock-support-mode 'jit-lock-mode)
               ;;(setq lazy-lock-defer-contextually t)
@@ -93,7 +87,7 @@
 
   ;;------------------------------------------------------------------------------
   ;; C
-                                        ;(autoload 'ac-c-headers "ac-c-headers")
+
   (add-hook 'c-mode-hook (lambda () (matt/c-indent 8 t)))
 
   ;;------------------------------------------------------------------------------
@@ -133,7 +127,9 @@
     (matt/c-indent 4 nil)
     (c-set-offset 'substatement-open 0)
     ;; Treat Java 1.5 @-style annotations as comments.
-    (setq c-comment-start-regexp "(@|/(/|[*][*]?))")
+    (setq-local c-comment-start-regexp "(@|/(/|[*][*]?))")
+    (setq-local fill-column 100)
+
     (modify-syntax-entry ?@ "< b" java-mode-syntax-table)
 
     (jtags-mode)
@@ -141,7 +137,7 @@
                                         ;  (setq eclim-auto-save t)
 
     ;; Don't newline open curly
-    (setq c-hanging-braces-alist
+    (setq-local c-hanging-braces-alist
           (append '((defun-open after)
                     (defun-close before after)
                     (class-open after)

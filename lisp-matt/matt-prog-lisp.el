@@ -87,7 +87,7 @@
 ;; (add-hook 'geiser-repl-mode-hook 'ac-geiser-setup)
 
 (use-package racket
-  :diminish (racket-mode . "(λr)")
+  :diminish ('racket-mode . "(λr)")
   :mode "\\.rkt\\'"
   :bind
   (:map racket-mode-map

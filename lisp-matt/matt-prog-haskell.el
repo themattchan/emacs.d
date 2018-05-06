@@ -159,13 +159,69 @@ Returns the project root with a shell.nix file, or NIL if not nix."
 
 (eval-after-load 'company-mode '(add-to-list company-backends 'company-ghc))
 
-;; auto-fill-mode is fucked in literate haskell
-(add-hook 'literate-haskell-mode-hook (lambda () (auto-fill-mode nil)))
-
-(use-package haskell-mode
-  :diminish "λ"
+(use-package literate-haskell-mode
+  :diminish (literate-haskell-mode . "λ")
   :ensure t
   :defer 30
+  :mode ("\\.lhs\\'" . literate-haskell-mode)
+  :config
+  ;; auto-fill-mode is fucked in literate haskell
+  (auto-fill-mode nil))
+
+(use-package haskell-mode
+  :diminish (haskell-mode . "λ")
+  :ensure t
+  :defer 30
+  :mode (("\\.hs\\'"    . haskell-mode)
+         ("\\.cabal\\'" . haskell-cabal-mode)
+         ("\\.hcr\\'"   . haskell-core-mode))
+  :bind
+  (:map haskell-mode-map
+
+        ;; Haskell mode keybindings
+        ;;        ("C-`" . flycheck-list-errors)
+        ("C-c C-b" . flycheck-buffer)
+        ("M-n" . flycheck-next-error)
+        ("M-p" . flycheck-previous-error)
+        ("<f8>" . haskell-navigate-imports)
+        ("C-c C-h" . haskell-hoogle)
+        ("C-c C-y" . haskell-hayoo-at-point)
+        ("C-c g"   . matt/haskell-cabal-typecheck)
+        ("C-c i e" . haskell-insert-language-extension)
+        ("C-c i o" . haskell-insert-compiler-extension)
+        ("C-c i s" . haskell-format-language-extensions))
+
+
+  :config
+  (remove-hook 'haskell-mode-hook 'stack-mode)
+  (add-hook 'haskell-mode-hook 'haskell-doc-mode)
+  (add-hook 'haskell-mode-hook 'haskell-decl-scan-mode)
+  (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+  (setq-local haskell-process-suggest-remove-import-lines t)
+  (setq-local haskell-process-auto-import-loaded-modules t)
+  (setq-local haskell-process-log t)
+
+  ;; Haskell mode GLOBAL settings
+  (use-package flycheck
+    :diminish
+    :init (flycheck-mode 1))
+
+  (use-package flycheck-haskell
+    :config (flycheck-haskell-setup))
+
+  ;; use flycheck-haskell
+  (flycheck-haskell-setup)
+
+  (haskell-indentation-mode)
+
+  (flycheck-add-next-checker 'haskell-ghc '(t . haskell-hlint))
+
+  (setq-local haskell-process-type 'cabal-repl)
+
+  (setq-local flycheck-haskell-runghc-command '("runghc" "-i"))
+
+  (setq-local haskell-process-path-ghci "cabal repl")
+
   :bind
   (:map haskell-mode-map
 

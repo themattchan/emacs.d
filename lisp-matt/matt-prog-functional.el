@@ -60,11 +60,12 @@
     (lsp-purescript-enable)
     (purescript-indentation-mode))
 
-(defun purescript-make-tags ()
-  (interactive)
-  (projectile-with-default-dir (projectile-project-root)
-    (shell-command "purs docs --format etags \"*.purs\" \"src/**/*.purs\" \"bower_components/*/src/**/*.purs\" >! TAGS"))
-  (load-project-tags))
+(eval-and-compile
+  (defun purescript-make-tags ()
+    (interactive)
+    (projectile-with-default-dir (projectile-project-root)
+      (shell-command "purs docs --format etags \"*.purs\" \"src/**/*.purs\" \"bower_components/*/src/**/*.purs\" >! TAGS"))
+    (load-project-tags)))
 
 (setq idris-interpreter-path "/usr/local/bin/idris")
 
