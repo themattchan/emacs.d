@@ -29,7 +29,7 @@
 (add-hook 'after-init-hook
           `(lambda ()
              (setq gc-cons-threshold 50000000 ; 50mb
-                   gc-cons-percentage 0.1)
+                   gc-cons-percentage 0.4)
              (garbage-collect)) t)
 
 (eval-and-compile

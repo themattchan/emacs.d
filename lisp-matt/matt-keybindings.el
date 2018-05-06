@@ -30,6 +30,9 @@
 ;;; Code:
 (eval-when-compile (require 'use-package))
 (eval-when-compile (require 'bind-key))
+
+;; Already loaded at this point, but needed so that emacs won't bitch about
+;; presonal-keybindings not being defined
 (require 'bind-key)
 
 (setq lexical-binding t)
