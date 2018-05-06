@@ -35,8 +35,8 @@
 (eval-and-compile
   (defun matt/recompile-settings ()
     (interactive)
-    (byte-compile-file "~/.emacs.d/init.el" t 0)
-    (byte-compile-file "~/.emacs.d/custom.el" t 0)
+    (byte-recompile-file "~/.emacs.d/init.el" t 0)
+    (byte-recompile-file "~/.emacs.d/custom.el" t 0)
     (byte-recompile-directory "~/.emacs.d/lisp-matt/" 0 t)
     (load-file user-init-file)
     ))
