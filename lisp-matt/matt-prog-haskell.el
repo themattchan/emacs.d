@@ -90,71 +90,6 @@
   (defun haskell-mode-p ()
     (memq major-mode haskell-modes-list))
 
-  (defun haskell-make-bash-nix-ghc-command (command)
-    `("bash" "-c"
-      ,(format "source %s;" (nix-sandbox-rc (my-nix-current-sandbox)))
-      "-I" ,(substitute-in-file-name "nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs/")
-      "--show-trace"
-      "--command"
-      ,@command
-      )
-    )
-
-  (defun haskell-make-bash-nix-ghci-repl (argv)
-    `("bash" "-c"
-      ,(format "source %s;" (nix-sandbox-rc (my-nix-current-sandbox)))
-      "-I" ,(substitute-in-file-name "nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs/")
-      "--show-trace"
-      "--command"
-      ,(s-join " " argv)
-      )
-    )
-
-  (defun my-nix-current-sandbox ()
-    "Try to find if the current project is a nix project.
-Returns the project root with a shell.nix file, or NIL if not nix."
-    (locate-dominating-file default-directory "shell.nix"))
-
-  ;; The following three functions are copied from
-  ;; https://github.com/jml/emacs-configuration/blob/master/plugins/ghc-nix.el
-  ;; with modifications
-  (defun -wrap-nix-command (command)
-    "Wrap the shell command COMMAND to be invoked inside a nix-shell."
-    (combine-and-quote-strings
-     `("nix-shell"
-       "-I" ,(substitute-in-file-name "nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs/")
-       "--show-trace"
-       "--run" ,command
-       "|" "tail" "-1"))) ;; get rid of info messages we print out
-
-  (defun -run-nix-command (command)
-    "Run COMMAND inside the current sandbox (implicitly)."
-    (let ((default-directory (my-nix-current-sandbox)))
-      (shell-command-to-string (-wrap-nix-command command))))
-
-  (defun nix-ghc-executable ()
-    "Return the path to the ghc executable inside the current sandbox."
-    (s-trim (-run-nix-command "type -p ghc")))
-
-  ;; ;; If in nix, compile inside a nix shell
-  ;; (defadvice compile (around maybe-compile-in-nix-sandbox activate)
-  ;;   (let ((sandbox (my-nix-current-sandbox)))
-  ;;     (if sandbox
-  ;;         ;; override dynamically bound variables used by 'compile'
-  ;;         (let ((default-directory (my-nix-current-sandbox))
-  ;;               (command
-  ;;                (combine-and-quote-strings `("nix-shell" "-I" ,(substitute-in-file-name "nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs/")
-  ;;                                             "--run" ,command))))
-
-  ;;                                         ;(nix-shell-string (my-nix-current-sandbox) command))); (s-join " " (haskell-make-bash-nix-ghc-command (list command)))))
-  ;;           ad-do-it)
-  ;;       ad-do-it)))
-
-  (defun haskell-compile-in-nix (cmd)
-    (interactive "Mcompile: ")
-    (let ((default-directory (my-nix-current-sandbox)))
-      (compile (nix-shell-string (my-nix-current-sandbox) cmd))))
-
   ) ;; eval-and-compile
 
 (eval-after-load 'company-mode '(add-to-list company-backends 'company-ghc))
@@ -214,56 +149,10 @@ Returns the project root with a shell.nix file, or NIL if not nix."
 
   (setq-local haskell-process-path-ghci "cabal repl")
 
-  :bind
-  (:map haskell-mode-map
-
-        ;; Haskell mode keybindings
-        ;;        ("C-`" . flycheck-list-errors)
-        ("C-c C-b" . flycheck-buffer)
-        ("M-n" . flycheck-next-error)
-        ("M-p" . flycheck-previous-error)
-        ("<f8>" . haskell-navigate-imports)
-        ("C-c C-h" . haskell-hoogle)
-        ("C-c C-y" . haskell-hayoo-at-point)
-        ("C-c g"   . matt/haskell-cabal-typecheck)
-        ("C-c i e" . haskell-insert-language-extension)
-        ("C-c i o" . haskell-insert-compiler-extension)
-        ("C-c i s" . haskell-format-language-extensions))
-
-
-  :config
-  (remove-hook 'haskell-mode-hook 'stack-mode)
-  (add-hook 'haskell-mode-hook 'haskell-doc-mode)
-  (add-hook 'haskell-mode-hook 'haskell-decl-scan-mode)
-  (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
-  (setq-local haskell-process-suggest-remove-import-lines t)
-  (setq-local haskell-process-auto-import-loaded-modules t)
-  (setq-local haskell-process-log t)
-
-  ;; Haskell mode GLOBAL settings
-  (use-package flycheck
-    :diminish
-    :init (flycheck-mode 1))
-
-  (use-package flycheck-haskell
-    :config (flycheck-haskell-setup))
-
-  ;; use flycheck-haskell
-  (flycheck-haskell-setup)
-
-  (haskell-indentation-mode)
-
-  (flycheck-add-next-checker 'haskell-ghc '(t . haskell-hlint))
-
-  (setq-local haskell-process-type 'cabal-repl)
-
-  (setq-local flycheck-haskell-runghc-command '("runghc" "-i"))
-
-  (setq-local haskell-process-path-ghci "cabal repl")
   ;; ;; so we can actually see our writings
   (setq haskell-literate-comment-face 'default)
   (setq haskell-interactive-popup-error nil)
-;; auto-fill-mode is fucked in literate haskell
+  ;; auto-fill-mode is fucked in literate haskell
   (add-hook 'literate-haskell-mode-hook
             (lambda ()
               (auto-fill-mode nil)))
@@ -272,29 +161,29 @@ Returns the project root with a shell.nix file, or NIL if not nix."
   (dolist (mode haskell-modes-list)
     (font-lock-add-keywords mode '(("\\_<\\(error\\|undefined\\)\\_>" 0 'font-lock-warning-face))))
 
+  ;; align rules
+  (add-hook 'align-load-hook
+            (lambda ()
+              (add-to-list 'align-rules-list
+                           '(haskell-types
+                             (regexp . "\\(\\s-+\\)\\(::\\|∷\\)\\s-+")
+                             (modes haskell-modes-list)))
+              (add-to-list 'align-rules-list
+                           '(haskell-assignment
+                             (regexp . "\\(\\s-+\\)=\\s-+")
+                             (modes haskell-modes-list)))
+              (add-to-list 'align-rules-list
+                           '(haskell-arrows
+                             (regexp . "\\(\\s-+\\)\\(->\\|→\\)\\s-+")
+                             (modes haskell-modes-list)))
+              (add-to-list 'align-rules-list
+                           '(haskell-left-arrows
+                             (regexp . "\\(\\s-+\\)\\(<-\\|←\\)\\s-+")
+                             (modes haskell-modes-list)))
+              ))
+
   ) ;; use-package
 
-
-;; align rules
-(add-hook 'align-load-hook
-          (lambda ()
-            (add-to-list 'align-rules-list
-                         '(haskell-types
-                           (regexp . "\\(\\s-+\\)\\(::\\|∷\\)\\s-+")
-                           (modes haskell-modes-list)))
-            (add-to-list 'align-rules-list
-                         '(haskell-assignment
-                           (regexp . "\\(\\s-+\\)=\\s-+")
-                           (modes haskell-modes-list)))
-            (add-to-list 'align-rules-list
-                         '(haskell-arrows
-                           (regexp . "\\(\\s-+\\)\\(->\\|→\\)\\s-+")
-                           (modes haskell-modes-list)))
-            (add-to-list 'align-rules-list
-                         '(haskell-left-arrows
-                           (regexp . "\\(\\s-+\\)\\(<-\\|←\\)\\s-+")
-                           (modes haskell-modes-list)))
-            ))
 
 ;; nix stuff
 (use-package nix-mode
