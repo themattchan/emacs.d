@@ -91,7 +91,6 @@
 
 ;; Redefine startup messasge
 (defun startup-echo-area-message ()
-  ;;"By your command..."
   (format "Emacs started in %s." (emacs-init-time)))
 
 ;; y/n prompts instead of yes/no
@@ -105,16 +104,9 @@
     ad-do-it))
 
 ;; normal delete key behaviour please
-;; highlight selection and overwrite
 (delete-selection-mode t)
+;; highlight selection and overwrite
 (transient-mark-mode t)
-
-;;------------------------------------------------------------------------------
-;; Show time on the mode line
-(use-package display-time
-  :defer 5
-  :config
-  (display-time))
 
 ;;------------------------------------------------------------------------------
 ;; Kill UI cruft
@@ -130,6 +122,13 @@
 (eval-when-compile (require 'cl))
 (use-package saveplace :defer t)
 (use-package uniquify :defer 10)
+
+;;------------------------------------------------------------------------------
+;; Show time on the mode line
+(use-package display-time
+  :defer 5
+  :config
+  (display-time))
 
 ;;------------------------------------------------------------------------------
 ;; Smart mode line
@@ -169,8 +168,13 @@
   :init
   (progn
     (use-package helm-config)
-    (when (executable-find "curl")
-      (setq helm-net-prefer-curl t))
+    (global-unset-key (kbd "C-x c"))
+    ) ;; end init
+
+  :config
+  (progn
+      (when (executable-find "curl")
+       (setq helm-net-prefer-curl t))
     (setq
      helm-input-idle-delay                 0.001
      helm-idle-delay                       0.001
@@ -204,17 +208,12 @@
      '(helm-ag-command-option "--skip-vcs-ignores")
      '(helm-ag-insert-at-point 'symbol))
 
-    (global-unset-key (kbd "C-x c"))
-    ) ;; end init
-
-  :config
-  (progn
     (ido-mode -1) ; just in case
     (helm-mode)
     (helm-projectile-on)
     (helm-autoresize-mode t)
     (add-to-list 'helm-sources-using-default-as-input 'helm-source-man-pages)
-    )
+    ) ;progn
 
   :bind
   (:map helm-map
