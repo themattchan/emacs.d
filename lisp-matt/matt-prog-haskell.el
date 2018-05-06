@@ -37,7 +37,7 @@
     (interactive)
     (compile "cabal build -j8 --ghc-options=\"-fno-code -fwrite-interface\""))
 
-  ;; Captures the selected region or symbol at point
+  ;; Captures the selected region or symbol atnnn point
   ;; and queries hayoo.
   (defun haskell-hayoo-at-point ()
     (interactive)
@@ -165,7 +165,7 @@ Returns the project root with a shell.nix file, or NIL if not nix."
 (use-package haskell-mode
   :diminish "λ"
   :ensure t
-  :defer t
+  :defer 30
   :bind
   (:map haskell-mode-map
 

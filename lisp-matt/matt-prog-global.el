@@ -118,17 +118,16 @@
   :config
   (flycheck-pos-tip-mode))
 
-;;------------------------------------------------------------------------------
-;; No auto-indent
-(let ((whitespace-langs '(python-mode
-                          yaml-mode
-                          haskell-mode
-                          literate-haskell-mode)))
-  (dolist (mode whitespace-langs)
-    (add-hook (intern (format "%s-hook" mode))
-              (lambda ()
-                (electric-indent-mode -1)
-                (electric-pair-mode -1)))))
+;; ;;------------------------------------------------------------------------------
+;; ;; No auto-indent
+;; (let ((whitespace-langs '(python-mode
+;;                           yaml-mode
+;;                           haskell-mode
+;;                           literate-haskell-mode)))
+;;   (dolist (mode whitespace-langs)
+;;     (add-hook (intern (format "%s-hook" mode))
+;;               (lambda ()
+;;                 (electric-indent-mode -1)))))
 
 ;;------------------------------------------------------------------------------
 (use-package whitespace
@@ -191,8 +190,11 @@
 ;;------------------------------------------------------------------------------
 ;; Language server protocol
 
-(add-hook 'lsp-mode-hook 'lsp-ui-mode)
-(add-hook 'purescript-mode #'lsp-purescript-enable)
+(use-package lsp-mode
+  :defer t
+  :config
+  (add-hook lsp-mode-hook'lsp-ui-mode))
+;;(add-hook 'purescript-mode #'lsp-purescript-enable)
 
 ;;------------------------------------------------------------------------------
 ;; Emacs code browser
@@ -213,8 +215,9 @@
 
   :config
   ;; activate and deactivate ecb
-  (setq ecb-show-sources-in-directories-buffer 'always)
-  (setq ecb-compile-window-height 12))
+  (setq ecb-show-sources-in-directories-buffer 'always
+        ecb-compile-window-height 12
+        ecb-tip-of-the-day nil))
 
 (provide 'matt-prog-global)
 ;; Local Variables:

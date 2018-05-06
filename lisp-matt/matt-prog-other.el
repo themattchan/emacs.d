@@ -42,6 +42,7 @@
 ;; Python
 (use-package python-mode
   :diminish "py"
+  :defer t
   :mode ("\\.py\\'" . python-mode)
   :config
   (add-hook 'python-mode-hook
@@ -57,6 +58,7 @@
 ;; Ampl mode
 
 (use-package ampl-mode
+  :defer t
   :mode (("\\.mod$" . ampl-mode)
          ("\\.dat$" . ampl-mode)
          ("\\.ampl$" . ampl-mode))

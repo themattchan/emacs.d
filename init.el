@@ -21,13 +21,14 @@
 
 ;;; Code:
 
-(defun matt/recompile-settings ()
-  (interactive)
-  (byte-recompile-file "~/.emacs.d/init.el" 0)
-  (byte-recompile-file "~/.emacs.d/custom-24.el" 0)
-  (byte-recompile-directory "~/.emacs.d/lisp-matt" 0)
-  (load-file user-init-file)
-  )
+(eval-and-compile
+  (defun matt/recompile-settings ()
+    (interactive)
+    (byte-recompile-file "~/.emacs.d/init.el" 0)
+    (byte-recompile-file "~/.emacs.d/custom-24.el" 0)
+    (byte-recompile-directory "~/.emacs.d/lisp-matt" 0)
+    (load-file user-init-file)
+    ))
 
 ;;==============================================================================
 ;; Personalisations and globals
@@ -52,23 +53,23 @@
 (setenv "LC_ALL" "en_US.UTF-8")
 
 (setq *my-path-list*
-  `("~/.nix-profile/bin"
-    "~/.nix-profile/sbin"
-    "/opt/"
-    "/opt/local/bin"
-    "/opt/local/sbin"
-    "/opt/X11/bin"
-    "/usr/local/bin"
-    "/usr/local/sbin"
-    "/usr/texbin"
-    "/usr/bin"
-    "/usr/sbin"
-    "/bin"
-    "/sbin"
-    ,(substitute-in-file-name "$HOME/Library/Haskell/bin") ; for hdevtools, ghc-mod
-    ,(substitute-in-file-name "$HOME/.local/bin")          ; stack install dir
-    "/Library/TeX/texbin"
-    ))
+      `("~/.nix-profile/bin"
+        "~/.nix-profile/sbin"
+        "/opt/"
+        "/opt/local/bin"
+        "/opt/local/sbin"
+        "/opt/X11/bin"
+        "/usr/local/bin"
+        "/usr/local/sbin"
+        "/usr/texbin"
+        "/usr/bin"
+        "/usr/sbin"
+        "/bin"
+        "/sbin"
+        ,(substitute-in-file-name "$HOME/Library/Haskell/bin") ; for hdevtools, ghc-mod
+        ,(substitute-in-file-name "$HOME/.local/bin")          ; stack install dir
+        "/Library/TeX/texbin"
+        ))
 (setenv "NIX_PATH" (substitute-in-file-name "$HOME/.nix-defexpr/channels/nixpkgs/"))
 
 ;; Set PATHs for Unix-Based systems
@@ -81,20 +82,21 @@
 ;;(setenv "PYTHONPATH" "/usr/local/lib/python2.7/site-packages:")
 
 ;; Show stack trace on error
-;(setq debug-on-error t)
+;;(setq debug-on-error t)
 
 ;; Set file paths before anything else
 
 ;; load path for extra packages
 (add-to-list 'load-path (concat user-emacs-directory "lisp-matt/"))
-;;(add-to-list 'load-path (concat user-emacs-directory "lisp/")
-(let ((default-directory  (concat user-emacs-directory "lisp/")))
-  (message "load lisp files")
-  (dolist (file (directory-files default-directory nil "\\.el$"))
-    (when (file-regular-p file)
-      (message "loaded %s" file)
-      (load-file (concat  (file-name-as-directory default-directory) file))))
-  (normal-top-level-add-to-load-path '("flycheck-liquidhs.el" "liquid-types.el")))
+(add-to-list 'load-path (concat user-emacs-directory "lisp/"))
+;; (let ((default-directory  (concat user-emacs-directory "lisp/")))
+;;   (message "load lisp files")
+;;   (dolist (file (directory-files default-directory nil "\\.el$"))
+;;     (when (file-regular-p file)
+;;       (message "loaded %s" file)
+;;       (load-file (concat  (file-name-as-directory default-directory) file))))
+;;   (normal-top-level-add-to-load-path '("flycheck-liquidhs.el" "liquid-types.el")))
+
 ;; customize.el settings location
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
@@ -131,11 +133,9 @@
 (use-package bind-key :ensure t)
 
 ;; from John Wiegley's setup
-(setq
- message-log-max 16384
- gc-cons-threshold 402653184
- gc-cons-percentage 0.6
- )
+(setq message-log-max 16384
+      gc-cons-threshold 402653184
+      gc-cons-percentage 0.6)
 
 (add-hook 'after-init-hook
           `(lambda ()
@@ -183,7 +183,7 @@
     (require config)
     (message "+ Loaded %s" config)))
 
-;; (message "Emacs started in %s." (emacs-init-time))
+(message "Emacs started in %s." (emacs-init-time))
 
 ;; Local Variables:
 ;; indent-tabs-mode: nil

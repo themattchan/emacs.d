@@ -111,7 +111,6 @@
 ;;------------------------------------------------------------------------------
 ;; yasnippet
 ;; load before auto-complete, so TAB expands snippet before completing
-;;(require 'yasnippet)
 (use-package yasnippet
   :diminish (yas-minor-mode . "")
   :defer t
@@ -121,7 +120,6 @@
         ("TAB" . nil)
         ;; use shift-tab for yasnippet completion so it doesn't conflict w/ ac-mode
         ("<S-tab>" . yas-expand))
-  ;; (global-set-key (kbd "<S-tab>") 'yas-expand)
 
   :config
   (setq yas-prompt-functions '(yas-ido-prompt yas-dropdown-prompt))

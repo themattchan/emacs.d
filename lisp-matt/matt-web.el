@@ -23,6 +23,7 @@
 
 
 (use-package web-mode
+  :defer t
   :mode
   (("\\.html$" . web-mode)
    ("\\.scala.html\\'" . web-mode)
