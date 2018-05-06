@@ -81,7 +81,7 @@
 (setq package-enable-at-startup nil)
 (setq package-archives
       '(("melpa" . "https://melpa.org/packages/")
-        ("gnu" . "http://elpa.gnu.org/packages/")))
+        ("gnu" . "https://elpa.gnu.org/packages/")))
 (setq package-user-dir (concat user-emacs-directory "elpa/"))
 (setq package-archive-enable-alist '(("melpa" deft magit)))
 (package-initialize nil)
