@@ -112,6 +112,7 @@
 
 
 (use-package erc
+  :disabled t
   :defer t
   :config
 

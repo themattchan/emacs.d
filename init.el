@@ -35,8 +35,8 @@
 (eval-and-compile
   (defun matt/recompile-settings ()
     (interactive)
-    (byte-recompile-file "~/.emacs.d/init.el" t 0)
-    (byte-recompile-file "~/.emacs.d/custom.el" t 0)
+    (byte-compile-file "~/.emacs.d/init.el" t 0)
+    (byte-compile-file "~/.emacs.d/custom.el" t 0)
     (byte-recompile-directory "~/.emacs.d/lisp-matt/" 0 t)
     (load-file user-init-file)
     ))
@@ -70,7 +70,7 @@
   (defun matt/install-my-packages ()
     (message "Installing required packages...")
     (package-refresh-contents)
-    (dolist (pkg package-selected-packages) ; matt/packages)
+    (dolist (pkg package-selected-packages)
       (when (not (package-installed-p pkg))
         (message "  + Installing package: %s" pkg)
         (ignore-errors
