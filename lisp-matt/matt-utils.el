@@ -26,8 +26,11 @@
 ;; Dired
 
 (use-package dired
-  :defer t
+  :defer 15
   :config
+  (require 'dired-details+)
+  (require 'dired-x)
+  ;; hide the -al stuff, toggle with '(' and ')'
   (setq dired-recursive-deletes 'always
         dired-recursive-copies 'always
         delete-by-moving-to-trash t
@@ -35,19 +38,12 @@
         ;; show sym link targets
         Dired-details-hide-link-targets nil)
   (add-hook 'dired-mode-hook 'turn-on-stripe-buffer-mode)
-;; (add-hook 'dired-mode-hook 'stripe-listify-buffer)
-  )
-
-;; hide the -al stuff, toggle with '(' and ')'
-(use-package dired-details+
-  :after dired)
-
-(use-package dired-x
-  :after dired
-  :config
+  ;; (add-hook 'dired-mode-hook 'stripe-listify-buffer)
   (setq-default ; C-x M-o to toggle omit mode
    dired-omit-mode t
-   dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^\\.\\|^~"))
+   dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^\\.\\|^~")
+  )
+
 
 ;;------------------------------------------------------------------------------
 ;; Terminal
