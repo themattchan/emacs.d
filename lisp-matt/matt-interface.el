@@ -22,6 +22,93 @@
 ;;; Code:
 
 ;;------------------------------------------------------------------------------
+;; Fix Emacs interface annoyances
+(setq-default                     ; Global settings for ALL BUFFERS
+ ;; kill the splash screen and all that garbage
+ inhibit-splash-screen t
+ inhibit-startup-message t
+ inhibit-startup-screen t
+ inhibit-startup-buffer-menu t
+ initial-scratch-message ""
+ ;;inhibit-startup-echo-area-message "matt"
+ ;;initial-buffer-choice                    ; Open to some file
+ menu-prompting nil
+ confirm-kill-emacs 'y-or-n-p ; Ask before exit
+
+ ;;frame-title-format '(buffer-file-name "%f" "%b") ; Full file path in title
+ display-warning-minimum-level 'error   ; Turn off annoying warning messages
+ disabled-command-function nil          ; Don't second-guess advanced commands
+
+ ;; mode line customizations
+ display-battery-mode t
+ battery-mode-line-format " [%L: %b%p%%] " ; %t for time
+
+ line-number-mode t
+ column-number-mode t
+
+ ns-pop-up-frames nil ;; Mac open new files in the existing frame
+ use-dialog-box nil
+
+ ;; square cursor
+ cursor-type 'box
+ ;; scrolling does not move cursor
+ scroll-preserve-screen-position t
+ ;; use wheel
+ mouse-wheel-mode t
+ echo-keystrokes 0.1
+
+ redisplay-dont-pause t
+
+ ;; buffer handling
+ save-place t
+ save-place-forget-unreadable-files t
+ uniquify-rationalize-file-buffer-names t
+ uniquify-buffer-name-style 'forward
+ buffers-menu-sort-function 'sort-buffers-menu-by-mode-then-alphabetically ; Buffers menu settings
+ buffers-menu-grouping-function 'group-buffers-menu-by-mode-then-alphabetically
+ buffers-menu-submenus-for-groups-p t
+ ibuffer-default-sorting-mode 'filename/process
+ ;; when using ido, the confirmation is rather annoying...
+ confirm-nonexistent-file-or-buffer nil
+
+ ;; font lock
+ font-lock-use-fonts '(or (mono) (grayscale))    ; Maximal syntax highlighting
+ font-lock-use-colors '(color)
+ font-lock-maximum-decoration t
+ font-lock-maximum-size nil
+ font-lock-auto-fontify t
+
+ ;; Smooth scrolling
+ scroll-margin 1
+ scroll-step 1
+ scroll-conservatively 10000
+ scroll-preserve-screen-position 1
+ mouse-wheel-follow-mouse 't
+ mouse-wheel-scroll-amount '(1 ((shift) . 1))
+ ;; stfu and stop beeping. you ain't vim.
+ ring-bell-function 'ignore
+ ) ;; end startup setq
+
+;; Redefine startup messasge
+(defun startup-echo-area-message ()
+  "By your command...")
+
+;; y/n prompts instead of yes/no
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+;; No popups and dialogues. They crash carbon emacs.
+;; Not to mention that they're incredibly annoying.
+(defadvice y-or-n-p (around prevent-dialog activate)
+  "Prevent y-or-n-p from activating a dialog"
+  (let ((use-dialog-box nil))
+    ad-do-it))
+
+;; normal delete key behaviour please
+;; highlight selection and overwrite
+(delete-selection-mode t)
+(transient-mark-mode t)
+
+;;------------------------------------------------------------------------------
 ;; Show time on the mode line
 (use-package display-time
   :defer 5
@@ -46,6 +133,7 @@
 ;;------------------------------------------------------------------------------
 ;; Smart mode line
 (use-package smart-mode-line
+  :demand t
   :config
   (setq mode-line-format (delq 'mode-line-position mode-line-format))
   (sml/setup))
@@ -159,15 +247,6 @@
 
    ("C-h SPC"   . helm-all-mark-rings)
 
-   ;; ("C-c h"     . helm-command-prefix)
-   ;; ("C-c h M-:" . helm-eval-expression-with-eldoc)
-   ;; ("C-c h o"   . helm-occur)
-
-   ;; helm-projectile
-   ;; ("C-c p f"   . helm-projectile-find-file)
-   ;; ("C-c p g"   . helm-projectile-find-file-dwim)
-   ;; ("C-c p s s" . helm-projectile-ag)
-
    ;; silver searcher
    ("M-s s"     . helm-ag)
    ("M-s a"     . helm-ag-project-root)
@@ -175,9 +254,6 @@
    ("M-s p"     . helm-ag-pop-stack)
    ("M-s C-c"   . helm-ag-clear-stack)
    ))
-
-;; when using ido, the confirmation is rather annoying...
- (setq confirm-nonexistent-file-or-buffer nil)
 
 ;;------------------------------------------------------------------------------
 ;; winner-mode
@@ -193,84 +269,6 @@
   :config
   (setq recentf-max-menu-items 30)
   (recentf-mode 1))
-
-
-;;------------------------------------------------------------------------------
-;; Fix Emacs interface annoyances
-(setq-default                     ; Global settings for ALL BUFFERS
- ;; kill the splash screen and all that garbage
- inhibit-splash-screen t
- inhibit-startup-message t
- inhibit-startup-screen t
- inhibit-startup-buffer-menu t
- initial-scratch-message ""
- ;;inhibit-startup-echo-area-message "matt"
- ;;initial-buffer-choice                    ; Open to some file
- menu-prompting nil
- confirm-kill-emacs 'y-or-n-p ; Ask before exit
-
- ;;frame-title-format '(buffer-file-name "%f" "%b") ; Full file path in title
- display-warning-minimum-level 'error   ; Turn off annoying warning messages
- disabled-command-function nil          ; Don't second-guess advanced commands
-
- ;; mode line customizations
- display-battery-mode t
- battery-mode-line-format " [%L: %b%p%%] " ; %t for time
-
- line-number-mode t
- column-number-mode t
-
- ns-pop-up-frames nil ;; Mac open new files in the existing frame
-
- ;; square cursor
- cursor-type 'box
- ;; scrolling does not move cursor
- scroll-preserve-screen-position t
- ;; use wheel
- mouse-wheel-mode t
- echo-keystrokes 0.1
-
- redisplay-dont-pause t
-
- ;; buffer handling
- save-place t
- save-place-forget-unreadable-files t
- uniquify-rationalize-file-buffer-names t
- uniquify-buffer-name-style 'forward
- buffers-menu-sort-function 'sort-buffers-menu-by-mode-then-alphabetically ; Buffers menu settings
- buffers-menu-grouping-function 'group-buffers-menu-by-mode-then-alphabetically
- buffers-menu-submenus-for-groups-p t
- ibuffer-default-sorting-mode 'filename/process
-
- ;; font lock
- font-lock-use-fonts '(or (mono) (grayscale))    ; Maximal syntax highlighting
- font-lock-use-colors '(color)
- font-lock-maximum-decoration t
- font-lock-maximum-size nil
- font-lock-auto-fontify t
-
- ;; Smooth scrolling
- scroll-margin 1
- scroll-step 1
- scroll-conservatively 10000
- scroll-preserve-screen-position 1
- mouse-wheel-follow-mouse 't
- mouse-wheel-scroll-amount '(1 ((shift) . 1))
- ;; stfu and stop beeping. you ain't vim.
- ring-bell-function 'ignore
- ) ;; end startup setq
-
-;; Redefine startup messasge
-(defun startup-echo-area-message ()
-  "By your command...")
-
-;; y/n prompts instead of yes/no
-(defalias 'yes-or-no-p 'y-or-n-p)
-
-;; normal delete key behaviour please
-;; highlight selection and overwrite
-(delete-selection-mode t)
-(transient-mark-mode t)
 
 ;;------------------------------------------------------------------------------
 ;; smart parens nav
@@ -367,16 +365,6 @@
                           :font "Lucida Console 10" ; Consolas is also good
                           :weight 'normal))))
   )
-
-;;------------------------------------------------------------------------------
-;; No popups and dialogues. They crash carbon emacs.
-;; Not to mention that they're incredibly annoying.
-(defadvice y-or-n-p (around prevent-dialog activate)
-  "Prevent y-or-n-p from activating a dialog"
-  (let ((use-dialog-box nil))
-    ad-do-it))
-;; Fallback. DIE, DIALOGUE BOXES, DIE!!
-(setq use-dialog-box nil)
 
 ;;------------------------------------------------------------------------------
 ;; Unclutter mode line

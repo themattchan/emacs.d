@@ -87,13 +87,13 @@
   (require 'use-package))
 
 (setq use-package-always-ensure nil)
-(setq use-package-always-defer t)
+;(setq use-package-always-defer t)
 
 (use-package diminish :ensure t :demand t :defer nil)
 (use-package bind-key :ensure t :demand t :defer nil)
-(use-package cl-lib :ensure t)
-(use-package f :ensure t)      ; filesystem utils
-(use-package s :ensure t)      ; string utils
+(use-package cl-lib :ensure t :defer t)
+(use-package f :ensure t :defer t)      ; filesystem utils
+(use-package s :ensure t :defer t)      ; string utils
 
 ;;==============================================================================
 ;; Setup paths
@@ -166,9 +166,10 @@
 
          ;; General interface settings
          matt-keybindings
+         matt-themes                    ; load theme first, o/w smart mode line
+                                        ; does not show the right colours
          matt-interface
          matt-edit-global
-         matt-themes
 
          ;; Hooks for editing
          ;; Text documents
