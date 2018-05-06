@@ -243,8 +243,10 @@ Returns the project root with a shell.nix file, or NIL if not nix."
                            (regexp . "\\(\\s-+\\)\\(<-\\|←\\)\\s-+")
                            (modes haskell-modes-list)))
             ))
+
 ;; nix stuff
 (use-package nix-mode
+  :defer t
   :config
   (setq-local tab-width 2))
 

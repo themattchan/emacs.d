@@ -23,6 +23,14 @@
 
 ;;; Code:
 
+(defconst matt/lisps
+  '(lisp-mode
+    emacs-lisp-mode
+    common-lisp-mode
+    scheme-mode
+    racket-mode
+    clojure-mode))
+
 (setq inferior-lisp-program "sbcl")
 (setq scheme-program-name "racket")
 (when *is-mac*
@@ -36,7 +44,10 @@
 ;;------------------------------------------------------------------------------
 ;; colourful parens
 (use-package rainbow-delimiters
-  :hook lisp-modes
+  :init
+  (dolist (mode matt/lisps)
+    (add-hook (intern (format "%s-hook" mode))
+              'rainbow-delimiters-mode))
   :config
   (cl-loop
    for index from 1 to rainbow-delimiters-max-face-count

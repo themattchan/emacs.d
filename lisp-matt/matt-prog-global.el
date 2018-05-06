@@ -37,6 +37,8 @@
   :config
   (show-paren-mode 1))
 
+(add-hook 'makefile-mode (lambda () (setq indent-tabs-mode t)))
+
 (add-hook 'prog-mode-hook
           (lambda()
             ;;(matt/load-theme 'adwaita)

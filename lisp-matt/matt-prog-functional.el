@@ -21,55 +21,13 @@
 
 ;;; Code:
 
-;; no tabs in functional langs
-(defconst functional-langs
-  '(tuareg-mode
-    sml-lex-mode
-    sml-yacc-mode
-    sml-mode
-    haskell-mode
-    literate-haskell-mode
-    purescript-mode
-    elm-mode
-    scala-mode
-    scala2-mode
-    erlang-mode
-    fsharp-mode))
-
-(defconst lisp-modes
-  '(lisp-mode
-    emacs-lisp-mode
-    common-lisp-mode
-    scheme-mode
-    racket-mode
-    clojure-mode))
-
-(defun matt/functional-programming ()
-  (setq indent-tabs-mode nil)
-  (setq tab-width 2))
-
-(dolist (mode functional-langs)
-  (add-hook (intern (format "%s-hook" mode))
-            #'matt/functional-programming))
-
-(defun matt/untabify-hook ()
-  (when (member major-mode (cl-union functional-langs
-                                     lisp-modes))
-    (untabify (point-min) (point-max))))
-(add-hook 'before-save-hook 'matt/untabify-hook)
-
 ;; Proof General and Coq
-;; TODO: autoload
 (use-package proof-site
-  ;;  :defer t
+  :defer t
   :load-path (lambda () (concat user-emacs-directory "lisp/PG/generic"))
   :mode ("\\.v\\'" . coq-mode)
   :init (setq proof-splash-enable nil))
-(use-package company-coq
-  :commands (company-coq-mode)
-  :init (add-hook 'coq-mode-hook 'company-coq-mode t)
-  :config
-  (setq company-coq-disabled-features '(prettify-symbols)))
+
 (use-package coq
   :defer t
   :config
@@ -79,23 +37,26 @@
   ;;    (setq proof-general-directory "~/.emacs.d/lisp/PG")
   )
 
-;; (if (file-accessible-directory-p proof-general-directory)
-;;     (load (concat (file-name-as-directory proof-general-directory)
-;;                   "generic/proof-site")))
-
-;;(add-hook 'coq-mode-hook #'company-coq-mode)
+(use-package company-coq
+  :commands (company-coq-mode)
+  :init (add-hook 'coq-mode-hook 'company-coq-mode t)
+  :defer t
+  :after coq
+  :config
+  (setq company-coq-disabled-features '(prettify-symbols)))
 
 ;;  Purescript
 
-(add-hook 'purescript-mode-hook
-  (lambda ()
+(use-package purescript-mode
+  :defer t
+  :config
     (use-package psc-ide
       :bind (:map psc-ide-mode-map
                   ("M-." . find-tag)))
     (psc-ide-mode)
     (company-mode)
     (flycheck-mode)
-    (purescript-indentation-mode)))
+    (purescript-indentation-mode))
 
 (defun purescript-make-tags ()
   (interactive)

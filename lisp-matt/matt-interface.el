@@ -22,10 +22,6 @@
 ;;; Code:
 
 ;;------------------------------------------------------------------------------
-;; Mac open new files in the existing frame
-(setq ns-pop-up-frames nil)
-
-;;------------------------------------------------------------------------------
 ;; Show time on the mode line
 (display-time)
 
@@ -34,8 +30,7 @@
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 ;; Want menu bar only in GUIs
-(when (not window-system)
-  (menu-bar-mode -1))
+(when (not window-system) (menu-bar-mode -1))
 
 ;; No cursor blink
 (blink-cursor-mode -1)
@@ -211,7 +206,7 @@
  ;;inhibit-startup-echo-area-message "matt"
  ;;initial-buffer-choice                    ; Open to some file
  menu-prompting nil
- confirm-kill-emacs 'y-or-n-p ; Ask before exit - takes a while to load, y'know?
+ confirm-kill-emacs 'y-or-n-p ; Ask before exit
 
  ;;frame-title-format '(buffer-file-name "%f" "%b") ; Full file path in title
  display-warning-minimum-level 'error   ; Turn off annoying warning messages
@@ -224,6 +219,7 @@
  line-number-mode t
  column-number-mode t
 
+ ns-pop-up-frames nil ;; Mac open new files in the existing frame
 
  ;; square cursor
  cursor-type 'box
@@ -252,6 +248,13 @@
  font-lock-maximum-size nil
  font-lock-auto-fontify t
 
+ ;; Smooth scrolling
+ scroll-margin 1
+ scroll-step 1
+ scroll-conservatively 10000
+ scroll-preserve-screen-position 1
+ mouse-wheel-follow-mouse 't
+ mouse-wheel-scroll-amount '(1 ((shift) . 1))
  ;; stfu and stop beeping. you ain't vim.
  ring-bell-function 'ignore
  ) ;; end startup setq
@@ -282,8 +285,6 @@
   :defer t
   :config
   (setq neo-theme 'nerd))
-
-
 
 ;;------------------------------------------------------------------------------
 ;; treemacs
@@ -375,19 +376,6 @@
     ad-do-it))
 ;; Fallback. DIE, DIALOGUE BOXES, DIE!!
 (setq use-dialog-box nil)
-
-;;------------------------------------------------------------------------------
-;; Smooth scrolling
-(setq scroll-margin 1
-      scroll-step 1
-      scroll-conservatively 10000
-      scroll-preserve-screen-position 1
-      mouse-wheel-follow-mouse 't
-      mouse-wheel-scroll-amount '(1 ((shift) . 1)))
-
-;; because sometimes you want a mouse
-;; (autoload 'xt-mouse "xt-mouse")
-;; (xterm-mouse-mode)
 
 ;;------------------------------------------------------------------------------
 ;; Unclutter mode line
@@ -485,9 +473,10 @@
 ;; anzu mode (show current & total matches in isearch)
 
 (use-package anzu
-  :defer 10
+  :demand t
   :diminish
-  :config (global-anzu-mode +1))
+  :config
+  (global-anzu-mode +1))
 
 
 (provide 'matt-interface)

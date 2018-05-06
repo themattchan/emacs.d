@@ -31,20 +31,16 @@
 
 (eval-and-compile
   (defun matt/c-indent (width tabs)
-    ;; use setq-local, its supposedly more hygienic
-    ;; set correct backspace behaviour.
-    (setq-local c-backspace-function 'backward-delete-char)
-
-    ;; c-type lang specifics. want 4-space width tab tabs
-    (setq-local c-basic-offset width)
     (setq-local tab-width width)
-    ;; (setq-local c-indent-level 4)
-
-    ;;(setq-local c-indent-tabs-mode t)           ; tabs please
-    (setq-local c-tab-always-indent tabs)          ; t for tabs, nil for spaces
     (setq-local indent-tabs-mode tabs)
 
-    ;;(setq-local tab-stop-list (number-sequence 8 120 8))
+    (setq-local c-backspace-function 'backward-delete-char)
+
+    (setq-local c-basic-offset width)
+    (setq-local c-indent-level width)
+
+    (setq-local c-indent-tabs-mode tabs)
+    (setq-local c-tab-always-indent tabs)
     ))
 
 (use-package cc-mode
@@ -110,8 +106,9 @@
               (c-set-offset 'substatement-open 0)
               ;; don't indent curly for inline method def
               (c-set-offset 'inline-open 0)
-              (setq-default flycheck-gcc-language-standard "c++11"
-                            flycheck-clang-language-standard "c++11")
+
+              (setq-default flycheck-gcc-language-standard "c++17"
+                            flycheck-clang-language-standard "c++17")
               ))
 
   ;;------------------------------------------------------------------------------
@@ -132,7 +129,9 @@
   ;; (require 'ac-emacs-eclim-source)
   ;; (ac-emacs-eclim-config)
 
-  (defun matt/java-hooks ()
+  (defun my-java-hook ()
+    (matt/c-indent 4 nil)
+    (c-set-offset 'substatement-open 0)
     ;; Treat Java 1.5 @-style annotations as comments.
     (setq c-comment-start-regexp "(@|/(/|[*][*]?))")
     (modify-syntax-entry ?@ "< b" java-mode-syntax-table)
@@ -156,12 +155,11 @@
                     (extern-lang-close after)
                     (statement-case-open after)
                     (substatement-open after))
-                  'c-hanging-braces-alist)))
+                  'c-hanging-braces-alist))
+    ) ;; my-java-hook
 
 
-  (add-hook 'java-mode-hook 'matt/java-hooks)
-  (add-hook 'java-mode-hook (lambda () (matt/c-indent 4)))
-  (add-hook 'java-mode-hook (lambda ()  (c-set-offset 'substatement-open 0)))
+  (add-hook 'java-mode-hook 'my-java-hook)
   );; use-package cc-mode
 
 ;;------------------------------------------------------------------------------
@@ -176,6 +174,10 @@
   (setq-local tab-width 8)
   (setq-local tab-stop-list (number-sequence 8 120 8))
   (setq-local indent-tabs-mode t))
+
+
+;;------------------------------------------------------------------------------
+;; Protobuf
 
 (use-package protobuf-mode
   :defer t

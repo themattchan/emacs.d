@@ -37,17 +37,17 @@
  auto-save-interval 200 ; number of keystrokes between auto-saves (default: 300)
 
  ;; GLOBAL EDITING SETTINGS
- ;;
 
- x-select-enable-clipboard t            ; integrate with the system clipboard ffs
- initial-major-mode 'fundamental-mode   ; set initial major mode to be text
- undo-limit 1000                        ; Increase number of undo
- fill-column 80                         ; default fill-column is 80 chars
- ispell-dictionary "english"            ; English spelling, thanks
+ x-select-enable-clipboard t            ; integrate with the system clipboard
+ initial-major-mode 'fundamental-mode
+ undo-limit 1000
+ fill-column 80                         ; 80 char columns
+ ispell-dictionary "english"
 
  ;; Tabs and indentation and whitespace
  indent-tabs-mode nil                   ; tabs to spaces by default
- tab-width 4                            ; Default tab display is 4 spaces
+ tab-width 2                            ; Default tab display is 2 spaces
+
  ;; default insert is also 4 and inc of 4
  ;; got to specify this or it will continue to expand to 8 spc
  ;; tab-stop-list (number-sequence 4 120 4)
@@ -57,11 +57,11 @@
  next-line-add-newlines nil             ; No newlines at end of buffer unless I hit return
  sentence-end-double-space nil          ; sentences end with one space only.
 
- ;; FORCE FILES TO BE UTF-8 and LF damn it
+ ;; FORCE FILES TO BE UTF-8 and LF
  buffer-file-coding-system 'utf-8-unix
  default-file-name-coding-system 'utf-8-unix
  default-keyboard-coding-system 'utf-8-unix
- default-process-coding-system '(utf-8-unix .   utf-8-unix)
+ default-process-coding-system '(utf-8-unix . utf-8-unix)
  default-sendmail-coding-system 'utf-8-unix
  default-terminal-coding-system 'utf-8-unix
 
@@ -84,9 +84,8 @@
 
 ;;------------------------------------------------------------------------------
 ;; flyspell - aspell is better
-(if *is-mac*
-    (setq-default ispell-program-name "/usr/local/bin/aspell")
-  (setq-default ispell-program-name "/usr/bin/aspell"))
+(setq-default ispell-program-name
+              (if *is-mac* "/usr/local/bin/aspell" "/usr/bin/aspell"))
 
 (set-language-environment "UTF-8")
 
@@ -140,12 +139,13 @@
 ;;(add-hook 'after-init-hook 'global-company-mode)
 ;(eval-after-load 'company-mode (lambda () (add-to-list 'company-backends 'company-ghc)))
 
-(defun load-project-tags ()
-  (interactive)
-  (condition-case nil
-      (let ((root (projectile-project-root)))
-        (visit-tags-table (s-concat root "TAGS")))
-    (error nil)))
+(eval-and-compile
+  (defun load-project-tags ()
+    (interactive)
+    (condition-case nil
+        (let ((root (projectile-project-root)))
+          (visit-tags-table (s-concat root "TAGS")))
+      (error nil))))
 
 (provide 'matt-edit-global)
 ;; Local Variables:
