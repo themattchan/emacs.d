@@ -28,10 +28,8 @@
     (byte-recompile-file "~/.emacs.d/init.el" t 0)
     (byte-recompile-file "~/.emacs.d/custom.el" t 0)
     (byte-recompile-directory "~/.emacs.d/lisp-matt/" 0 t)
-    (load user-init-file)
-    ))
+    (load user-init-file))
 
-(eval-and-compile
   (defsubst matt/initialise-packages ()
     (require 'package)
     (setq package-enable-at-startup nil)
