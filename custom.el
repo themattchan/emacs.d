@@ -41,42 +41,15 @@
  '(doc-view-continuous t)
  '(ecb-layout-name "left2")
  '(ecb-options-version "2.40")
- '(ecb-source-path (quote (("/" "/") ("/Users/matt/Dropbox" "dropbox"))))
  '(ecb-tip-of-the-day nil)
- '(eclim-eclipse-dirs (quote ("/Applications/eclipse")))
- '(eclim-executable "/Applications/eclipse/eclim")
- '(ede-project-directories (quote ("/Users/matt/Dropbox/cse30/cse30-pa3")))
  '(expand-region-guess-python-mode nil)
  '(fancy-battery-mode nil)
  '(fancy-battery-show-percentage t)
  '(fci-rule-color "#5c5e5e" t)
  '(fci-rule-width 5)
- '(flycheck-command-wrapper-function
-(function
- (lambda
-   (command)
-   (if
-       (numberp
-        (position major-mode
-                  (quote
-                   (haskell-mode literate-haskell-mode))))
-       (apply
-        (quote nix-shell-command)
-        (nix-current-sandbox)
-        command))
-   command)))
  '(flycheck-completion-system (quote ido) t)
  '(flycheck-display-errors-delay 0)
  '(flycheck-display-errors-function (quote flycheck-display-error-messages))
-'(flycheck-executable-find
-(function
- (lambda
-   (cmd)
-   (nix-executable-find
-    (nix-current-sandbox)
-    cmd))))
- '(flycheck-haskell-hdevtools-executable "~/Library/Haskell/bin/hdevtools")
- '(flycheck-haskell-liquid-executable "~/.local/bin//liquid")
  '(flycheck-highlighting-mode (quote sexps))
  '(flyspell-issue-message-flag t)
  '(geiser-active-implementations (quote (racket scheme)))
@@ -91,35 +64,6 @@
    racket))))
  '(geiser-mode-auto-p nil)
  '(geiser-mode-autodoc-p nil)
- '(haskell-font-lock-symbols nil)
-'(haskell-mode-hook
-(quote
- (#[nil "\301\211\207"
-        [indent-tabs-mode nil]
-        2]
-  interactive-haskell-mode matt/functional-programming
-  #[nil "\300\301!\207"
-        [electric-indent-mode -1]
-        2]
-  haskell-indentation-mode)) t)
-'(haskell-process-args-ghci
-(quote
- ("ghci" "--with-ghc" "intero" "--no-load" "--no-build")))
- '(haskell-process-auto-import-loaded-modules t)
- '(haskell-process-log t)
- '(haskell-process-path-cabal "cabal configure && cabal")
- '(haskell-process-suggest-remove-import-lines t)
- '(haskell-process-type (quote cabal-repl))
- '(haskell-process-use-ghci t)
-'(haskell-process-wrapper-function
-(function
- (lambda
-   (args)
-   (apply
-    (quote nix-shell-command)
-    (nix-current-sandbox)
-    args))))
- '(haskell-program-name "stack ghci \"+.\"")
  '(helm-ag-base-command "ag --nocolor --nogroup --ignore-case")
  '(helm-ag-command-option "--skip-vcs-ignores")
  '(helm-ag-insert-at-point (quote symbol))
@@ -234,10 +178,7 @@
 ["#073642" "#dc322f" "#859900" "#b58900" "#268bd2" "#d33682" "#2aa198" "#eee8d5"])
 '(xterm-color-names-bright
 ["#002b36" "#cb4b16" "#586e75" "#657b83" "#839496" "#6c71c4" "#93a1a1" "#fdf6e3"])
-'(znc-servers
-(quote
- (("162.248.141.245" 1701 t
-   ((matt-znc "mach" "Z2fqfcxgPdJWn8Y")))))))
+)
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
