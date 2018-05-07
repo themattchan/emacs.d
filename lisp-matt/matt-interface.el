@@ -41,7 +41,7 @@
 
  ;; mode line customizations
  ;; display-battery-mode t
- ;; battery-mode-line-format " [%L: %b%p%%] " ; %t for time
+ battery-mode-line-format " [%L: %b%p%%] " ; %t for time
 
  line-number-mode t
  column-number-mode t

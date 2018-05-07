@@ -20,6 +20,7 @@
 ;;; Commentary:
 
 ;;; Code:
+(eval-and-compile
   (defmacro diminish-minor-mode (mode str)
     `(with-eval-after-load ,mode
        (diminish ,mode ,str)))
@@ -34,11 +35,12 @@
   ;;     (let ((s (alist-get major-mode diminish-major-mode-alist)))
   ;;       (when s (setq mode-name s)))))
   (defmacro diminish-major-mode (mode str)
-;    `(with-eval-after-load ,mode
+                                        ;    `(with-eval-after-load ,mode
     `(add-hook 'after-change-major-mode-hook
-                 (lambda ()
-                   (when (eq major-mode ,mode)
-                     (setq mode-name ,str)))))
+               (lambda ()
+                 (when (eq major-mode ,mode)
+                   (setq mode-name ,str)))))
+  )
 
 (eval-and-compile
   (eval-when-compile (require 'cl))
