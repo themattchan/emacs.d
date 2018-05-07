@@ -41,10 +41,10 @@
 
 ;; Python
 (use-package python-mode
-  :diminish "py"
   :defer t
   :mode ("\\.py\\'" . python-mode)
   :config
+  (diminish-major-mode 'python-mode "py")
   (add-hook 'python-mode-hook
             (lambda()
               (elpy-enable)

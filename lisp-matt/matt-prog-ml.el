@@ -35,10 +35,10 @@
 
 
 (use-package tuareg
-  :diminish "λOCaml"
   :mode (("\\.ml[ily]?$" . tuareg-mode)
          ("\\.topml$" . tuareg-mode))
   :config
+  (diminish-major-mode 'tuareg-mode "λOCaml")
   (add-hook 'tuareg-mode-hook (lambda ()  (setq indent-tabs-mode nil)))
   (add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)
   (add-hook 'tuareg-mode-hook 'merlin-mode t))

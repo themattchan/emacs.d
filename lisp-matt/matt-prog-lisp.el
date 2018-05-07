@@ -93,12 +93,12 @@
 ;; (add-hook 'geiser-repl-mode-hook 'ac-geiser-setup)
 
 (use-package racket-mode
-  :diminish ('racket-mode . "(λr)")
   :mode "\\.rkt\\'"
   :bind
   (:map racket-mode-map
         ("C-c C-l" . 'racket-run-and-switch-to-repl))
   :config
+  (diminish-major-mode 'racket-mode "(λr)")
   (when *is-mac* (setq racket-program "/Applications/Racket/bin/racket")))
 
 ;; Clojure
