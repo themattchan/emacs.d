@@ -157,17 +157,16 @@
 ;; Unclutter mode line
 
 ;; diminish settings without a home in use-package defns.
-(diminish-minor-mode lisp-interaction-mode "λeval")
-(diminish-minor-mode auto-complete-mode " α")
-(diminish-minor-mode paredit-mode " π")
-(diminish-minor-mode eldoc-mode "")
-(diminish-minor-mode abbrev-mode "")
-(diminish-minor-mode smartparens-mode "")
-(diminish-minor-mode auto-highlight-symbol-mode "")
-(diminish-minor-mode subword-mode "")
-(diminish-minor-mode nxhtml-mode "nx")
-(diminish-minor-mode button-lock-mode "")
-(diminish-minor-mode subword-mode "")
+(macroexpand '(diminish-minor-mode 'lisp-interaction-mode "λeval"))
+(diminish-minor-mode 'auto-complete-mode " α")
+(diminish-minor-mode 'paredit-mode " π")
+(diminish-minor-mode 'eldoc-mode "")
+(diminish-minor-mode 'abbrev-mode "")
+(diminish-minor-mode 'smartparens-mode "")
+(diminish-minor-mode 'auto-highlight-symbol-mode "")
+;;(diminish-minor-mode 'subword-mode "")
+(diminish-minor-mode 'nxhtml-mode "nx")
+(diminish-minor-mode 'button-lock-mode "")
 
 ;;------------------------------------------------------------------------------
 ;; Completion modes, etc

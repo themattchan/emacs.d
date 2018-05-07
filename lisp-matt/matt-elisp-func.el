@@ -20,17 +20,28 @@
 ;;; Commentary:
 
 ;;; Code:
+  (defmacro diminish-minor-mode (mode str)
+    `(with-eval-after-load ,mode
+       (diminish ,mode ,str)))
+
+  ;; (defvar diminish-major-mode-alist nil)
+
+  ;;   (defmacro diminish-major-mode (mode str)
+  ;;     `(push (,mode . ,str) diminish-major-mode-alist))
+
+  ;;   (add-hook 'after-change-major-mode-hook
+  ;;    (lambda ()
+  ;;     (let ((s (alist-get major-mode diminish-major-mode-alist)))
+  ;;       (when s (setq mode-name s)))))
+  (defmacro diminish-major-mode (mode str)
+;    `(with-eval-after-load ,mode
+    `(add-hook 'after-change-major-mode-hook
+                 (lambda ()
+                   (when (eq major-mode ,mode)
+                     (setq mode-name ,str)))))
 
 (eval-and-compile
   (eval-when-compile (require 'cl))
-
-  (defmacro diminish-minor-mode (mode str)
-    `(eval-after-load ,(symbol-name mode)
-       (diminish (quote ,mode) ,str)))
-
-  (defmacro diminish-major-mode (mode str)
-    `(eval-after-load ,(symbol-name mode)
-       (setq mode-name ,str)))
 
   ;; expand filled paragraph to a line
   (defun unfill-paragraph ()

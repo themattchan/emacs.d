@@ -46,11 +46,16 @@
 
 (add-hook 'makefile-mode (lambda () (setq indent-tabs-mode t)))
 
+(use-package subword-mode
+  :diminish
+  :defer t
+  :init
+  (add-hook 'prog-mode-hook #'subword-mode))
+
 (add-hook 'prog-mode-hook
           (lambda()
             (electric-indent-mode 1)    ; auto indent
             (hl-line-mode 1)            ; highlight current line
-            (subword-mode)
             (setq
              flycheck-completion-system 'ido
              ;; enable multiline comments
