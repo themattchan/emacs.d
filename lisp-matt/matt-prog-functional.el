@@ -25,7 +25,7 @@
 ;; Proof General and Coq
 (use-package proof-site
   :defer t
-  :load-path (lambda () (concat user-emacs-directory "lisp/PG/generic"))
+  :load-path (lambda () (expand-file-name "lisp/PG/generic" user-emacs-directory))
   :mode ("\\.v\\'" . coq-mode)
   :init
   (setq proof-splash-enable nil))
@@ -33,7 +33,7 @@
 (use-package coq
   :defer t
   :after proof-site
-  :load-path (lambda () (concat user-emacs-directory "lisp/PG/coq"))
+  :load-path (lambda () (expand-file-name "lisp/PG/coq" user-emacs-directory))
   :config
   (if *is-mac* (setq coq-prog-name "/usr/local/bin/coqtop"))
 

@@ -37,7 +37,7 @@
           '(("melpa" . "https://melpa.org/packages/")
             ("gnu" . "https://elpa.gnu.org/packages/")
             ("marmalade" . "https://marmalade-repo.org/packages/")))
-    (setq package-user-dir (concat user-emacs-directory "elpa/"))
+    (setq package-user-dir (expand-file-name "elpa/" user-emacs-directory))
     (setq package-archive-enable-alist '(("melpa" deft magit)))
     (package-initialize nil))
 
@@ -152,8 +152,8 @@
 ;; Set file paths before anything else
 
 ;; load path for extra packages
-(add-to-list 'load-path (concat user-emacs-directory "lisp-matt/"))
-(add-to-list 'load-path (concat user-emacs-directory "lisp/"))
+(add-to-list 'load-path (expand-file-name "lisp-matt/" user-emacs-directory))
+(add-to-list 'load-path (expand-file-name "lisp/" user-emacs-directory))
 ;; (let ((default-directory  (concat user-emacs-directory "lisp/")))
 ;;   (message "load lisp files")
 ;;   (dolist (file (directory-files default-directory nil "\\.el$"))
@@ -163,7 +163,7 @@
 ;;   (normal-top-level-add-to-load-path '("flycheck-liquidhs.el" "liquid-types.el")))
 
 ;; customize.el
-(setq custom-file "~/.emacs.d/custom.el")
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file)
 
 ;;==============================================================================
