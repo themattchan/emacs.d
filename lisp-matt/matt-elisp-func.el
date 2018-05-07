@@ -22,7 +22,7 @@
 ;;; Code:
 (eval-and-compile
   (defmacro diminish-minor-mode (mode str)
-    `(with-eval-after-load ,mode
+    `(with-eval-after-load 'diminish
        (diminish ,mode ,str)))
 
   ;; (defvar diminish-major-mode-alist nil)
@@ -110,7 +110,6 @@ or just one char if that's not possible"
       (indent-region (point-min) (point-max))
       (save-buffer)
       (kill-buffer nil)))
-
 
   (defun do-files (files)
     (lambda (fun)

@@ -36,7 +36,6 @@
     (before theme-dont-propagate activate)
   (mapc #'disable-theme custom-enabled-themes))
 
-
 ;; TODO rewrite this using frame configurations
 ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Frames.html#Frames
 (eval-and-compile
