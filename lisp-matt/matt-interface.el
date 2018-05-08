@@ -45,7 +45,7 @@
  display-battery-mode t
 
  display-time-default-load-average nil
- display-time-format "%a %d %b%l:%M %p"
+ display-time-format "%a %d %b %l:%M %p"
  display-time-mode t
 
  line-number-mode t
@@ -103,10 +103,11 @@
 
 ;; No popups and dialogues. They crash carbon emacs.
 ;; Not to mention that they're incredibly annoying.
-(defadvice y-or-n-p (around prevent-dialog activate)
-  "Prevent y-or-n-p from activating a dialog"
-  (let ((use-dialog-box nil))
-    ad-do-it))
+(advice-add 'y-or-n-p
+            :around
+            #'(lambda (y-or-n-p-fun prompt)
+                (let ((use-dialog-box nil))
+                  (apply y-or-n-p-fun prompt))))
 
 ;; normal delete key behaviour please
 (delete-selection-mode t)
