@@ -369,8 +369,7 @@
 
 ;; Only one theme at a time, auto disable prev loaded theme
 ;; (activate this AFTER loading my theme)
-(defadvice load-theme
-    (before theme-dont-propagate activate)
+(defadvice load-theme (before theme-dont-propagate activate)
   (mapc #'disable-theme custom-enabled-themes))
 
 ;;------------------------------------------------------------------------------
@@ -478,7 +477,7 @@
 ;;------------------------------------------------------------------------------
 ;; Projectile mode by default
 
-(setq my-globally-ignored-file-suffixes
+(defconst my-globally-ignored-file-suffixes
       '( ".o"
          ".hi"
          ".out"
@@ -493,7 +492,7 @@
          ".bak"
          ".log"
          ))
-(setq my-globally-ignored-files
+(defconst my-globally-ignored-files
       '( ".DS_Store"
          "*~"
          "\#*\#"
@@ -502,7 +501,7 @@
          "package-lock.json"
          ))
 
-(setq my-globally-ignored-directories
+(defconst my-globally-ignored-directories
       '("*.liquid" ".stack-work" "dist" "out"
         "repl" "target" "venv" "tmp"
         "output" "node_modules" "bower_components"
