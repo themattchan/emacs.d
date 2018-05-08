@@ -195,7 +195,6 @@
          ;; General interface settings
          matt-keybindings
          matt-interface
-         matt-themes
          matt-edit-global
 
          ;; Hooks for editing

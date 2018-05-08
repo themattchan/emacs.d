@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 ;;; matt-interface.el --- Startup, UI, and general settings.
 
 ;;; Copyright (c) 2013-2015 Matthew Chan
@@ -30,7 +31,7 @@
  inhibit-startup-screen t
  inhibit-startup-buffer-menu t
  initial-scratch-message ""
- ;;inhibit-startup-echo-area-message "matt"
+
  ;;initial-buffer-choice                    ; Open to some file
  menu-prompting nil
  confirm-kill-emacs 'y-or-n-p ; Ask before exit
@@ -85,7 +86,7 @@
  scroll-preserve-screen-position 1
  mouse-wheel-follow-mouse 't
  mouse-wheel-scroll-amount '(1 ((shift) . 1))
- ;; stfu and stop beeping. you ain't vim.
+
  ring-bell-function 'ignore
  ) ;; end startup setq
 
@@ -357,14 +358,82 @@
               ("M-m fp" . treemacs-projectile-toggle)))
 
 ;;------------------------------------------------------------------------------
-;; Face (fonts) customization
+;; Themes
+
+(if (window-system)
+    (load-theme 'badwolf t) ; odersky
+  (progn
+    ;; default theme on terminals
+    (load-theme 'wombat t)
+    (set-background-color "black")))
+
+;; Only one theme at a time, auto disable prev loaded theme
+;; (activate this AFTER loading my theme)
+(defadvice load-theme
+    (before theme-dont-propagate activate)
+  (mapc #'disable-theme custom-enabled-themes))
+
+;;------------------------------------------------------------------------------
+;; Face (fonts) customisation
 
 (eval-and-compile
-  (defun matt/font-size-for-display ()
-    (let ((w (display-pixel-width)))
-      (cond
-       ((>= w 1680) 160)
-       (t 120)))))
+  (defun maximize-frame ()
+    "Maximize the frame
+(this is cribbed from the definition of toggle-frame-maximized)"
+  (interactive)
+  (let ((fullscreen (frame-parameter nil 'fullscreen)))
+    (when (not (eq fullscreen 'maximized))
+      (set-frame-parameter nil 'fullscreen 'maximized))))
+
+(defsubst get-display-size ()
+  (pcase (assq 'geometry (frame-monitor-attributes))
+    (`(geometry ,x ,y ,w ,h) w)))
+
+(defun get-display-type ()
+  (let ((w (get-display-size)))
+    (cond
+     ((>= w 2560) 'hdpi)
+     (t 'normal))))
+
+(defun matt/font-size-for-display ()
+  (case (get-display-type)
+    ('hdpi 160)
+    ('normal 120)))
+
+(defun small-fonts ()
+  (interactive)
+  (set-face-attribute 'default nil :height 120))
+
+(defun normal-fonts ()
+  (interactive)
+  (set-face-attribute 'default nil :height (matt/font-size-for-display)))
+
+(defun large-fonts ()
+  (interactive)
+  (set-face-attribute 'default nil :height 160))
+
+(defun layout-4column ()
+  (interactive)
+  (small-fonts)
+  (delete-other-windows)
+  (dotimes (_ 3) (split-window-right))
+  (balance-windows)
+  (maximize-frame))
+
+(defun layout-2by4 ()
+  (interactive)
+  (small-fonts)
+  (delete-other-windows)
+  (split-window-below)
+  (dotimes (_ 3) (split-window-right))
+  (other-window -1)
+  (dotimes (_ 3) (split-window-right))
+  (balance-windows)
+  (maximize-frame))
+) ;; eval-and-compile
+
+;; default-frame-alist affects ALL frames
+(add-to-list 'initial-frame-alist '(fullscreen . maximized))
 
 (eval-and-compile
   (eval-when-compile (require 'cl))
@@ -375,26 +444,22 @@
   ;;  :demand t
   :after helm
   :config
-  (when (window-system)
-    (cond
-     (*is-mac*
-      (set-face-attribute 'default nil
-                          :font "Monaco"
-                          :height (matt/font-size-for-display)
-                          :weight 'normal
-                          :width 'normal))
+  (defun matt/default-fonts ()
+    (interactive)
+    (when (window-system)
+      (set-face-attribute
+       'default
+       nil
 
-     (*is-linux*
-      (set-face-attribute 'default nil
-                          :font (font-alternatives "Inconsolata" "DejaVu Sans Mono" "Consolas")
-                          :height 120
-                          :weight 'normal
-                          :width 'normal))
+       :font
+       (cond
+        (*is-mac* "Monaco")
+        (*is-linux*  (font-alternatives "Inconsolata" "DejaVu Sans Mono" "Consolas"))
+        (*is-windows*  (font-alternatives "Lucida Console" "Consolas")))
 
-     (*is-windows*
-      (set-face-attribute 'default nil
-                          :font "Lucida Console 10" ; Consolas is also good
-                          :weight 'normal)))
+       :height (matt/font-size-for-display)
+       :weight 'normal
+       :width 'normal))
 
     ;; Make the minibuffer/helm/modeline text small
     (let* ((prefixes '("mode-" "sml/")) ;"helm-"
@@ -404,7 +469,8 @@
                                              prefixes))
                                (face-list))))
       (mapc (lambda (face) (set-face-attribute face nil :height 120)) smalls))
-    ))
+    )
+  (matt/default-fonts))
 
 ;;------------------------------------------------------------------------------
 ;; Projectile mode by default
