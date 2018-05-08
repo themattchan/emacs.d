@@ -41,8 +41,7 @@
     `(progn
      ,@(cl-mapcar
         #'(lambda (some-lisp-mode)
-           `(add-hook (intern (format "%s-hook" (quote ,some-lisp-mode)))
-            ,thing-to-hook))
+            `(add-hook (intern (format "%s-hook" ',some-lisp-mode)) ,thing-to-hook))
         all-lisps))))
 
 ;; (macroexpand '(add-hook-all-lisps 'foo))
