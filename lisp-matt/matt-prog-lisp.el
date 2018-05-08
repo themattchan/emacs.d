@@ -85,9 +85,10 @@
   )
 
 (use-package paredit
-  :diminish
+  :diminish " π"
   :init
-  (add-hook-all-lisps 'paredit-mode))
+  (add-hook-all-lisps 'paredit-mode)
+  (add-hook 'lisp-interaction-mode-hook 'paredit-mode))
 
 ;; Common Lisp
 ;; Setup load-path and autoloads

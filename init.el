@@ -111,7 +111,6 @@
 
   :diminish lisp-interaction-mode "λeval"
   :diminish auto-complete-mode " α"
-  :diminish paredit-mode " π"
   :diminish eldoc-mode
   :diminish abbrev-mode
   :diminish smartparens-mode

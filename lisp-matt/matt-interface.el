@@ -140,6 +140,7 @@
 ;; Smart mode line
 (use-package smart-mode-line
   :demand t
+  :after faces
   :config
   (setq
    mode-line-format (delq 'mode-line-position mode-line-format)
