@@ -157,8 +157,6 @@
 ;;------------------------------------------------------------------------------
 ;; GNUS RSS
 
-(setq gnus-select-method '(nntp "news.gmane.org"))
-(add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
 
 (setq jiralib-url "https://jira.mv.awakenetworks.net/")
 

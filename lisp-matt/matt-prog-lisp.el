@@ -31,6 +31,22 @@
     racket-mode
     clojure-mode))
 
+(defmacro add-hook-all-lisps (thing-to-hook)
+  (let ((all-lisps '(lisp-mode
+                     emacs-lisp-mode
+                     common-lisp-mode
+                     scheme-mode
+                     racket-mode
+                     clojure-mode)))
+    `(progn
+     ,@(cl-mapcar
+        #'(lambda (some-lisp-mode)
+           `(add-hook (intern (format "%s-hook" (quote ,some-lisp-mode)))
+            ,thing-to-hook))
+        all-lisps))))
+
+;; (macroexpand '(add-hook-all-lisps 'foo))
+
 (diminish-major-mode 'lisp-mode "(())")
 (diminish-major-mode 'scheme-mode "(λ)")
 (diminish-major-mode 'clojure-mode "(λclj)")
@@ -50,11 +66,13 @@
 ;;------------------------------------------------------------------------------
 ;; colourful parens
 (use-package rainbow-delimiters
+  :diminish
+
   :init
-  (dolist (mode matt/lisps)
-    (add-hook (intern (format "%s-hook" mode))
-              'rainbow-delimiters-mode))
+  (add-hook-all-lisps 'rainbow-delimiters-mode)
+
   :config
+
   (cl-loop
    for index from 1 to rainbow-delimiters-max-face-count
    do
@@ -62,12 +80,17 @@
     (intern (format "rainbow-delimiters-depth-%d-face" index))
     nil
     :weight 'bold))
+
   (set-face-attribute 'rainbow-delimiters-unmatched-face nil
                       :foreground 'unspecified
                       :inherit 'error
                       :strike-through t)
   )
 
+(use-package paredit
+  :diminish
+  :init
+  (add-hook-all-lisps 'paredit-mode))
 
 ;; Common Lisp
 ;; Setup load-path and autoloads

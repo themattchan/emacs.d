@@ -161,7 +161,7 @@
 ;;------------------------------------------------------------------------------
 ;; Unclutter mode line
 
-;; ;; diminish settings without a home in use-package defns.
+;; ;; Diminish settings without a home in use-package defns.
 ;; (diminish-minor-mode 'lisp-interaction-mode "λeval")
 ;; (diminish-minor-mode 'auto-complete-mode " α")
 ;; (diminish-minor-mode 'paredit-mode " π")
@@ -447,8 +447,8 @@
     `(cond ,@(cl-mapcar #'(lambda (f) `((find-font (font-spec :name ,f)) ,f)) (cons font fonts)))))
 
 (use-package faces
-  ;;  :demand t
-  :after helm
+  :demand t
+;;  :after helm
   :config
   (defun matt/default-fonts ()
     (interactive)
@@ -458,10 +458,7 @@
        nil
 
        :font
-       (cond
-        (*is-mac* "Monaco")
-        (*is-linux*  (font-alternatives "Inconsolata" "DejaVu Sans Mono" "Consolas"))
-        (*is-windows*  (font-alternatives "Lucida Console" "Consolas")))
+	   (font-alternatives "Monaco" "Inconsolata" "DejaVu Sans Mono" "Lucida Console" "Consolas")
 
        :height 120  ;(matt/font-size-for-display)
        :weight 'normal
@@ -482,34 +479,34 @@
 ;; Projectile mode by default
 
 (defconst my-globally-ignored-file-suffixes
-      '( ".o"
-         ".hi"
-         ".out"
-         ".elc"
-         ".jar"
-         ".class"
-         ".pyc"
-         ".gz"
-         ".tar.gz"
-         ".tgz"
-         ".zip"
-         ".bak"
-         ".log"
-         ))
+  '( ".o"
+	 ".hi"
+	 ".out"
+	 ".elc"
+	 ".jar"
+	 ".class"
+	 ".pyc"
+	 ".gz"
+	 ".tar.gz"
+	 ".tgz"
+	 ".zip"
+	 ".bak"
+	 ".log"
+	 ))
 (defconst my-globally-ignored-files
-      '( ".DS_Store"
-         "*~"
-         "\#*\#"
-         "#*#"
-         "yarn.lock"
-         "package-lock.json"
-         ))
+  '( ".DS_Store"
+	 "*~"
+	 "\#*\#"
+	 "#*#"
+	 "yarn.lock"
+	 "package-lock.json"
+	 ))
 
 (defconst my-globally-ignored-directories
-      '("*.liquid" ".stack-work" "dist" "out"
-        "repl" "target" "venv" "tmp"
-        "output" "node_modules" "bower_components"
-        ))
+  '("*.liquid" ".stack-work" "dist" "out"
+	"repl" "target" "venv" "tmp"
+	"output" "node_modules" "bower_components"
+	))
 
 (use-package grep
   :defer 5
