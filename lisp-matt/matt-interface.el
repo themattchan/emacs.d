@@ -364,17 +364,22 @@
 ;;------------------------------------------------------------------------------
 ;; Themes
 
+;; Only one theme at a time, auto disable prev loaded theme
+(advice-add 'load-theme
+            :around
+            #'(lambda (load-theme-fun theme &rest args)
+                (mapc #'disable-theme custom-enabled-themes)
+                (apply load-theme-fun
+                       (pcase args
+                         (`(_ ,no-enable) (list theme t no-enable))
+                         (_ (list theme t nil))))))
+
 (if (window-system)
     (load-theme 'badwolf t) ; odersky
   (progn
     ;; default theme on terminals
     (load-theme 'wombat t)
     (set-background-color "black")))
-
-;; Only one theme at a time, auto disable prev loaded theme
-;; (activate this AFTER loading my theme)
-(defadvice load-theme (before theme-dont-propagate activate)
-  (mapc #'disable-theme custom-enabled-themes))
 
 ;;------------------------------------------------------------------------------
 ;; Face (fonts) customisation

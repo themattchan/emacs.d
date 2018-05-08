@@ -54,9 +54,7 @@
 
 (setq inferior-lisp-program "sbcl")
 (setq scheme-program-name "racket")
-(when *is-mac*
-  (setq geiser-racket-binary "/Applications/Racket/bin/racket")
-  )
+(when *is-mac* (setq geiser-racket-binary "/Applications/Racket/bin/racket"))
 
 (add-hook 'align-load-hook
           (lambda ()
