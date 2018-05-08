@@ -107,7 +107,7 @@
             :around
             #'(lambda (y-or-n-p-fun prompt)
                 (let ((use-dialog-box nil))
-                  (apply y-or-n-p-fun prompt))))
+                  (funcall y-or-n-p-fun prompt))))
 
 ;; normal delete key behaviour please
 (delete-selection-mode t)
