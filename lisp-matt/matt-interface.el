@@ -448,7 +448,7 @@
 
 (use-package faces
   :demand t
-;;  :after helm
+  ;;  :after helm
   :config
   (defun matt/default-fonts ()
     (interactive)
@@ -458,7 +458,7 @@
        nil
 
        :font
-	   (font-alternatives "Monaco" "Inconsolata" "DejaVu Sans Mono" "Lucida Console" "Consolas")
+       (font-alternatives "Monaco" "Inconsolata" "DejaVu Sans Mono" "Lucida Console" "Consolas")
 
        :height 120  ;(matt/font-size-for-display)
        :weight 'normal
@@ -480,33 +480,33 @@
 
 (defconst my-globally-ignored-file-suffixes
   '( ".o"
-	 ".hi"
-	 ".out"
-	 ".elc"
-	 ".jar"
-	 ".class"
-	 ".pyc"
-	 ".gz"
-	 ".tar.gz"
-	 ".tgz"
-	 ".zip"
-	 ".bak"
-	 ".log"
-	 ))
+     ".hi"
+     ".out"
+     ".elc"
+     ".jar"
+     ".class"
+     ".pyc"
+     ".gz"
+     ".tar.gz"
+     ".tgz"
+     ".zip"
+     ".bak"
+     ".log"
+     ))
 (defconst my-globally-ignored-files
   '( ".DS_Store"
-	 "*~"
-	 "\#*\#"
-	 "#*#"
-	 "yarn.lock"
-	 "package-lock.json"
-	 ))
+     "*~"
+     "\#*\#"
+     "#*#"
+     "yarn.lock"
+     "package-lock.json"
+     ))
 
 (defconst my-globally-ignored-directories
   '("*.liquid" ".stack-work" "dist" "out"
-	"repl" "target" "venv" "tmp"
-	"output" "node_modules" "bower_components"
-	))
+    "repl" "target" "venv" "tmp"
+    "output" "node_modules" "bower_components"
+    ))
 
 (use-package grep
   :defer 5
