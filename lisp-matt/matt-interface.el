@@ -41,8 +41,12 @@
  disabled-command-function nil          ; Don't second-guess advanced commands
 
  ;; mode line customizations
- ;; display-battery-mode t
  battery-mode-line-format " [%L: %b%p%%] " ; %t for time
+ display-battery-mode t
+
+ display-time-default-load-average nil
+ display-time-format "%a %d %b%l:%M %p"
+ display-time-mode t
 
  line-number-mode t
  column-number-mode t
@@ -134,7 +138,6 @@
 ;;------------------------------------------------------------------------------
 ;; Smart mode line
 (use-package smart-mode-line
-  :disabled t
   :demand t
   :config
   (setq
