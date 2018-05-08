@@ -389,6 +389,9 @@
   (pcase (assq 'geometry (frame-monitor-attributes))
     (`(geometry ,x ,y ,w ,h) w)))
 
+;; 13" macbook: 1280
+;; home monitor: 1920
+;; samsung ultrabook: 2560
 (defun get-display-type ()
   (let ((w (get-display-size)))
     (cond
@@ -457,7 +460,7 @@
         (*is-linux*  (font-alternatives "Inconsolata" "DejaVu Sans Mono" "Consolas"))
         (*is-windows*  (font-alternatives "Lucida Console" "Consolas")))
 
-       :height (matt/font-size-for-display)
+       :height 120  ;(matt/font-size-for-display)
        :weight 'normal
        :width 'normal))
 
