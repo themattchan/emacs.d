@@ -23,11 +23,14 @@
 ;;; Code:
 
 (eval-and-compile
+  (defmacro .emacs.d/ (file)
+    `(expand-file-name ,file user-emacs-directory))
+
   (defun matt/recompile-settings ()
     (interactive)
-    (byte-recompile-file "~/.emacs.d/init.el" t 0)
-    (byte-recompile-file "~/.emacs.d/custom.el" t 0)
-    (byte-recompile-directory "~/.emacs.d/lisp-matt/" 0 t)
+    (byte-recompile-file (.emacs.d/ "init.el") t 0)
+    (byte-recompile-file (.emacs.d/ "custom.el") t 0)
+    (byte-recompile-directory (.emacs.d/ "lisp-matt/") 0 t)
     (load user-init-file))
 
   (defsubst matt/initialise-packages ()
@@ -37,7 +40,7 @@
           '(("melpa" . "https://melpa.org/packages/")
             ("gnu" . "https://elpa.gnu.org/packages/")
             ("marmalade" . "https://marmalade-repo.org/packages/")))
-    (setq package-user-dir (expand-file-name "elpa/" user-emacs-directory))
+    (setq package-user-dir (.emacs.d/ "elpa/"))
     (setq package-archive-enable-alist '(("melpa" deft magit)))
     (package-initialize nil))
 
@@ -97,7 +100,7 @@
 
 (eval-when-compile (require 'cl))       ; use common lisp (macros only)
 (eval-when-compile
-  (add-to-list 'load-path (car (directory-files "~/.emacs.d/elpa" nil "use-package-*" nil)))
+  (add-to-list 'load-path (car (directory-files (.emacs.d/ "elpa/") nil "use-package-*" nil)))
   (require 'use-package))
 (setq use-package-always-ensure nil)
 ;;(setq use-package-always-defer t)
@@ -167,8 +170,8 @@
 ;; Set file paths before anything else
 
 ;; load path for extra packages
-(add-to-list 'load-path (expand-file-name "lisp-matt/" user-emacs-directory))
-(add-to-list 'load-path (expand-file-name "lisp/" user-emacs-directory))
+(add-to-list 'load-path (.emacs.d/ "lisp-matt/"))
+(add-to-list 'load-path (.emacs.d/ "lisp/"))
 ;; (let ((default-directory  (concat user-emacs-directory "lisp/")))
 ;;   (message "load lisp files")
 ;;   (dolist (file (directory-files default-directory nil "\\.el$"))
@@ -178,14 +181,14 @@
 ;;   (normal-top-level-add-to-load-path '("flycheck-liquidhs.el" "liquid-types.el")))
 
 ;; customize.el
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(setq custom-file (.emacs.d/ "custom.el"))
 (load custom-file)
 
 ;;==============================================================================
 ;; Now load my configs
 ;;==============================================================================
-(let ((private "~/.emacs.d/private.el"))
-  (when (file-exists-p private)
+(let ((private (.emacs.d/ "private.el")))
+  (when (file-readable-p private)
     (load-file private)))
 
 (let ((matt-configs
