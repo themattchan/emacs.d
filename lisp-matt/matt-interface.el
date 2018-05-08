@@ -134,6 +134,7 @@
 ;;------------------------------------------------------------------------------
 ;; Smart mode line
 (use-package smart-mode-line
+  :disabled t
   :demand t
   :config
   (setq
