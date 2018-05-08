@@ -22,19 +22,12 @@
 ;;; Code:
 (eval-when-compile (require 'use-package))
 
-(use-package auto-fill
-  :diminish
-  :defer 5
-  :commands auto-fill-mode
-  :init
-  (add-hook 'prog-mode-hook #'auto-fill-mode)
-  (add-hook 'text-mode #'auto-fill-mode))
+(add-hook 'prog-mode-hook #'auto-fill-mode)
+(add-hook 'text-mode #'auto-fill-mode)
 
 (use-package paren
   :diminish
   :defer 1
-  ;; :hook ((prog-mode . 'show-paren-mode)
-  ;;        (text-mode . 'show-paren-mode))
   :config
   (show-paren-mode 1))
 
@@ -46,7 +39,7 @@
 
 (add-hook 'makefile-mode (lambda () (setq indent-tabs-mode t)))
 
-(use-package subword-mode
+(use-package subword
   :diminish
   :defer t
   :init
@@ -186,7 +179,7 @@
 ;; Language server protocol
 
 (use-package lsp-mode
-  :defer t
+  :defer tq
   :config
   (add-hook lsp-mode-hook 'lsp-ui-mode))
 ;;(add-hook 'purescript-mode #'lsp-purescript-enable)
@@ -201,6 +194,7 @@
 
 (use-package magithub
   :after magit
+  :disabled t
   :config
   (magithub-feature-autoinject t))
 

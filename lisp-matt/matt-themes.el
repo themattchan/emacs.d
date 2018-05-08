@@ -39,15 +39,14 @@
 ;; TODO rewrite this using frame configurations
 ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Frames.html#Frames
 (eval-and-compile
-(defconst DEFAULT-FONT-SIZE (face-attribute 'default :height))
 
 (defun small-fonts ()
   (interactive)
-  (set-face-attribute 'default nil :height (truncate (* DEFAULT-FONT-SIZE 0.75))))
+  (set-face-attribute 'default nil :height (truncate (* (matt/font-size-for-display) 0.75))))
 
 (defun normal-fonts ()
   (interactive)
-  (set-face-attribute  'default nil :height DEFAULT-FONT-SIZE))
+  (set-face-attribute  'default nil :height (matt/font-size-for-display)))
 
 (defun maximize-frame ()
  "Maximize the frame

@@ -102,7 +102,21 @@
 (setq use-package-always-ensure nil)
 ;;(setq use-package-always-defer t)
 
-(use-package diminish :ensure t :demand t :defer nil)
+(use-package diminish
+  :ensure t :demand t :defer nil
+
+  :diminish lisp-interaction-mode "λeval"
+  :diminish auto-complete-mode " α"
+  :diminish paredit-mode " π"
+  :diminish eldoc-mode
+  :diminish abbrev-mode
+  :diminish smartparens-mode
+  :diminish auto-highlight-symbol-mode
+  :diminish subword-mode
+  :diminish nxhtml-mode "nx"
+  :diminish button-lock-mode
+  :diminish anzu-mode
+  )
 (use-package bind-key :ensure t :demand t :defer nil)
 (use-package cl-lib :ensure t :defer t)
 (use-package f :ensure t :defer t)      ; filesystem utils

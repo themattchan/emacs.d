@@ -64,8 +64,8 @@
     (psc-ide-mode)
     (company-mode)
     (flycheck-mode)
-    (lsp-purescript-enable)
-    (purescript-indentation-mode))
+;;    (lsp-purescript-enable)
+    (turn-on-purescript-indentation))
 
 (eval-and-compile
   (defun purescript-make-tags ()

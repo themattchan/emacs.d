@@ -136,9 +136,9 @@
   :demand t
   :config
   (setq
-    mode-line-format (delq 'mode-line-position mode-line-format)
-    sml/theme 'respectful
-    sml/shorten-modes t)
+   mode-line-format (delq 'mode-line-position mode-line-format)
+   sml/theme 'respectful
+   sml/shorten-modes t)
   (sml/setup))
 ;; '(:eval (if (use-region-p)
 ;;     (format "%d"
@@ -156,17 +156,17 @@
 ;;------------------------------------------------------------------------------
 ;; Unclutter mode line
 
-;; diminish settings without a home in use-package defns.
-(diminish-minor-mode 'lisp-interaction-mode "λeval")
-(diminish-minor-mode 'auto-complete-mode " α")
-(diminish-minor-mode 'paredit-mode " π")
-(diminish-minor-mode 'eldoc-mode "")
-(diminish-minor-mode 'abbrev-mode "")
-(diminish-minor-mode 'smartparens-mode "")
-(diminish-minor-mode 'auto-highlight-symbol-mode "")
-(diminish-minor-mode 'subword-mode "")
-(diminish-minor-mode 'nxhtml-mode "nx")
-(diminish-minor-mode 'button-lock-mode "")
+;; ;; diminish settings without a home in use-package defns.
+;; (diminish-minor-mode 'lisp-interaction-mode "λeval")
+;; (diminish-minor-mode 'auto-complete-mode " α")
+;; (diminish-minor-mode 'paredit-mode " π")
+;; (diminish-minor-mode 'eldoc-mode "")
+;; (diminish-minor-mode 'abbrev-mode "")
+;; (diminish-minor-mode 'smartparens-mode "")
+;; (diminish-minor-mode 'auto-highlight-symbol-mode "")
+;; (diminish-minor-mode 'subword-mode "")
+;; (diminish-minor-mode 'nxhtml-mode "nx")
+;; (diminish-minor-mode 'button-lock-mode "")
 
 ;;------------------------------------------------------------------------------
 ;; Completion modes, etc
@@ -192,8 +192,8 @@
 
   :config
   (progn
-      (when (executable-find "curl")
-       (setq helm-net-prefer-curl t))
+    (when (executable-find "curl")
+      (setq helm-net-prefer-curl t))
     (setq
      helm-input-idle-delay                 0.001
      helm-idle-delay                       0.001
@@ -236,9 +236,9 @@
 
   :bind
   (:map helm-map
-     ("<tab>" . helm-execute-persistent-action) ; rebind tab to run persistent action
-     ("C-i"   . helm-execute-persistent-action) ; make TAB works in terminal
-     ("C-z"   . helm-select-action)) ; list actions using C-z
+        ("<tab>" . helm-execute-persistent-action) ; rebind tab to run persistent action
+        ("C-i"   . helm-execute-persistent-action) ; make TAB works in terminal
+        ("C-z"   . helm-select-action)) ; list actions using C-z
 
   :bind
   (:map minibuffer-local-map
@@ -357,24 +357,36 @@
               ("M-m fp" . treemacs-projectile-toggle)))
 
 ;;------------------------------------------------------------------------------
-;; Fonts (face) customization
-;;(autoload 'faces "faces")
+;; Face (fonts) customization
+
+(eval-and-compile
+  (defun matt/font-size-for-display ()
+    (let ((w (display-pixel-width)))
+      (cond
+       ((>= w 1680) 160)
+       (t 120)))))
+
+(eval-and-compile
+  (eval-when-compile (require 'cl))
+  (defmacro font-alternatives (font &rest fonts)
+    `(cond ,@(cl-mapcar #'(lambda (f) `((find-font (font-spec :name ,f)) ,f)) (cons font fonts)))))
+
 (use-package faces
-  :demand t
+  ;;  :demand t
+  :after helm
   :config
-  ;; default font size is 14pt on carbon emacs
   (when (window-system)
     (cond
      (*is-mac*
       (set-face-attribute 'default nil
                           :font "Monaco"
-                          :height 160    ; default font size is 12pt on carbon emacs
+                          :height (matt/font-size-for-display)
                           :weight 'normal
                           :width 'normal))
 
      (*is-linux*
       (set-face-attribute 'default nil
-                          :font "Monospace-12"
+                          :font (font-alternatives "Inconsolata" "DejaVu Sans Mono" "Consolas")
                           :height 120
                           :weight 'normal
                           :width 'normal))
@@ -382,8 +394,17 @@
      (*is-windows*
       (set-face-attribute 'default nil
                           :font "Lucida Console 10" ; Consolas is also good
-                          :weight 'normal))))
-  )
+                          :weight 'normal)))
+
+    ;; Make the minibuffer/helm/modeline text small
+    (let* ((prefixes '("mode-" "sml/")) ;"helm-"
+           (smalls (seq-filter #'(lambda (face)
+                                   (seq-some #'(lambda (pfx)
+                                                 (string-prefix-p pfx (symbol-name face)))
+                                             prefixes))
+                               (face-list))))
+      (mapc (lambda (face) (set-face-attribute face nil :height 120)) smalls))
+    ))
 
 ;;------------------------------------------------------------------------------
 ;; Projectile mode by default
