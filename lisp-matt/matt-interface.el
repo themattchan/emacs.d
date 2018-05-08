@@ -375,10 +375,10 @@
                          (_ (list theme t nil))))))
 
 (if (window-system)
-    (load-theme 'badwolf t) ; odersky
+    (load-theme 'badwolf) ; odersky
   (progn
     ;; default theme on terminals
-    (load-theme 'wombat t)
+    (load-theme 'wombat)
     (set-background-color "black")))
 
 ;;------------------------------------------------------------------------------
