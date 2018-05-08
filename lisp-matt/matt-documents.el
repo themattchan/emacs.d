@@ -38,10 +38,10 @@
   :diminish
   :hook (text-mode . global-captain-mode))
 
-;(add-hook 'text-mode-hook 'ac-ispell-ac-setup)
 (add-hook 'text-mode-hook
           (lambda ()
             (visual-line-mode 1)
+            (auto-fill-mode)
             (setq
              ;; tabs to spaces in text mode
              indent-tabs-mode nil
@@ -52,11 +52,12 @@
              tab-stop-list (number-sequence 4 120 4)
              )))
 
-(use-package align
-  :init
-  (add-hook 'align-load-hook
+(add-hook 'align-load-hook
             (lambda ()
-              (setq align-text-modes (append '(fundamental-mode markdown-mode) align-text-modes)))))
+              (setq align-text-modes (append '(fundamental-mode markdown-mode) align-text-modes))))
+;; (use-package align
+;;   :init
+;;   )
 
 ;;------------------------------------------------------------------------------
 ;; LaTeX and AUCTeX

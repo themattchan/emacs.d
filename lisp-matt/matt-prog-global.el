@@ -22,9 +22,6 @@
 ;;; Code:
 (eval-when-compile (require 'use-package))
 
-(add-hook 'prog-mode-hook #'auto-fill-mode)
-(add-hook 'text-mode #'auto-fill-mode)
-
 (use-package paren
   :diminish
   :defer 1
@@ -47,6 +44,7 @@
 
 (add-hook 'prog-mode-hook
           (lambda()
+            (auto-fill-mode)
             (electric-indent-mode 1)    ; auto indent
             (hl-line-mode 1)            ; highlight current line
             (setq

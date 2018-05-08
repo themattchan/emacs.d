@@ -102,6 +102,7 @@
 (setq use-package-always-ensure nil)
 ;;(setq use-package-always-defer t)
 
+(use-package bind-key :ensure t :demand t :defer nil)
 (use-package diminish
   :ensure t :demand t :defer nil
 
@@ -117,7 +118,7 @@
   :diminish button-lock-mode
   :diminish anzu-mode
   )
-(use-package bind-key :ensure t :demand t :defer nil)
+
 (use-package cl-lib :ensure t :defer t)
 (use-package f :ensure t :defer t)      ; filesystem utils
 (use-package s :ensure t :defer t)      ; string utils
