@@ -560,22 +560,13 @@
         (append projectile-project-root-files
                 projectile-project-root-files-bottom-up))
 
-  ;;(file-name-directory (directory-file-name default-directory))
   (defun projectile-find-my-root (start-dir)
-;;    (message "start dir is %s" start-dir)
     (when (not (or (string= (substitute-in-file-name "$HOME/") start-dir)
                    (string= "~/" start-dir)))
       (let ((search-here (file-expand-wildcards (concat start-dir "*.cabal"))))
         (if search-here
-            search-here
+            (car search-here)
           (projectile-find-my-root (file-name-directory (directory-file-name start-dir)))))))
-    ;; (message "start-dir is %s" start-dir)
-    ;; (locate-dominating-file
-    ;;  start-dir
-    ;;  (lambda (dir)
-    ;;     (message "searching %s" (file-expand-wildcards (concat (file-name-as-directory dir) "*.cabal")))
-    ;;    ;; don't need file-name-as-directory because dir is guaranteed to be a valid dirpath
-    ;;    (file-expand-wildcards (concat dir "*.cabal")))))
 
 ;;  (add-to-list 'projectile-project-root-files-functions #'projectile-find-my-root)
   (setq projectile-project-root-files-functions
