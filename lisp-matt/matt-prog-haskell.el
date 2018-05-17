@@ -122,12 +122,12 @@
   (diminish-major-mode 'haskell-mode "λ")
   (diminish-major-mode 'literate-haskell-mode "λlit")
   (remove-hook 'haskell-mode-hook 'stack-mode)
-  (add-hook 'haskell-mode-hook 'haskell-doc-mode)
-  (add-hook 'haskell-mode-hook 'haskell-decl-scan-mode)
-  (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+  ;; (add-hook 'haskell-mode-hook 'haskell-doc-mode)
+  ;; (add-hook 'haskell-mode-hook 'haskell-decl-scan-mode)
+  ;; (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
   (setq-local haskell-process-suggest-remove-import-lines t)
   (setq-local haskell-process-auto-import-loaded-modules t)
-  (setq-local haskell-process-log t)
+;;  (setq-local haskell-process-log t)
 
   ;; Haskell mode GLOBAL settings
   (use-package flycheck

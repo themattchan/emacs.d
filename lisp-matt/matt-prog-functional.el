@@ -25,7 +25,7 @@
 ;; Proof General and Coq
 (use-package proof-site
   :defer t
-  :load-path (lambda () (.emacs.d/ "lisp/PG/generic"))
+  :load-path (lambda () (locate-user-emacs-file "lisp/PG/generic"))
   :mode ("\\.v\\'" . coq-mode)
   :init
   (setq proof-splash-enable nil))
@@ -33,7 +33,7 @@
 (use-package coq
   :defer t
   :after proof-site
-  :load-path (lambda () (.emacs.d/ "lisp/PG/coq"))
+  :load-path (lambda () (locate-user-emacs-file "lisp/PG/coq"))
   :config
   (if *is-mac* (setq coq-prog-name "/usr/local/bin/coqtop"))
 
@@ -57,15 +57,19 @@
 
 (use-package purescript-mode
   :defer t
+  :mode "\\.purs$"
   :config
-    (use-package psc-ide
-      :bind (:map psc-ide-mode-map
-                  ("M-." . find-tag)))
-    (psc-ide-mode)
-    (company-mode)
-    (flycheck-mode)
-;;    (lsp-purescript-enable)
-    (turn-on-purescript-indentation))
+  (add-hook 'purescript-mode-hook
+            (lambda ()
+              (psc-ide-mode)
+              (company-mode)
+              (flycheck-mode)
+              (turn-on-purescript-indentation))))
+
+(use-package psc-ide
+  :defer t
+  :bind (:map psc-ide-mode-map
+              ("M-." . find-tag)))
 
 (eval-and-compile
   (defun purescript-make-tags ()

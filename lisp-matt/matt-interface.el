@@ -228,10 +228,10 @@
      helm-lisp-fuzzy-completion            t)
 
     (custom-set-variables
-     '(helm-ag-base-command "ag --nocolor --nogroup --ignore-case")
+     '(helm-ag-base-command "rg --vimgrep --no-heading --smart-case ") ; "ag --nocolor --nogroup --ignore-case")
      ;; flags are here
      ;; https://github.com/ggreer/the_silver_searcher/blob/682ab865e174ce289b7dda5514abfdf21037a2db/doc/ag.1.md
-     '(helm-ag-command-option "--skip-vcs-ignores")
+     '(helm-ag-command-option "") ; "--skip-vcs-ignores")
      '(helm-ag-insert-at-point 'symbol))
 
     (ido-mode -1) ; just in case
@@ -405,7 +405,7 @@
 (defun get-display-type ()
   (let ((w (get-display-size)))
     (cond
-     ((>= w 2560) 'hdpi)
+     ((> w 2560) 'hdpi)
      (t 'normal))))
 
 (defun matt/font-size-for-display ()
@@ -465,9 +465,9 @@
        nil
 
        :font
-       (font-alternatives "Monaco" "Inconsolata" "DejaVu Sans Mono" "Lucida Console" "Consolas")
+       (font-alternatives "Hack" "Monaco" "Inconsolata" "PT Mono" "DejaVu Sans Mono" "Lucida Console" "Consolas")
 
-       :height 120  ;(matt/font-size-for-display)
+       :height (matt/font-size-for-display)
        :weight 'normal
        :width 'normal))
 
@@ -478,8 +478,7 @@
                                                  (string-prefix-p pfx (symbol-name face)))
                                              prefixes))
                                (face-list))))
-      (mapc (lambda (face) (set-face-attribute face nil :height 120)) smalls))
-    )
+      (mapc (lambda (face) (set-face-attribute face nil :height 120)) smalls)))
   (matt/default-fonts))
 
 ;;------------------------------------------------------------------------------
@@ -507,6 +506,7 @@
      "#*#"
      "yarn.lock"
      "package-lock.json"
+     "TAGS"
      ))
 
 (defconst my-globally-ignored-directories
@@ -514,6 +514,9 @@
     "repl" "target" "venv" "tmp"
     "output" "node_modules" "bower_components"
     ))
+
+(defconst my-root-files
+  '("bower.json" "package.json" "TAGS" "*.cabal"))
 
 (use-package grep
   :defer 5
@@ -532,6 +535,7 @@
   :defer 5
   :ensure t
   :config
+
   (setq projectile-globally-ignored-file-suffixes
         (append
          my-globally-ignored-file-suffixes
@@ -550,8 +554,18 @@
          projectile-globally-ignored-directories))
 
   (setq projectile-project-root-files
-        (append '("bower.json" "package.json" "TAGS" "*.cabal")
+        (append my-root-files
                 projectile-project-root-files))
+
+  (defun projectile-find-my-root (start-dir)
+    (locate-dominating-file
+     start-dir
+     (lambda (dir)
+;;        (message "%s" (file-expand-wildcards (concat (file-name-as-directory dir) "*.cabal")))
+       ;; don't need file-name-as-directory because dir is guaranteed to be a valid dirpath
+       (file-expand-wildcards (concat dir "*.cabal")))))
+
+  (add-to-list 'projectile-project-root-files-functions #'projectile-find-my-root)
 
   (projectile-mode)
   )
@@ -563,8 +577,11 @@
   :diminish
   :ensure t
   :demand t
+  :bind
+  (("M-%" . anzu-query-replace)
+   ("C-M-%" . anzu-query-replace-regexp))
   :config
-  (global-anzu-mode +1))
+  (global-anzu-mode))
 
 
 (provide 'matt-interface)
