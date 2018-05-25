@@ -228,10 +228,11 @@
      helm-lisp-fuzzy-completion            t)
 
     (custom-set-variables
-     '(helm-ag-base-command "rg --vimgrep --no-heading --smart-case ") ; "ag --nocolor --nogroup --ignore-case")
+;;     '(helm-ag-base-command "rg --vimgrep --no-heading --smart-case ")
+     '(helm-ag-base-command "ag --nocolor --nogroup --ignore-case")
      ;; flags are here
      ;; https://github.com/ggreer/the_silver_searcher/blob/682ab865e174ce289b7dda5514abfdf21037a2db/doc/ag.1.md
-     '(helm-ag-command-option "") ; "--skip-vcs-ignores")
+     '(helm-ag-command-option "--skip-vcs-ignores")
      '(helm-ag-insert-at-point 'symbol))
 
     (ido-mode -1) ; just in case
@@ -427,7 +428,7 @@
 
 (defun layout-4column ()
   (interactive)
-  (small-fonts)
+;;  (small-fonts)
   (delete-other-windows)
   (dotimes (_ 3) (split-window-right))
   (balance-windows)
@@ -435,7 +436,7 @@
 
 (defun layout-2by4 ()
   (interactive)
-  (small-fonts)
+;;  (small-fonts)
   (delete-other-windows)
   (split-window-below)
   (dotimes (_ 3) (split-window-right))
@@ -453,33 +454,45 @@
   (defmacro font-alternatives (font &rest fonts)
     `(cond ,@(cl-mapcar #'(lambda (f) `((find-font (font-spec :name ,f)) ,f)) (cons font fonts)))))
 
-(use-package faces
-  :demand t
-  ;;  :after helm
-  :config
-  (defun matt/default-fonts ()
-    (interactive)
-    (when (window-system)
-      (set-face-attribute
-       'default
-       nil
+(when (window-system)
+  (set-face-attribute
+   'default
+   nil
 
-       :font
-       (font-alternatives "Hack" "Monaco" "Inconsolata" "PT Mono" "DejaVu Sans Mono" "Lucida Console" "Consolas")
+   :font
+   (font-alternatives "Hack" "Monaco" "Inconsolata" "PT Mono" "DejaVu Sans Mono" "Lucida Console" "Consolas")
 
-       :height (matt/font-size-for-display)
-       :weight 'normal
-       :width 'normal))
+   :height (matt/font-size-for-display)
+   :weight 'normal
+   :width 'normal))
 
-    ;; Make the minibuffer/helm/modeline text small
-    (let* ((prefixes '("mode-" "sml/")) ;"helm-"
-           (smalls (seq-filter #'(lambda (face)
-                                   (seq-some #'(lambda (pfx)
-                                                 (string-prefix-p pfx (symbol-name face)))
-                                             prefixes))
-                               (face-list))))
-      (mapc (lambda (face) (set-face-attribute face nil :height 120)) smalls)))
-  (matt/default-fonts))
+;; (use-package faces
+;;   :demand t
+;;   ;;  :after helm
+;;   :config
+;;   (defun matt/default-fonts ()
+;;     (interactive)
+;;     (when (window-system)
+;;       (set-face-attribute
+;;        'default
+;;        nil
+
+;;        :font
+;;        (font-alternatives "Hack" "Monaco" "Inconsolata" "PT Mono" "DejaVu Sans Mono" "Lucida Console" "Consolas")
+
+;;        :height (matt/font-size-for-display)
+;;        :weight 'normal
+;;        :width 'normal))
+
+;;     ;; Make the minibuffer/helm/modeline text small
+;;     (let* ((prefixes '("mode-" "sml/")) ;"helm-"
+;;            (smalls (seq-filter #'(lambda (face)
+;;                                    (seq-some #'(lambda (pfx)
+;;                                                  (string-prefix-p pfx (symbol-name face)))
+;;                                              prefixes))
+;;                                (face-list))))
+;;       (mapc (lambda (face) (set-face-attribute face nil :height 120)) smalls)))
+;;   (matt/default-fonts))
 
 ;;------------------------------------------------------------------------------
 ;; Projectile mode by default
