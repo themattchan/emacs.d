@@ -147,11 +147,7 @@
   (setq org-latex-pdf-process
         '("latexmk -pdflatex='xelatex --shell-escape' -pdf %f"))
 
-  (add-hook 'org-mode-hook 'turn-on-stripe-table-mode)
-
-  (add-hook 'org-mode-hook
-            (lambda ()
-              (set-face-attribute 'org-level-1 nil :height 120))))
+  (add-hook 'org-mode-hook 'turn-on-stripe-table-mode))
 
 (use-package ox-latex :after org)
 (put 'upcase-region 'disabled nil)
