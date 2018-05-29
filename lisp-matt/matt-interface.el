@@ -424,7 +424,7 @@
 
 (defun large-fonts ()
   (interactive)
-  (set-face-attribute 'default nil :height 160))
+  (set-face-attribute 'default nil :height (truncate (* 1.2 (matt/font-size-for-display)))))
 
 (defun layout-4column ()
   (interactive)
