@@ -157,8 +157,10 @@
 ;;------------------------------------------------------------------------------
 ;; GNUS RSS
 
-
-(setq jiralib-url "https://jira.mv.awakenetworks.net/")
+(use-package alert
+  :commands (alert)
+  :init
+  (setq alert-default-style 'notifier))
 
 (provide 'matt-utils)
 ;; Local Variables:

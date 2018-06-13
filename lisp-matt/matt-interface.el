@@ -578,7 +578,7 @@
                    (string= "~/" start-dir)))
       (let ((search-here (file-expand-wildcards (concat start-dir "*.cabal"))))
         (if search-here
-            (car search-here)
+            (file-name-directory (car search-here))
           (projectile-find-my-root (file-name-directory (directory-file-name start-dir)))))))
 
 ;;  (add-to-list 'projectile-project-root-files-functions #'projectile-find-my-root)
