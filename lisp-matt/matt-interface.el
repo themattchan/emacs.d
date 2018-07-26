@@ -411,7 +411,7 @@
 
 (defun matt/font-size-for-display ()
   (case (get-display-type)
-    ('hdpi 160)
+    ('hdpi 180)
     ('normal 120)))
 
 (defun small-fonts ()
@@ -425,6 +425,10 @@
 (defun large-fonts ()
   (interactive)
   (set-face-attribute 'default nil :height (truncate (* 1.2 (matt/font-size-for-display)))))
+
+(defun extra-large-fonts ()
+  (interactive)
+  (set-face-attribute 'default nil :height (truncate (* 1.6 (matt/font-size-for-display)))))
 
 (defun layout-4column ()
   (interactive)
