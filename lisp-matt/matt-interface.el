@@ -41,8 +41,12 @@
  disabled-command-function nil          ; Don't second-guess advanced commands
 
  ;; mode line customizations
- ;; display-battery-mode t
  battery-mode-line-format " [%L: %b%p%%] " ; %t for time
+ display-battery-mode t
+
+ display-time-default-load-average nil
+ display-time-format "%a %d %b %l:%M %p"
+ display-time-mode t
 
  line-number-mode t
  column-number-mode t
@@ -99,10 +103,11 @@
 
 ;; No popups and dialogues. They crash carbon emacs.
 ;; Not to mention that they're incredibly annoying.
-(defadvice y-or-n-p (around prevent-dialog activate)
-  "Prevent y-or-n-p from activating a dialog"
-  (let ((use-dialog-box nil))
-    ad-do-it))
+(advice-add 'y-or-n-p
+            :around
+            #'(lambda (y-or-n-p-fun prompt)
+                (let ((use-dialog-box nil))
+                  (funcall y-or-n-p-fun prompt))))
 
 ;; normal delete key behaviour please
 (delete-selection-mode t)
@@ -135,6 +140,7 @@
 ;; Smart mode line
 (use-package smart-mode-line
   :demand t
+  :after faces
   :config
   (setq
    mode-line-format (delq 'mode-line-position mode-line-format)
@@ -157,7 +163,7 @@
 ;;------------------------------------------------------------------------------
 ;; Unclutter mode line
 
-;; ;; diminish settings without a home in use-package defns.
+;; ;; Diminish settings without a home in use-package defns.
 ;; (diminish-minor-mode 'lisp-interaction-mode "λeval")
 ;; (diminish-minor-mode 'auto-complete-mode " α")
 ;; (diminish-minor-mode 'paredit-mode " π")
@@ -222,6 +228,7 @@
      helm-lisp-fuzzy-completion            t)
 
     (custom-set-variables
+;;     '(helm-ag-base-command "rg --vimgrep --no-heading --smart-case ")
      '(helm-ag-base-command "ag --nocolor --nogroup --ignore-case")
      ;; flags are here
      ;; https://github.com/ggreer/the_silver_searcher/blob/682ab865e174ce289b7dda5514abfdf21037a2db/doc/ag.1.md
@@ -360,17 +367,22 @@
 ;;------------------------------------------------------------------------------
 ;; Themes
 
+;; Only one theme at a time, auto disable prev loaded theme
+(advice-add 'load-theme
+            :around
+            #'(lambda (load-theme-fun theme &rest args)
+                (mapc #'disable-theme custom-enabled-themes)
+                (apply load-theme-fun
+                       (pcase args
+                         (`(_ ,no-enable) (list theme t no-enable))
+                         (_ (list theme t nil))))))
+
 (if (window-system)
-    (load-theme 'badwolf t) ; odersky
+    (load-theme 'badwolf) ; odersky
   (progn
     ;; default theme on terminals
-    (load-theme 'wombat t)
+    (load-theme 'wombat)
     (set-background-color "black")))
-
-;; Only one theme at a time, auto disable prev loaded theme
-;; (activate this AFTER loading my theme)
-(defadvice load-theme (before theme-dont-propagate activate)
-  (mapc #'disable-theme custom-enabled-themes))
 
 ;;------------------------------------------------------------------------------
 ;; Face (fonts) customisation
@@ -394,12 +406,12 @@
 (defun get-display-type ()
   (let ((w (get-display-size)))
     (cond
-     ((>= w 2560) 'hdpi)
+     ((> w 2560) 'hdpi)
      (t 'normal))))
 
 (defun matt/font-size-for-display ()
   (case (get-display-type)
-    ('hdpi 160)
+    ('hdpi 180)
     ('normal 120)))
 
 (defun small-fonts ()
@@ -412,11 +424,15 @@
 
 (defun large-fonts ()
   (interactive)
-  (set-face-attribute 'default nil :height 160))
+  (set-face-attribute 'default nil :height (truncate (* 1.2 (matt/font-size-for-display)))))
+
+(defun extra-large-fonts ()
+  (interactive)
+  (set-face-attribute 'default nil :height (truncate (* 1.6 (matt/font-size-for-display)))))
 
 (defun layout-4column ()
   (interactive)
-  (small-fonts)
+;;  (small-fonts)
   (delete-other-windows)
   (dotimes (_ 3) (split-window-right))
   (balance-windows)
@@ -424,7 +440,7 @@
 
 (defun layout-2by4 ()
   (interactive)
-  (small-fonts)
+;;  (small-fonts)
   (delete-other-windows)
   (split-window-below)
   (dotimes (_ 3) (split-window-right))
@@ -442,73 +458,85 @@
   (defmacro font-alternatives (font &rest fonts)
     `(cond ,@(cl-mapcar #'(lambda (f) `((find-font (font-spec :name ,f)) ,f)) (cons font fonts)))))
 
-(use-package faces
-  ;;  :demand t
-  :after helm
-  :config
-  (defun matt/default-fonts ()
-    (interactive)
-    (when (window-system)
-      (set-face-attribute
-       'default
-       nil
+(when (window-system)
+  (set-face-attribute
+   'default
+   nil
 
-       :font
-       (cond
-        (*is-mac* "Monaco")
-        (*is-linux*  (font-alternatives "Inconsolata" "DejaVu Sans Mono" "Consolas"))
-        (*is-windows*  (font-alternatives "Lucida Console" "Consolas")))
+   :font
+   (font-alternatives "Hack" "Monaco" "Inconsolata" "PT Mono" "DejaVu Sans Mono" "Lucida Console" "Consolas")
 
-       :height 120  ;(matt/font-size-for-display)
-       :weight 'normal
-       :width 'normal))
+   :height (matt/font-size-for-display)
+   :weight 'normal
+   :width 'normal))
 
-    ;; Make the minibuffer/helm/modeline text small
-    (let* ((prefixes '("mode-" "sml/")) ;"helm-"
-           (smalls (seq-filter #'(lambda (face)
-                                   (seq-some #'(lambda (pfx)
-                                                 (string-prefix-p pfx (symbol-name face)))
-                                             prefixes))
-                               (face-list))))
-      (mapc (lambda (face) (set-face-attribute face nil :height 120)) smalls))
-    )
-  (matt/default-fonts))
+;; (use-package faces
+;;   :demand t
+;;   ;;  :after helm
+;;   :config
+;;   (defun matt/default-fonts ()
+;;     (interactive)
+;;     (when (window-system)
+;;       (set-face-attribute
+;;        'default
+;;        nil
+
+;;        :font
+;;        (font-alternatives "Hack" "Monaco" "Inconsolata" "PT Mono" "DejaVu Sans Mono" "Lucida Console" "Consolas")
+
+;;        :height (matt/font-size-for-display)
+;;        :weight 'normal
+;;        :width 'normal))
+
+;;     ;; Make the minibuffer/helm/modeline text small
+;;     (let* ((prefixes '("mode-" "sml/")) ;"helm-"
+;;            (smalls (seq-filter #'(lambda (face)
+;;                                    (seq-some #'(lambda (pfx)
+;;                                                  (string-prefix-p pfx (symbol-name face)))
+;;                                              prefixes))
+;;                                (face-list))))
+;;       (mapc (lambda (face) (set-face-attribute face nil :height 120)) smalls)))
+;;   (matt/default-fonts))
 
 ;;------------------------------------------------------------------------------
 ;; Projectile mode by default
 
 (defconst my-globally-ignored-file-suffixes
-      '( ".o"
-         ".hi"
-         ".out"
-         ".elc"
-         ".jar"
-         ".class"
-         ".pyc"
-         ".gz"
-         ".tar.gz"
-         ".tgz"
-         ".zip"
-         ".bak"
-         ".log"
-         ))
+  '( ".o"
+     ".hi"
+     ".out"
+     ".elc"
+     ".jar"
+     ".class"
+     ".pyc"
+     ".gz"
+     ".tar.gz"
+     ".tgz"
+     ".zip"
+     ".bak"
+     ".log"
+     ))
 (defconst my-globally-ignored-files
-      '( ".DS_Store"
-         "*~"
-         "\#*\#"
-         "#*#"
-         "yarn.lock"
-         "package-lock.json"
-         ))
+  '( ".DS_Store"
+     "*~"
+     "\#*\#"
+     "#*#"
+     "yarn.lock"
+     "package-lock.json"
+     "TAGS"
+     ))
 
 (defconst my-globally-ignored-directories
-      '("*.liquid" ".stack-work" "dist" "out"
-        "repl" "target" "venv" "tmp"
-        "output" "node_modules" "bower_components"
-        ))
+  '("*.liquid" ".stack-work" "dist" "out"
+    "repl" "target" "venv" "tmp"
+    "output" "node_modules" "bower_components"
+    ))
+
+(defconst my-root-files
+  '("bower.json" "package.json" "TAGS" "*.cabal"))
 
 (use-package grep
-  :defer 5
+  :defer 5in
   :config
   (setq grep-highlight-matches t)   ; grep in colour
   (setq grep-find-ignored-files
@@ -524,6 +552,7 @@
   :defer 5
   :ensure t
   :config
+
   (setq projectile-globally-ignored-file-suffixes
         (append
          my-globally-ignored-file-suffixes
@@ -542,9 +571,27 @@
          projectile-globally-ignored-directories))
 
   (setq projectile-project-root-files
-        (append '("bower.json" "package.json" "TAGS" "*.cabal")
+        (append my-root-files
                 projectile-project-root-files))
+  (setq projectile-project-root-files-bottom-up
+        (append projectile-project-root-files
+                projectile-project-root-files-bottom-up))
 
+  (defun projectile-find-my-root (start-dir)
+    (when (not (or (string= (substitute-in-file-name "$HOME/") start-dir)
+                   (string= "~/" start-dir)))
+      (let ((search-here (file-expand-wildcards (concat start-dir "*.cabal"))))
+        (if search-here
+            (file-name-directory (car search-here))
+          (projectile-find-my-root (file-name-directory (directory-file-name start-dir)))))))
+
+;;  (add-to-list 'projectile-project-root-files-functions #'projectile-find-my-root)
+  (setq projectile-project-root-files-functions
+        '(projectile-find-my-root
+          projectile-root-bottom-up
+          projectile-root-local
+          projectile-root-top-down
+          projectile-root-top-down-recurring))
   (projectile-mode)
   )
 
@@ -555,8 +602,11 @@
   :diminish
   :ensure t
   :demand t
+  :bind
+  (("M-%" . anzu-query-replace)
+   ("C-M-%" . anzu-query-replace-regexp))
   :config
-  (global-anzu-mode +1))
+  (global-anzu-mode))
 
 
 (provide 'matt-interface)

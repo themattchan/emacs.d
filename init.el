@@ -23,14 +23,11 @@
 ;;; Code:
 
 (eval-and-compile
-  (defmacro .emacs.d/ (file)
-    `(expand-file-name ,file user-emacs-directory))
-
   (defun matt/recompile-settings ()
     (interactive)
-    (byte-recompile-file (.emacs.d/ "init.el") t 0)
-    (byte-recompile-file (.emacs.d/ "custom.el") t 0)
-    (byte-recompile-directory (.emacs.d/ "lisp-matt/") 0 t)
+    (byte-recompile-file (locate-user-emacs-file "init.el") t 0)
+    (byte-recompile-file (locate-user-emacs-file "custom.el") t 0)
+    (byte-recompile-directory (locate-user-emacs-file "lisp-matt/") 0 t)
     (load user-init-file))
 
   (defsubst matt/initialise-packages ()
@@ -40,7 +37,7 @@
           '(("melpa" . "https://melpa.org/packages/")
             ("gnu" . "https://elpa.gnu.org/packages/")
             ("marmalade" . "https://marmalade-repo.org/packages/")))
-    (setq package-user-dir (.emacs.d/ "elpa/"))
+    (setq package-user-dir (locate-user-emacs-file "elpa/"))
     (setq package-archive-enable-alist '(("melpa" deft magit)))
     (package-initialize nil))
 
@@ -89,8 +86,6 @@
 
 (setq load-prefer-newer t)           ; Load latest bytecode
 
-;; (let ((default-directory "~/.emacs.d/elpa"))
-;;   (normal-top-level-add-subdirs-to-load-path))
 ;; TODO defer this
 (matt/initialise-packages)
 
@@ -100,7 +95,7 @@
 
 (eval-when-compile (require 'cl))       ; use common lisp (macros only)
 (eval-when-compile
-  (add-to-list 'load-path (car (directory-files (.emacs.d/ "elpa/") nil "use-package-*" nil)))
+  (add-to-list 'load-path (car (directory-files (locate-user-emacs-file "elpa/") nil "use-package-*" t)))
   (require 'use-package))
 (setq use-package-always-ensure nil)
 ;;(setq use-package-always-defer t)
@@ -111,7 +106,6 @@
 
   :diminish lisp-interaction-mode "λeval"
   :diminish auto-complete-mode " α"
-  :diminish paredit-mode " π"
   :diminish eldoc-mode
   :diminish abbrev-mode
   :diminish smartparens-mode
@@ -170,8 +164,8 @@
 ;; Set file paths before anything else
 
 ;; load path for extra packages
-(add-to-list 'load-path (.emacs.d/ "lisp-matt/"))
-(add-to-list 'load-path (.emacs.d/ "lisp/"))
+(add-to-list 'load-path (locate-user-emacs-file "lisp-matt/"))
+(add-to-list 'load-path (locate-user-emacs-file "lisp/"))
 ;; (let ((default-directory  (concat user-emacs-directory "lisp/")))
 ;;   (message "load lisp files")
 ;;   (dolist (file (directory-files default-directory nil "\\.el$"))
@@ -181,13 +175,13 @@
 ;;   (normal-top-level-add-to-load-path '("flycheck-liquidhs.el" "liquid-types.el")))
 
 ;; customize.el
-(setq custom-file (.emacs.d/ "custom.el"))
+(setq custom-file (locate-user-emacs-file "custom.el"))
 (load custom-file)
 
 ;;==============================================================================
 ;; Now load my configs
 ;;==============================================================================
-(let ((private (.emacs.d/ "private.el")))
+(let ((private (locate-user-emacs-file "private.el")))
   (when (file-readable-p private)
     (load-file private)))
 

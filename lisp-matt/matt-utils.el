@@ -107,60 +107,60 @@
 ;; mostly from https://github.com/bryangarza/dot-emacs/blob/master/init.el#L1273
 
 
-(use-package erc
-  :disabled t
-  :defer t
-  :config
+;; (use-package erc
+;;   :disabled t
+;;   :defer t
+;;   :config
 
-  (use-package erc-services
-    :config
-    (erc-services-mode 1))
+;;   (use-package erc-services
+;;     :config
+;;     (erc-services-mode 1))
 
-  (use-package znc)
+;;   (use-package znc)
 
-  (setq erc-server-coding-system '(utf-8 . utf-8)
+;;   (setq erc-server-coding-system '(utf-8 . utf-8)
 
-        erc-prompt-for-nickserv-password nil
+;;         erc-prompt-for-nickserv-password nil
 
-        erc-timestamp-format "[%I:%M %p]"
-        erc-hide-timestamps t
-        erc-echo-timestamps nil
-        erc-echo-timestamp-format "TS'd %A, %I:%M:%S %p"
+;;         erc-timestamp-format "[%I:%M %p]"
+;;         erc-hide-timestamps t
+;;         erc-echo-timestamps nil
+;;         erc-echo-timestamp-format "TS'd %A, %I:%M:%S %p"
 
-        erc-track-showcount t
-        erc-track-enable-keybindings t
-        erc-track-use-faces t
-        erc-track-exclude-types '("JOIN" "PART" "QUIT" "NICK" "MODE")
+;;         erc-track-showcount t
+;;         erc-track-enable-keybindings t
+;;         erc-track-use-faces t
+;;         erc-track-exclude-types '("JOIN" "PART" "QUIT" "NICK" "MODE")
 
-        erc-join-buffer 'bury
+;;         erc-join-buffer 'bury
 
-        erc-part-reason-various-alist '(("^$" "Leaving"))
-        erc-quit-reason-various-alist '(("^$" "Leaving"))
-        erc-quit-reason 'erc-part-reason-various
-        erc-part-reason 'erc-quit-reason-various
+;;         erc-part-reason-various-alist '(("^$" "Leaving"))
+;;         erc-quit-reason-various-alist '(("^$" "Leaving"))
+;;         erc-quit-reason 'erc-part-reason-various
+;;         erc-part-reason 'erc-quit-reason-various
 
-        erc-hide-list '("JOIN" "PART" "QUIT" "NICK" "MODE" "324" "329" "332" "333" "353"  "477")
-        erc-lurker-hide-list '("JOIN" "PART" "QUIT" "NICK" "MODE")
+;;         erc-hide-list '("JOIN" "PART" "QUIT" "NICK" "MODE" "324" "329" "332" "333" "353"  "477")
+;;         erc-lurker-hide-list '("JOIN" "PART" "QUIT" "NICK" "MODE")
 
-        erc-autojoin-channels-alist
-        '(("freenode.net"
-           "#haskell" "#haskell-lens" "#haskell-in-depth" "#haskell-beginners" "#xmonad"
-           "#idris" "#categorytheory"
-           ))
-        erc-nickserv-passwords
-        '((freenode     ((matt/irc-username . matt/freenode-pass)))))
-  (erc :server "irc.freenode.net" :port 6667 :nick matt/irc-username :password matt/freenode-pass)
+;;         erc-autojoin-channels-alist
+;;         '(("freenode.net"
+;;            "#haskell" "#haskell-lens" "#haskell-in-depth" "#haskell-beginners" "#xmonad"
+;;            "#idris" "#categorytheory"
+;;            ))
+;;         erc-nickserv-passwords
+;;         '((freenode     ((matt/irc-username . matt/freenode-pass)))))
+;;   (erc :server "irc.freenode.net" :port 6667 :nick matt/irc-username :password matt/freenode-pass)
 
-  (add-to-list 'erc-modules 'scrolltobottom)
-  )
+;;   (add-to-list 'erc-modules 'scrolltobottom)
+;;   )
 
 ;;------------------------------------------------------------------------------
 ;; GNUS RSS
 
-(setq gnus-select-method '(nntp "news.gmane.org"))
-(add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
-
-(setq jiralib-url "https://jira.mv.awakenetworks.net/")
+(use-package alert
+  :commands (alert)
+  :init
+  (setq alert-default-style 'notifier))
 
 (provide 'matt-utils)
 ;; Local Variables:

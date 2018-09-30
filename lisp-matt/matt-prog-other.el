@@ -27,8 +27,8 @@
 (use-package scala-mode
   :defer t
   :mode
-  (("\.scala" . scala-mode)
-   ("\.sbt\'" . scala-mode))
+  (("\\.scala$" . scala-mode)
+   ("\\.sbt$" . scala-mode))
   :config
   (add-hook 'scala-mode-hook
             (lambda ()
@@ -42,7 +42,7 @@
 ;; Python
 (use-package python-mode
   :defer t
-  :mode ("\\.py\\'" . python-mode)
+  :mode ("\\.py$" . python-mode)
   :config
   (diminish-major-mode 'python-mode "py")
   (add-hook 'python-mode-hook

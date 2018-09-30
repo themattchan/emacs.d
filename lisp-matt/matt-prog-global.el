@@ -190,12 +190,6 @@
   :bind
   ("C-x C-g" . magit-status))
 
-(use-package magithub
-  :after magit
-  :disabled t
-  :config
-  (magithub-feature-autoinject t))
-
 ;;------------------------------------------------------------------------------
 ;; Emacs code browser
 (use-package ecb

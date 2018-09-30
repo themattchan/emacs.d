@@ -125,12 +125,13 @@
   :init
   ;;(add-hook 'markdown-mode-hook 'turn-on-pandoc)
   ;; markdown check paren balancing
-  (add-hook 'markdown-mode-hook
-               (lambda ()
-                 (when buffer-file-name
-                   (add-hook 'after-save-hook
-                             'check-parens
-                             nil t)))))
+  ;; (add-hook 'markdown-mode-hook
+  ;;              (lambda ()
+  ;;                (when buffer-file-name
+  ;;                  (add-hook 'after-save-hook
+  ;;                            'check-parens
+  ;;                            nil t))))
+  )
 
 ;;------------------------------------------------------------------------------
 ;; Org-mode

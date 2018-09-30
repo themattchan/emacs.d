@@ -183,6 +183,7 @@
 
 (use-package protobuf-mode
   :defer t
+  :mode "\\.proto$"
   :config
   (matt/c-indent 2 nil))
 

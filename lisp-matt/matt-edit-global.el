@@ -39,7 +39,7 @@
  ;; GLOBAL EDITING SETTINGS
 
  x-select-enable-clipboard t            ; integrate with the system clipboard
- initial-major-mode 'fundamental-mode
+ initial-major-mode 'text-mode
  undo-limit 1000
  fill-column 80                         ; 80 char columns
  ispell-dictionary "english"
