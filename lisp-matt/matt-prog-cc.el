@@ -30,7 +30,7 @@
 ;;; Code:
 
 (eval-and-compile
-  (defun matt/c-indent (width tabs)
+  (defsubst matt/c-indent (width tabs)
     (setq-local tab-width width)
     (setq-local indent-tabs-mode tabs)
 
@@ -65,7 +65,7 @@
                                       (c++-mode  . "stroustrup")
                                       (java-mode . "java")
                                       (awk-mode  . "awk")
-                                      (other     . "free-group-style")))
+                                      (other     . "cc-mode")))
 
               ;; (setq show-paren-style 'expression) ; highlight blocks
 
@@ -157,6 +157,12 @@
 
   (add-hook 'java-mode-hook 'my-java-hook)
   );; use-package cc-mode
+
+(use-package eclim
+  :defer t
+  :config
+  (setq eclim-eclipse-dirs '("~/eclipse/java-oxygen"))
+  (setq eclim-executable "~/.p2/pool/plugins/org.eclim_2.7.2/bin/eclim"))
 
 ;;------------------------------------------------------------------------------
 ;; Assembly
