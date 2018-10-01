@@ -95,6 +95,11 @@ or just one char if that's not possible"
               (backward-delete-char-untabify (- (match-end 1) (match-beginning 1)))
             (call-interactively 'backward-delete-char-untabify))))))
 
+  (defun sort-lines-nocase ()
+    (interactive)
+    (let ((sort-fold-case t))
+      (call-interactively 'sort-lines)))
+
   (defun kill-all-buffers ()
     (interactive)
     (mapc 'kill-buffer (buffer-list)))
