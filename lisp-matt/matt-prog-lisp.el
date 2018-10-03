@@ -84,12 +84,12 @@
                       :strike-through t)
   )
 
-(use-package paredit
-  :diminish " π"
-  :deactivate t
-  :init
-  (add-hook-all-lisps 'paredit-mode)
-  (add-hook 'lisp-interaction-mode-hook 'paredit-mode))
+;; (use-package paredit
+;;   :diminish " π"
+;;   :deactivate t
+;;   :init
+;;   (add-hook-all-lisps 'paredit-mode)
+;;   (add-hook 'lisp-interaction-mode-hook 'paredit-mode))
 
 ;; Common Lisp
 ;; Setup load-path and autoloads

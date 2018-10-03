@@ -53,6 +53,9 @@
         (ignore-errors (package-install pkg))))
     (message "All required packages installed.")))
 
+;;(matt/initialise-packages)
+;;(matt/install-my-packages)
+
 ;; disable file handlers for startup
 (defvar file-name-handler-alist-old file-name-handler-alist)
 (setq file-name-handler-alist nil)
