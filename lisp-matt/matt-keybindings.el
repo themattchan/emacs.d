@@ -170,17 +170,6 @@
   (bind-key "C-c C-b"       'previous-buffer)   ; move to prev buffer
   (bind-key "C-c C-n"       'next-buffer)      ; move to next buffer
 
-  ;; (bind-key "<wheel-left>"     'previous-buffer)   ; move to prev buffer
-  ;; (bind-key "<wheel-right>"     'next-buffer)
-
-  ;; Don't need this anymore, use rectangle-mode
-  ;; cua rectangle selection is good.
-  ;; (cua-selection-mode 1)
-
-  ;; avy
-  ;; (avy-setup-default)
-  ;; (global-set-key (kbd "C-'") 'avy-goto-char-timer)
-
   ;; jump buffers
 
   ;; WARNING: lexical-binding must be on
