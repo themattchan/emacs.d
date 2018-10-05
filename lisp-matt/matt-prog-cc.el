@@ -107,21 +107,6 @@
 
   ;;------------------------------------------------------------------------------
   ;; Java
-                                        ;(autoload 'jtags-mode "jtags" "Toggle jtags mode." t)
-                                        ;(require 'eclim)
-                                        ;(require 'eclimd)
-
-
-  ;; (defvar eclimd-port nil
-  ;;   "The active eclimd port number")
-
-  ;; (custom-set-variables
-  ;;  '(eclim-eclipse-dirs '("/Applications/eclipse"))
-  ;;  '(eclim-executable "/Applications/eclipse/eclim"))
-
-  ;; add the emacs-eclim source
-  ;; (require 'ac-emacs-eclim-source)
-  ;; (ac-emacs-eclim-config)
 
   (defun my-java-hook ()
     (matt/c-indent 4 nil)
@@ -133,8 +118,6 @@
     (modify-syntax-entry ?@ "< b" java-mode-syntax-table)
 
     (jtags-mode)
-                                        ; (eclim-mode)
-                                        ;  (setq eclim-auto-save t)
 
     ;; Don't newline open curly
     (setq-local c-hanging-braces-alist
@@ -157,12 +140,6 @@
 
   (add-hook 'java-mode-hook 'my-java-hook)
   );; use-package cc-mode
-
-(use-package eclim
-  :defer t
-  :config
-  (setq eclim-eclipse-dirs '("~/eclipse/java-oxygen"))
-  (setq eclim-executable "~/.p2/pool/plugins/org.eclim_2.7.2/bin/eclim"))
 
 ;;------------------------------------------------------------------------------
 ;; Assembly

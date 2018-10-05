@@ -181,6 +181,9 @@
 (setq custom-file (locate-user-emacs-file "custom.el"))
 (load custom-file)
 
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
+
 ;;==============================================================================
 ;; Now load my configs
 ;;==============================================================================
