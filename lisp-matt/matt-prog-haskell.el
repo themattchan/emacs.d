@@ -164,7 +164,7 @@
                 (when go
                   (flycheck-haskell-setup)
                   (setq flycheck-haskell-ghc-executable (expand-file-name "nix-ghc" user-emacs-directory))
-                  (setq flycheck-select-checker 'haskell-ghc)
+                  (flycheck-select-checker 'haskell-ghc)
                   (setq-local flycheck-ghc-search-path (list (expand-file-name go)))
                   ;; (setq flycheck-command-wrapper-function
                   ;;       (lambda (command)
