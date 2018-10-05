@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t -*-
 ;;; matt-prog-haskell.el --- Haskell mode settings
 
 ;;; Copyright (c) 2016-2018 Matthew Chan
@@ -87,8 +88,22 @@
   (defun haskell-use-stack-p ()
     (locate-dominating-file default-directory "stack.yaml"))
 
+  (defun haskell-use-nix-p ()
+    (locate-dominating-file default-directory "shell.nix"))
+
   (defun haskell-mode-p ()
     (memq major-mode haskell-modes-list))
+
+  ;; (defun nixify-flycheck-haskell-runghc-command (f &rest args)
+  ;;   (let ((res (apply f args))
+  ;;         (is-nix (locate-dominating-file default-directory "shell.nix")))
+  ;;     (if is-nix
+  ;;         (let ((nix-exe (funcall flycheck-executable-find "nix-shell")))
+  ;;           `(,nix-exe "-I" "." "--command" (string-join ,res
+  ;;       res)
+  ;;   )
+  ;; (add-function :around (symbol-function 'flycheck-haskell-runghc-command) #'nixify-flycheck-haskell-runghc-command )
+
 
   ) ;; eval-and-compile
 
@@ -127,7 +142,7 @@
   ;; (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
   (setq-local haskell-process-suggest-remove-import-lines t)
   (setq-local haskell-process-auto-import-loaded-modules t)
-;;  (setq-local haskell-process-log t)
+  ;;  (setq-local haskell-process-log t)
 
   ;; Haskell mode GLOBAL settings
   (use-package flycheck
@@ -137,18 +152,30 @@
   (use-package flycheck-haskell
     :config (flycheck-haskell-setup))
 
-  ;; use flycheck-haskell
-  (flycheck-haskell-setup)
-
   (haskell-indentation-mode)
 
   (flycheck-add-next-checker 'haskell-ghc '(t . haskell-hlint))
 
-  (setq-local haskell-process-type 'cabal-repl)
+  (setq haskell-process-args-cabal-repl '("--ghc-options=-ferror-spans -fshow-loaded-modules -fno-code"))
 
-  (setq-local flycheck-haskell-runghc-command '("runghc" "-i"))
-
-  (setq-local haskell-process-path-ghci "cabal repl")
+  (add-hook 'haskell-mode-hook
+            (lambda ()
+              (let ((go (haskell-use-nix-p)))
+                (when go
+                  (flycheck-haskell-setup)
+                  (setq flycheck-haskell-ghc-executable (expand-file-name "nix-ghc" user-emacs-directory))
+                  (setq flycheck-select-checker 'haskell-ghc)
+                  (setq-local flycheck-ghc-search-path (list (expand-file-name go)))
+                  ;; (setq flycheck-command-wrapper-function
+                  ;;       (lambda (command)
+                  ;;         ;; (message (format "FUCKKKKKKK %s" (list "bash" "-c" (format "(cd %s; nix-shell --command \"%s\")" go (s-join " " command)))))
+                  ;;         ;; (list "bash" "-c" (format "(cd %s; nix-shell --command \"%s\")" go (s-join " " command)))
+                  ;;         ;; (message (format "FUCKKKKKKK %s" (list "bash" "-c" (format "(cd %s; nix-shell --command \"%s\")" go (s-join " " command)))))
+                  ;;         ;; (list "" "-c" (format "(cd %s; nix-shell --command \"%s\")" go (s-join " " command)))
+                  ;;         ;;(message (format "%s" command))
+                  ;;         command
+                  ;;         ))
+                  ))))
 
   ;; ;; so we can actually see our writings
   (setq haskell-literate-comment-face 'default)
