@@ -99,8 +99,9 @@
   ;; M-w copy selection
   ;; C-y yank (paste)
   ;; M-y rotate kill ring
+  (bind-key "C-d" 'delete-char)
   (bind-key "C-S-d" 'delete-backward-char)
-  (bind-key "M-S-d" 'backward-kill-word)
+  (bind-key "M-D" 'backward-kill-word)
 
   ;; also alias to C-Y
   ;; (bind-key "C-y" 'yank)
