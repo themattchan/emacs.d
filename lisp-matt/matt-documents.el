@@ -139,6 +139,13 @@
 
 (use-package org
   :defer t
+
+  :init
+  (define-prefix-command 'matt/org-capture-map)
+  (global-set-key (kbd "C-M-c") matt/org-capture-map)
+  (bind-keys :map matt/org-capture-map
+             ("t" . (lambda () (interactive) (org-capture :keys "t"))))
+
   :config
   (use-package org-agenda)
   (use-package org-capture)
