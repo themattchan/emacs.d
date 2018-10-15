@@ -175,6 +175,12 @@
                   ;;         ;;(message (format "%s" command))
                   ;;         command
                   ;;         ))
+
+                  ;; (setq flycheck-command-wrapper-function
+                  ;;       (lambda (command)
+                  ;;         (message (format "%s" command))
+                  ;;         command))
+
                   ))))
 
   ;; ;; so we can actually see our writings
