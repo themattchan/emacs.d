@@ -123,7 +123,7 @@
   :mode ("\\.text\\'" "\\.markdown\\'" "\\.md\\'")
   :defer t
   :init
-  ;;(add-hook 'markdown-mode-hook 'turn-on-pandoc)
+  (add-hook 'markdown-mode-hook 'turn-on-pandoc)
   ;; markdown check paren balancing
   ;; (add-hook 'markdown-mode-hook
   ;;              (lambda ()
@@ -140,6 +140,9 @@
 (use-package org
   :defer t
   :config
+  (use-package org-agenda)
+  (use-package org-capture)
+
   (setq org-startup-truncated nil
         org-fontify-whole-heading-line t
         org-src-fontify-natively t)
@@ -147,6 +150,45 @@
   (setq org-latex-listings 'minted)
   (setq org-latex-pdf-process
         '("latexmk -pdflatex='xelatex --shell-escape' -pdf %f"))
+
+
+  ;; GTD
+
+  (let ((matt/TODO-INBOX "~/Dropbox/todo/TODO.org")
+        (matt/TODO-SOMEDAY "~/Dropbox/todo/someday.org")
+        (matt/TODO-PROJECTS "~/Dropbox/todo/projects.org")
+        (matt/TODO-TICKLER "~/Dropbox/todo/tickler.org")
+        (matt/LEARN "~/Dropbox/todo/learn.org")
+        (matt/JOURNAL "~/Dropbox/writing/journal.org"))
+
+  (setq org-capture-templates
+        `(("t" "Todo [inbox]" entry
+           (file ,matt/TODO-INBOX)
+           "* TODO %i%?")
+          ("T" "Tickler" entry
+           (file ,matt/TODO-TICKLER)
+           "* %i%? \n %U")
+
+          ("j" "Journal" entry (file+olp+datetree ,matt/JOURNAL)
+           "* %?\nEntered on %U\n  %i\n  %a")))
+
+  ;; http://doc.endlessparentheses.com/Var/org-refile-targets.html
+  ;; :level N --- only headlines at level N
+  ;; :maxlevel N --- headlines from levels 1 to N
+  (setq org-refile-targets `((,matt/TODO-SOMEDAY :level . 1)
+                             (,matt/LEARN :level . 2)
+                             (,matt/TODO-TICKLER :maxlevel . 2)
+                             (,matt/TODO-PROJECTS :maxlevel . 3)))
+
+  (setq org-agenda-files (list matt/TODO-INBOX matt/TODO-PROJECTS matt/TODO-TICKLER))
+
+  (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+
+  (setq org-agenda-custom-commands
+        '(("o" "At the office" tags-todo "@office"
+           ((org-agenda-overriding-header "Office")))))
+
+  ) ;; let
 
   (add-hook 'org-mode-hook 'turn-on-stripe-table-mode))
 
