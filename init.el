@@ -53,6 +53,9 @@
         (ignore-errors (package-install pkg))))
     (message "All required packages installed.")))
 
+;;(matt/initialise-packages)
+;;(matt/install-my-packages)
+
 ;; disable file handlers for startup
 (defvar file-name-handler-alist-old file-name-handler-alist)
 (setq file-name-handler-alist nil)
@@ -177,6 +180,9 @@
 ;; customize.el
 (setq custom-file (locate-user-emacs-file "custom.el"))
 (load custom-file)
+
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
 
 ;;==============================================================================
 ;; Now load my configs

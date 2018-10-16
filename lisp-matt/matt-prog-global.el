@@ -176,10 +176,10 @@
 ;;------------------------------------------------------------------------------
 ;; Language server protocol
 
-(use-package lsp-mode
-  :defer tq
-  :config
-  (add-hook lsp-mode-hook 'lsp-ui-mode))
+;; (use-package lsp-mode
+;;   :defer tq
+;;   :config
+;;   (add-hook lsp-mode-hook 'lsp-ui-mode))
 ;;(add-hook 'purescript-mode #'lsp-purescript-enable)
 
 ;;------------------------------------------------------------------------------

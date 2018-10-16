@@ -553,6 +553,8 @@
   :ensure t
   :config
 
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+
   (setq projectile-globally-ignored-file-suffixes
         (append
          my-globally-ignored-file-suffixes
