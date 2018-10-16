@@ -179,8 +179,8 @@
   (let ((matt/TODO-INBOX "~/Dropbox/todo/TODO.org")
         (matt/TODO-SOMEDAY "~/Dropbox/todo/someday.org")
         (matt/TODO-PROJECTS "~/Dropbox/todo/projects.org")
-        (matt/TODO-TICKLER "~/Dropbox/todo/tickler.org")
-        (matt/LEARN "~/Dropbox/todo/learn.org"))
+        (matt/LEARN "~/Dropbox/todo/learn.org")
+        (matt/org-default-timestamp-fmt "[%<%Y-%m-%d %b %H:%M>]"))
 
     (global-set-key "\C-cl" 'org-store-link)
     (global-set-key "\C-ca" 'org-agenda)
@@ -194,11 +194,11 @@
           ;; https://orgmode.org/manual/Template-expansion.html#Template-expansion
           `(("t" "TODO [inbox]" entry
              (file ,matt/TODO-INBOX)
-             "* TODO %i%?\n [%<%Y-%m-%d %b %H:%M>]")
+             ,(s-concat "* TODO %i%?\n " matt/org-default-timestamp-fmt))
 
-            ("T" "Tickler" entry
-             (file ,matt/TODO-TICKLER)
-             "* %i%? \n %U")
+            ("T" "someday" entry
+             (file ,matt/TODO-SOMEDAY)
+             ,(s-concat "* TODO %i%? \n " matt/org-default-timestamp-fmt))
             ))
 
     ;; http://doc.endlessparentheses.com/Var/org-refile-targets.html
@@ -206,10 +206,9 @@
     ;; :maxlevel N --- headlines from levels 1 to N
     (setq org-refile-targets `((,matt/TODO-SOMEDAY :level . 1)
                                (,matt/LEARN :level . 2)
-                               (,matt/TODO-TICKLER :maxlevel . 2)
                                (,matt/TODO-PROJECTS :maxlevel . 3)))
 
-    (setq org-agenda-files (list matt/TODO-INBOX matt/TODO-PROJECTS matt/TODO-TICKLER))
+    (setq org-agenda-files (list matt/TODO-INBOX matt/TODO-PROJECTS matt/TODO-SOMEDAY))
 
 ;;    (setq org-todo-keywords '((sequence "☛ TODO(t)" "⚑ WAITING(w)" "|" "✔ DONE(d)" "✘ CANCELLED(c)")))
     (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))

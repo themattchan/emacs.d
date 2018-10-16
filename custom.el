@@ -115,6 +115,9 @@
     ("#dc322f" "#cb4b16" "#b58900" "#546E00" "#B4C342" "#00629D" "#2aa198" "#d33682" "#6c71c4")))
  '(olivetti-body-width 100)
  '(olivetti-minimum-body-width 40)
+ '(org-agenda-files
+   (quote
+    ("~/Dropbox/todo/TODO.org" "~/Dropbox/todo/projects.org" "~/Dropbox/todo/tickler.org")))
  '(org-fontify-done-headline t)
  '(org-fontify-quote-and-verse-blocks t)
  '(org-fontify-whole-heading-line t)
