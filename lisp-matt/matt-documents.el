@@ -169,6 +169,12 @@
 
   (add-hook 'org-mode-hook 'turn-on-stripe-table-mode)
 
+  (setq org-modules '(org-gnus
+                      org-drill
+                      org-habit
+                      org-annotate-file
+                      org-toc))
+
   ;; GTD
   (let ((matt/TODO-INBOX "~/Dropbox/todo/TODO.org")
         (matt/TODO-SOMEDAY "~/Dropbox/todo/someday.org")
@@ -185,9 +191,10 @@
     (setq org-log-done 'time) ;; log the time whe things are done
 
     (setq org-capture-templates
+          ;; https://orgmode.org/manual/Template-expansion.html#Template-expansion
           `(("t" "TODO [inbox]" entry
              (file ,matt/TODO-INBOX)
-             "* TODO %i%?")
+             "* TODO %i%?\n [%<%Y-%m-%d %b %H:%M>]")
 
             ("T" "Tickler" entry
              (file ,matt/TODO-TICKLER)
@@ -206,6 +213,12 @@
 
 ;;    (setq org-todo-keywords '((sequence "☛ TODO(t)" "⚑ WAITING(w)" "|" "✔ DONE(d)" "✘ CANCELLED(c)")))
     (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+
+    (setq org-tag-alist '(("@computer" . ?c)
+                          ("@phone" . ?p)
+                          ("errand" . ?e)
+                          ))
+
 
   ;; see the M-x customize screen for options
   ;; EXAMPLE
@@ -242,6 +255,8 @@
             ))
 
     ) ;; let
+
+  (org-load-modules-maybe t) ;; load modules
   )
 
 (use-package ox-latex :after org)
