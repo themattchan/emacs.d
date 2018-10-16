@@ -39,7 +39,17 @@
             ("marmalade" . "https://marmalade-repo.org/packages/")))
     (setq package-user-dir (locate-user-emacs-file "elpa/"))
     (setq package-archive-enable-alist '(("melpa" deft magit)))
-    (package-initialize nil))
+    (package-initialize nil)
+
+    (when (not (package-installed-p 'el-get))
+      (package-install 'el-get))
+    (require 'el-get)
+    (el-get-bundle org-wiki
+      :url "https://raw.githubusercontent.com/caiorss/org-wiki/master/org-wiki.el"
+      :description "Emacs' desktop wiki built with org-mode"
+      :features org-wiki
+      )
+    )
 
   (defun matt/install-my-packages ()
     (interactive)

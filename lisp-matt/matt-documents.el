@@ -140,44 +140,56 @@
 (use-package org
   :defer t
 
-  :init
-  (define-prefix-command 'matt/org-capture-map)
-  (global-set-key (kbd "C-M-c") matt/org-capture-map)
-  (bind-keys :map matt/org-capture-map
-             ("t" . (lambda () (interactive) (org-capture :keys "t"))))
-
   :config
   (use-package org-agenda)
   (use-package org-capture)
 
+  (use-package org-journal
+    :config
+    (setq org-journal-dir "~/Dropbox/writing/diary"
+        org-journal-file-format "%Y-%m-%d.org"
+        org-journal-date-format "%A, %d %B %Y"))
+
+  (use-package org-wiki
+    :config
+    (setq org-wiki-location "~/Dropbox/notes/wiki"
+          org-wiki-close-root-switch t
+          org-wiki-server-host "127.0.0.1"))
+
   (setq org-startup-truncated nil
         org-fontify-whole-heading-line t
         org-src-fontify-natively t)
+
+  ;; latex export
   (add-to-list 'org-latex-packages-alist '("" "minted"))
   (setq org-latex-listings 'minted)
   (setq org-latex-pdf-process
         '("latexmk -pdflatex='xelatex --shell-escape' -pdf %f"))
 
+  (add-hook 'org-mode-hook 'turn-on-stripe-table-mode)
 
   ;; GTD
-
   (let ((matt/TODO-INBOX "~/Dropbox/todo/TODO.org")
         (matt/TODO-SOMEDAY "~/Dropbox/todo/someday.org")
         (matt/TODO-PROJECTS "~/Dropbox/todo/projects.org")
         (matt/TODO-TICKLER "~/Dropbox/todo/tickler.org")
-        (matt/LEARN "~/Dropbox/todo/learn.org")
-        (matt/JOURNAL "~/Dropbox/writing/journal.org"))
+        (matt/LEARN "~/Dropbox/todo/learn.org"))
+
+    (global-set-key "\C-cl" 'org-store-link)
+    (global-set-key "\C-ca" 'org-agenda)
+    (global-set-key "\C-cc" 'org-capture)
+    (global-set-key "\C-ct" '(lambda () (interactive) (org-capture :keys "t")))
+    (global-set-key "\C-cb" 'org-switchb)
 
   (setq org-capture-templates
-        `(("t" "Todo [inbox]" entry
+        `(("t" "TODO [inbox]" entry
            (file ,matt/TODO-INBOX)
            "* TODO %i%?")
+
           ("T" "Tickler" entry
            (file ,matt/TODO-TICKLER)
            "* %i%? \n %U")
-
-          ("j" "Journal" entry (file+olp+datetree ,matt/JOURNAL)
-           "* %?\nEntered on %U\n  %i\n  %a")))
+          ))
 
   ;; http://doc.endlessparentheses.com/Var/org-refile-targets.html
   ;; :level N --- only headlines at level N
@@ -196,8 +208,7 @@
            ((org-agenda-overriding-header "Office")))))
 
   ) ;; let
-
-  (add-hook 'org-mode-hook 'turn-on-stripe-table-mode))
+  )
 
 (use-package ox-latex :after org)
 (put 'upcase-region 'disabled nil)
