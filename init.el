@@ -45,7 +45,7 @@
       (package-install 'el-get))
     (require 'el-get)
     (el-get-bundle org-wiki
-      :url "https://raw.githubusercontent.com/caiorss/org-wiki/master/org-wiki.el"
+      :url "https://raw.githubusercontent.com/themattchan/org-wiki/master/org-wiki.el"
       :description "Emacs' desktop wiki built with org-mode"
       :features org-wiki
       )

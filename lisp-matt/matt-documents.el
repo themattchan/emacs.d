@@ -210,6 +210,8 @@
 
     (setq org-agenda-files (list matt/TODO-INBOX matt/TODO-PROJECTS matt/TODO-SOMEDAY))
 
+    ;; NICETO: have the bullets (but NOT the text) display as the utf8 glyphs
+    ;; when the keyword is specified
 ;;    (setq org-todo-keywords '((sequence "☛ TODO(t)" "⚑ WAITING(w)" "|" "✔ DONE(d)" "✘ CANCELLED(c)")))
     (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
 
