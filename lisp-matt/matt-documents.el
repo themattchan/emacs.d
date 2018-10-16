@@ -53,8 +53,8 @@
              )))
 
 (add-hook 'align-load-hook
-            (lambda ()
-              (setq align-text-modes (append '(fundamental-mode markdown-mode) align-text-modes))))
+          (lambda ()
+            (setq align-text-modes (append '(fundamental-mode markdown-mode) align-text-modes))))
 ;; (use-package align
 ;;   :init
 ;;   )
@@ -137,6 +137,7 @@
 ;; Org-mode
 ;;------------------------------------------------------------------------------
 
+;; SEE: https://github.com/gjstein/emacs.d/blob/master/config/gs-org.el
 (use-package org
   :defer t
 
@@ -147,8 +148,8 @@
   (use-package org-journal
     :config
     (setq org-journal-dir "~/Dropbox/writing/diary"
-        org-journal-file-format "%Y-%m-%d.org"
-        org-journal-date-format "%A, %d %B %Y"))
+          org-journal-file-format "%Y-%m-%d.org"
+          org-journal-date-format "%A, %d %B %Y"))
 
   (use-package org-wiki
     :config
@@ -181,33 +182,66 @@
     (global-set-key "\C-ct" '(lambda () (interactive) (org-capture :keys "t")))
     (global-set-key "\C-cb" 'org-switchb)
 
-  (setq org-capture-templates
-        `(("t" "TODO [inbox]" entry
-           (file ,matt/TODO-INBOX)
-           "* TODO %i%?")
+    (setq org-log-done 'time) ;; log the time whe things are done
 
-          ("T" "Tickler" entry
-           (file ,matt/TODO-TICKLER)
-           "* %i%? \n %U")
-          ))
+    (setq org-capture-templates
+          `(("t" "TODO [inbox]" entry
+             (file ,matt/TODO-INBOX)
+             "* TODO %i%?")
 
-  ;; http://doc.endlessparentheses.com/Var/org-refile-targets.html
-  ;; :level N --- only headlines at level N
-  ;; :maxlevel N --- headlines from levels 1 to N
-  (setq org-refile-targets `((,matt/TODO-SOMEDAY :level . 1)
-                             (,matt/LEARN :level . 2)
-                             (,matt/TODO-TICKLER :maxlevel . 2)
-                             (,matt/TODO-PROJECTS :maxlevel . 3)))
+            ("T" "Tickler" entry
+             (file ,matt/TODO-TICKLER)
+             "* %i%? \n %U")
+            ))
 
-  (setq org-agenda-files (list matt/TODO-INBOX matt/TODO-PROJECTS matt/TODO-TICKLER))
+    ;; http://doc.endlessparentheses.com/Var/org-refile-targets.html
+    ;; :level N --- only headlines at level N
+    ;; :maxlevel N --- headlines from levels 1 to N
+    (setq org-refile-targets `((,matt/TODO-SOMEDAY :level . 1)
+                               (,matt/LEARN :level . 2)
+                               (,matt/TODO-TICKLER :maxlevel . 2)
+                               (,matt/TODO-PROJECTS :maxlevel . 3)))
 
-  (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+    (setq org-agenda-files (list matt/TODO-INBOX matt/TODO-PROJECTS matt/TODO-TICKLER))
 
-  (setq org-agenda-custom-commands
-        '(("o" "At the office" tags-todo "@office"
-           ((org-agenda-overriding-header "Office")))))
+;;    (setq org-todo-keywords '((sequence "☛ TODO(t)" "⚑ WAITING(w)" "|" "✔ DONE(d)" "✘ CANCELLED(c)")))
+    (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
 
-  ) ;; let
+  ;; see the M-x customize screen for options
+  ;; EXAMPLE
+  ;; (setq org-agenda-custom-commands
+  ;;     '(("x" agenda)
+  ;;       ("y" agenda*)
+  ;;       ("w" todo "WAITING")
+  ;;       ("W" todo-tree "WAITING")
+  ;;       ("u" tags "+boss-urgent")
+  ;;       ("v" tags-todo "+boss-urgent")
+  ;;       ("U" tags-tree "+boss-urgent")
+  ;;       ("f" occur-tree "\\<FIXME\\>")
+  ;;       ("h" . "HOME+Name tags searches") ; description for "h" prefix
+  ;;       ("hl" tags "+home+Lisa")
+  ;;       ("hp" tags "+home+Peter")
+  ;;       ("hk" tags "+home+Kim")))
+    (setq org-agenda-custom-commands
+          '(("x" "Agenda"
+             ((agenda "" ((org-agenda-overriding-header "Today's Schedule:")
+					                (org-agenda-span 'day)
+					                (org-agenda-ndays 1)
+					                (org-agenda-start-on-weekday nil)
+					                (org-agenda-start-day "+0d")
+                          (org-agenda-todo-ignore-deadlines nil)))
+               ;; TODO tweak this
+               (tags-todo "@computer")
+               (tags-todo "@phone")
+               (tags-todo "errand")
+             ))
+
+            ("c" "computer tasks" tags-todo "@computer")
+            ("p" "phone calls" tags-todo "@phone")
+            ("e" "errands" tags-todo "errand")
+            ))
+
+    ) ;; let
   )
 
 (use-package ox-latex :after org)
