@@ -71,6 +71,7 @@
                                         ;(add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
 
 (setq explicit-shell-file-name (executable-find "zsh"))
+(setq shell-command-switch "-ic")
 (setq system-uses-terminfo nil)
 
 (setenv "ESHELL" (executable-find "zsh"))

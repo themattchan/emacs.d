@@ -151,7 +151,7 @@
 
 ;; Set PATHs for Unix-Based systems
 (setenv "PATH" (mapconcat #'identity *my-path-list* ":"))
-(setq exec-path (append exec-path *my-path-list*))
+(setq exec-path (append *my-path-list* exec-path))
 
 (when *is-mac* (setq path-to-ctags "/opt/local/bin/ctags"))
 
