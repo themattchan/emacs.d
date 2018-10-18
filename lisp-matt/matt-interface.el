@@ -401,17 +401,20 @@
     (`(geometry ,x ,y ,w ,h) w)))
 
 ;; 13" macbook: 1280
+;; retina mbp: 1680
 ;; home monitor: 1920
 ;; samsung ultrabook: 2560
 (defun get-display-type ()
   (let ((w (get-display-size)))
     (cond
-     ((> w 2560) 'hdpi)
+     ((>= w 2560) 'hdpi)
+     ((>= w 1680) 'macbookpro)
      (t 'normal))))
 
 (defun matt/font-size-for-display ()
   (case (get-display-type)
     ('hdpi 180)
+    ('macbookpro 140)
     ('normal 120)))
 
 (defun small-fonts ()

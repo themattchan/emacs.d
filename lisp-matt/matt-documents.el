@@ -140,7 +140,7 @@
 ;; SEE: https://github.com/gjstein/emacs.d/blob/master/config/gs-org.el
 (use-package org
   :defer t
-
+  :init (use-package s)
   :config
   (use-package org-agenda)
   (use-package org-capture)
@@ -179,6 +179,7 @@
   (let ((matt/TODO-INBOX "~/Dropbox/todo/TODO.org")
         (matt/TODO-SOMEDAY "~/Dropbox/todo/someday.org")
         (matt/TODO-PROJECTS "~/Dropbox/todo/projects.org")
+        (matt/TODO-WORK "~/Dropbox/todo/awake.org")
         (matt/LEARN "~/Dropbox/todo/learn.org")
         (matt/org-default-timestamp-fmt "[%<%Y-%m-%d %b %H:%M>]"))
 
@@ -199,6 +200,10 @@
             ("T" "someday" entry
              (file ,matt/TODO-SOMEDAY)
              ,(s-concat "* TODO %i%? \n " matt/org-default-timestamp-fmt))
+
+            ("w" "work" entry
+             (file ,matt/TODO-WORK)
+             ,(s-concat "* TODO %i%?\n " matt/org-default-timestamp-fmt))
             ))
 
     ;; http://doc.endlessparentheses.com/Var/org-refile-targets.html
@@ -206,9 +211,11 @@
     ;; :maxlevel N --- headlines from levels 1 to N
     (setq org-refile-targets `((,matt/TODO-SOMEDAY :level . 1)
                                (,matt/LEARN :level . 2)
-                               (,matt/TODO-PROJECTS :maxlevel . 3)))
+                               (,matt/TODO-PROJECTS :maxlevel . 3)
+                               (,matt/TODO-WORK :maxlevel . 3)
+                               ))
 
-    (setq org-agenda-files (list matt/TODO-INBOX matt/TODO-PROJECTS matt/TODO-SOMEDAY))
+    (setq org-agenda-files (list matt/TODO-INBOX matt/TODO-PROJECTS matt/TODO-SOMEDAY matt/TODO-WORK))
 
     ;; NICETO: have the bullets (but NOT the text) display as the utf8 glyphs
     ;; when the keyword is specified
