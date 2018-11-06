@@ -377,8 +377,10 @@
                          (`(_ ,no-enable) (list theme t no-enable))
                          (_ (list theme t nil))))))
 
+(load-file (locate-user-emacs-file "lisp-matt/badwolf-matt-theme.el"))
+
 (if (window-system)
-    (load-theme 'badwolf) ; odersky
+    (load-theme 'badwolf-matt) ; odersky
   (progn
     ;; default theme on terminals
     (load-theme 'wombat)
