@@ -1,6 +1,6 @@
 ;; -*- mode: emacs-lisp; eval: (rainbow-mode 1) -*-
 
-;;; badwolf-theme.el --- Bad Wolf color theme
+;;; badwolf-matt-theme.el --- Bad Wolf color theme
 
 ;; Copyright (C) 2015  Bartłomiej Kruczyk
 
@@ -9,7 +9,7 @@
 ;; Package-Version: 20161004.15
 ;; Keywords: themes
 ;; Package-Requires: ((emacs "24"))
-;; URL: https://github.com/bkruczyk/badwolf-emacs
+;; URL: https://github.com/bkruczyk/badwolf-matt-emacs
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -27,34 +27,34 @@
 ;;; Commentary:
 
 ;; An Emacs port of Steve's Losh theme for Vim:
-;; https://github.com/sjl/badwolf
+;; https://github.com/sjl/badwolf-matt
 
 ;;; Credits:
 
 ;; Steve Losh is creator of the original theme for Vim
-;; (https://github.com/sjl/badwolf), on which this Emacs port was
+;; (https://github.com/sjl/badwolf-matt), on which this Emacs port was
 ;; based.
 
 ;; locojay is creator of the initial Emacs port
-;; (https://github.com/locojay/badwolf).
+;; (https://github.com/locojay/badwolf-matt).
 
 ;;; Code:
 
 (deftheme badwolf-matt "Bad Wolf color theme")
 
-(defgroup badwolf nil
-  "Badwolf theme customization variables."
+(defgroup badwolf-matt nil
+  "Badwolf-Matt theme customization variables."
   :group 'faces)
 
-(defcustom badwolf-diff-hl-inverse nil
+(defcustom badwolf-matt-diff-hl-inverse nil
   "Inverse diff-hl faces."
   :type 'boolean
-  :group 'badwolf)
+  :group 'badwolf-matt)
 
-(defcustom badwolf-keywords-nobold nil
+(defcustom badwolf-matt-keywords-nobold nil
   "Do not use bold for keywords."
   :type 'boolean
-  :group 'badwolf)
+  :group 'badwolf-matt)
 
 (let* ((plain "#f8f6f2")
        (snow "#ffffff")
@@ -85,14 +85,14 @@
        (hl-line darkgravel))
 
   (custom-theme-set-variables
-   'badwolf
+   'badwolf-matt
    `(notmuch-search-line-faces
      '(("unread" :foreground ,lime)
        ("flagged" :foreground ,tardis)
        ("deleted" :foreground ,taffy :bold t))))
 
   (custom-theme-set-faces
-   'badwolf
+   'badwolf-matt
 
    ;; font lock
    `(default ((t (:inherit nil :foreground ,plain :background ,bg))))
@@ -103,7 +103,7 @@
    `(font-lock-doc-face ((t (:foreground ,dirtyblonde))))
    `(font-lock-function-name-face ((t (:foreground ,orange))))
    `(font-lock-variable-name-face ((t (:foreground ,orange))))
-   `(font-lock-keyword-face ((t (:foreground ,taffy ,@(when (not badwolf-keywords-nobold) `(:weight bold))))))
+   `(font-lock-keyword-face ((t (:foreground ,taffy ,@(when (not badwolf-matt-keywords-nobold) `(:weight bold))))))
    `(font-lock-preprocessor-face ((t (:foreground ,lime))))
    `(Font-lock-string-face ((t (:foreground ,dirtyblonde))))
    `(font-lock-type-face ((t (:foreground ,dress))))
@@ -115,14 +115,14 @@
 
    ;; ui
    `(cursor ((t (:background ,neon))))
-   `(region ((t (:foreground nil :background ,deepgravel))))
+   `(region ((t (:foreground nil :background ,deepgravel :underline ,neon))))
    `(secondary-selection ((t (:foreground ,darkgravel :background ,tardis))))
    `(fringe ((t (:background ,bg))))
    `(linum ((t (:foreground ,mediumgravel :background ,bg))))
    `(vertical-border ((t (:foreground ,gravel))))
    `(highlight ((t (:foreground ,coal :background ,dalespale))))
    `(escape-glyph ((t (:foreground ,tardis))))
-   `(hl-line ((t (:inherit nil :background ,hl-line))))
+   `(hl-line ((t (:inherit nil :background ,hl-line :underline ,neon))))
    `(minibuffer-prompt ((t (:foreground ,plain))))
    `(mode-line ((t (:box nil :foreground ,plain :background "gray22"))))
    `(mode-line-inactive ((t (:box nil :foreground ,gravel :background "gray16"))))
@@ -313,13 +313,13 @@
    `(clojure-interop-method-face ((t (:foreground ,plain))))
 
    ;; diff-hl
-   `(diff-hl-insert ((t ,(if badwolf-diff-hl-inverse
+   `(diff-hl-insert ((t ,(if badwolf-matt-diff-hl-inverse
                              `(:background ,bg :foreground ,lime)
                            `(:background ,lime :foreground ,bg)))))
-   `(diff-hl-delete ((t ,(if badwolf-diff-hl-inverse
+   `(diff-hl-delete ((t ,(if badwolf-matt-diff-hl-inverse
                              `(:background ,bg :foreground ,dress)
                            `(:background ,dress :foreground ,bg)))))
-   `(diff-hl-change ((t ,(if badwolf-diff-hl-inverse
+   `(diff-hl-change ((t ,(if badwolf-matt-diff-hl-inverse
                              `(:background ,bg :foreground ,dirtyblonde)
                            `(:background ,dirtyblonde :foreground ,bg)))))))
 
@@ -334,4 +334,4 @@
 ;; no-byte-compile: t
 ;; End:
 
-;;; badwolf-theme.el ends here
+;;; badwolf-matt-theme.el ends here
