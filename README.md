@@ -5,7 +5,7 @@
 
 ```
 git clone --recursive https://github.com/themattchan/emacs.d.git ~/.emacs.d
-make init
+cd ~/.emacs.d && make init
 ```
 
 ## Updating
