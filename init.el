@@ -142,29 +142,35 @@
 (setenv "LC_CTYPE" "en_US.UTF-8")
 (setenv "LC_ALL" "en_US.UTF-8")
 
-(defconst *my-path-list*
-  `("~/.nix-profile/bin"
-    "~/.nix-profile/sbin"
-    "/opt/"
-    "/opt/local/bin"
-    "/opt/local/sbin"
-    "/opt/X11/bin"
-    "/usr/local/bin"
-    "/usr/local/sbin"
-    "/usr/texbin"
-    "/usr/bin"
-    "/usr/sbin"
-    "/bin"
-    "/sbin"
-    ,(substitute-in-file-name "$HOME/Library/Haskell/bin") ; for hdevtools, ghc-mod
-    ,(substitute-in-file-name "$HOME/.local/bin")          ; stack install dir
-    "/Library/TeX/texbin"
-    ))
-(setenv "NIX_PATH" (substitute-in-file-name "$HOME/.nix-defexpr/channels/nixpkgs/"))
+;; (defconst *my-path-list*
+;;   `("/run/current-system/sw/bin"
+;;     "~/.nix-profile/bin"
+;;     "~/.nix-profile/sbin"
+;;     "/opt/"
+;;     "/opt/local/bin"
+;;     "/opt/local/sbin"
+;;     "/opt/X11/bin"
+;;     "/usr/local/bin"
+;;     "/usr/local/sbin"
+;;     "/usr/texbin"
+;;     "/usr/bin"
+;;     "/usr/sbin"
+;;     "/bin"
+;;     "/sbin"
+;;     ,(substitute-in-file-name "$HOME/Library/Haskell/bin") ; for hdevtools, ghc-mod
+;;     ,(substitute-in-file-name "$HOME/.local/bin")          ; stack install dir
+;;     "/Library/TeX/texbin"
+;;     ))
+
+;;(setenv "NIX_PATH" (substitute-in-file-name "$HOME/.nix-defexpr/channels/nixpkgs/"))
 
 ;; Set PATHs for Unix-Based systems
-(setenv "PATH" (mapconcat #'identity *my-path-list* ":"))
-(setq exec-path (append *my-path-list* exec-path))
+;;(setenv "PATH" (concat (getenv "NIX_PATH") (mapconcat #'identity *my-path-list* ":")))
+  ;;(setq exec-path (cons (getenv "NIX_PATH") (append *my-path-list* exec-path)))
+
+(let ((path (shell-command-to-string ". ~/.profile; echo -n $PATH")))
+  (setenv "PATH" path)
+  (setq exec-path (append (split-string-and-unquote path ":") exec-path)))
 
 (when *is-mac* (setq path-to-ctags "/opt/local/bin/ctags"))
 
