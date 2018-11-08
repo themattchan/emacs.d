@@ -3,38 +3,30 @@
 
 ## Installing
 
-The preferred way is to grab it along with all my dotfiles ---
-
-```
-git clone --recursive https://github.com/themattchan/dotfiles.git ~/dotfiles
-```
-
-For just the Emacs configs, try
-
 ```
 git clone --recursive https://github.com/themattchan/emacs.d.git ~/.emacs.d
-```
-
-Don't forget to compile all the files!
-
-```
-M-x matt/recompile-settings
+make init
 ```
 
 ## Updating
 
 ```
-git pull
-git submodule foreach git pull origin master
+make update
 ```
 
-Then as always,
+## Compiling
 
 ```
-M-x matt/recompile-settings
+make compile
 ```
 
-## How do I use this?
+to remove compiled shit
+
+```
+make clean
+```
+
+## Tutorial
 
 See [this](http://themattchan.com/docs/emacs-beginner.pdf) for an intro to Emacs.
 
