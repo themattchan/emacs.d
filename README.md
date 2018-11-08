@@ -4,9 +4,12 @@
 ## Installing
 
 ```
-git clone --recursive https://github.com/themattchan/emacs.d.git ~/.emacs.d
+git clone --recurse-submodules -j8 https://github.com/themattchan/emacs.d.git ~/.emacs.d
 cd ~/.emacs.d && make init
 ```
+
+`git clone --recursive` on old versions of git
+
 
 ## Updating
 
