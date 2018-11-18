@@ -72,6 +72,9 @@
 ;; (require 'cse131)
 ;; (add-to-list 'auto-mode-alist
 ;;              `(,(regexp-opt '(".adder" ".boa" ".cobra" ".diamond" ".egg" ".fdl")) . cse131-mode))
+(use-package nix-mode
+  :mode ("\\.nix$" . nix-mode)
+  :defer t)
 
 (provide 'matt-prog-other)
 ;; Local Variables:

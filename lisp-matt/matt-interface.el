@@ -398,24 +398,25 @@
     (when (not (eq fullscreen 'maximized))
       (set-frame-parameter nil 'fullscreen 'maximized))))
 
-(defsubst get-display-size ()
-  (pcase (assq 'geometry (frame-monitor-attributes))
-    (`(geometry ,x ,y ,w ,h) w)))
+;; (defsubst get-display-size ()
+;;   (pcase (assq 'geometry (frame-monitor-attributes))
+;;     (`(geometry ,x ,y ,w ,h) w)))
 
 ;; 13" macbook: 1280
 ;; retina mbp: 1680
 ;; home monitor: 1920
 ;; samsung ultrabook: 2560
 (defun get-display-type ()
-  (let ((w (get-display-size)))
+  (let ((w (display-pixel-width))
+        (p (display-mm-height)))
     (cond
-     ((>= w 2560) 'hdpi)
-     ((>= w 1680) 'macbookpro)
+     ((and (>= w 2560) (>= p 350))  'hdpi)
+     ((and (>= w 1680) (>= p 390)) 'macbookpro)
      (t 'normal))))
 
 (defun matt/font-size-for-display ()
   (case (get-display-type)
-    ('hdpi 180)
+    ('hdpi 140) ;; 180 if hdpi mode is not turned on
     ('macbookpro 140)
     ('normal 120)))
 
