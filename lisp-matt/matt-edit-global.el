@@ -179,10 +179,6 @@
                  '("pdf" "ps.gz" "ps"  "dvi"))
                "evince"
                (file))
-              ;; default to xdg mime type mapping
-              (""
-               "xdg-open"
-               (file))
               ))
       (openwith-mode 1)))
     )
