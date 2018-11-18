@@ -422,7 +422,7 @@
 
 (defun small-fonts ()
   (interactive)
-  (set-face-attribute 'default nil :height 120))
+  (set-face-attribute 'default nil :height (truncate (* 0.8 (matt/font-size-for-display)))))
 
 (defun normal-fonts ()
   (interactive)

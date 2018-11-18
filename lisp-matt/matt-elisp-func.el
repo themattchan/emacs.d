@@ -175,22 +175,6 @@ or just one char if that's not possible"
                              (buffer-substring (region-beginning) (region-end))
                            (read-string "Google: "))))))
 
-  ;; open the current file in another program. from emacs prelude.
-  (defun open-with (arg)
-    "Open visited file in default external program.
-
-With a prefix ARG always prompt for command to use."
-    (interactive "P")
-    (when buffer-file-name
-      (shell-command
-       (concat
-        (cond
-         ((and (not arg) *is-mac*) "open")
-         ((and (not arg) *is-linux*) "xdg-open")
-         (t (read-shell-command "Open current file with: ")))
-        " "
-        (shell-quote-argument buffer-file-name)))))
-
   (defun matt/get-package-activated-list ()
     `(defvar matt/packages
        ,package-activated-list
@@ -234,7 +218,16 @@ With a prefix ARG always prompt for command to use."
   ;; (defun hexcolour-add-to-font-lock ()
   ;;   (interactive)
   ;;   (font-lock-add-keywords nil hexcolour-keywords))
-
+(defun mu-open-in-external-app ()
+  "Open the file where point is or the marked files in Dired in external
+app. The app is chosen from your OS's preference."
+  (interactive)
+  (let* ((file-list
+          (dired-get-marked-files)))
+    (mapc
+     (lambda (file-path)
+       (let ((process-connection-type nil))
+         (start-process "" nil "xdg-open" file-path))) file-list)))
   );; eval-and-compile
 
 (provide 'matt-elisp-func)

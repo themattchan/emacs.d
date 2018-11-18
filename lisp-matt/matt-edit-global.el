@@ -136,7 +136,7 @@
   :config
   (global-company-mode))
 ;;(add-hook 'after-init-hook 'global-company-mode)
-;(eval-after-load 'company-mode (lambda () (add-to-list 'company-backends 'company-ghc)))
+                                        ;(eval-after-load 'company-mode (lambda () (add-to-list 'company-backends 'company-ghc)))
 
 (eval-and-compile
   (defun load-project-tags ()
@@ -145,6 +145,47 @@
         (let ((root (projectile-project-root)))
           (visit-tags-table (s-concat root "TAGS")))
       (error nil))))
+
+;;------------------------------------------------------------------------------
+;; openwith
+
+(use-package openwith
+  :ensure t
+  :config
+  (progn
+    (when (and *is-linux* (require 'openwith nil 'noerror))
+      (setq openwith-associations
+            `((,(openwith-make-extension-regexp
+                 '("mpg" "mpeg" "mp3" "mp4"
+                   "avi" "wmv" "wav" "mov" "flv"
+                   "ogm" "ogg" "mkv"))
+               "vlc"
+               (file))
+              (,(openwith-make-extension-regexp
+                 '("xbm" "pbm" "pgm" "ppm" "pnm"
+                   "png" "gif" "bmp" "tif" "jpeg" "jpg"))
+               "geeqie"
+               (file))
+              (,(openwith-make-extension-regexp
+                 '("doc" "xls" "ppt" "odt" "ods" "odg" "odp"))
+               "libreoffice"
+               (file))
+              ("\\.lyx"
+               "lyx"
+               (file))
+              ;; ("\\.ps\\.gz$"
+              ;;  "evince" (file))
+              (,(openwith-make-extension-regexp
+                 '("pdf" "ps.gz" "ps"  "dvi"))
+               "evince"
+               (file))
+              ;; default to xdg mime type mapping
+              (""
+               "xdg-open"
+               (file))
+              ))
+      (openwith-mode 1)))
+    )
 
 (provide 'matt-edit-global)
 ;; Local Variables:
