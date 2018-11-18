@@ -32,7 +32,9 @@
 
 (use-package flyspell
   :diminish
-  :hook (text-mode . flyspell-mode))
+  :hook (text-mode . flyspell-mode)
+  :init
+  (setq ispell-program-name (executable-find "aspell")))
 
 (use-package captain
   :diminish
