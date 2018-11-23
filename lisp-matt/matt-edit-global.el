@@ -72,6 +72,9 @@
 
  ;; auto reload TAGS
  tags-revert-without-query 1
+
+ ;; no regex double escaping
+ reb-re-syntax 'string
  )
 
 ;;------------------------------------------------------------------------------

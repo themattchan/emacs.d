@@ -42,11 +42,21 @@
   :init
   (add-hook 'prog-mode-hook #'subword-mode))
 
+(use-package highlight-indent-guides
+  :init
+  (setq highlight-indent-guides-method 'character)
+  (setq highlight-indent-guides-character ?\|)
+  (setq highlight-indent-guides-auto-odd-face-perc 15)
+  (setq highlight-indent-guides-auto-even-face-perc 15)
+  (setq highlight-indent-guides-auto-character-face-perc 20)
+  )
+
 (add-hook 'prog-mode-hook
           (lambda()
             (auto-fill-mode)
             (electric-indent-mode 1)    ; auto indent
             (hl-line-mode 1)            ; highlight current line
+
             (setq
              flycheck-completion-system 'ido
              ;; enable multiline comments
