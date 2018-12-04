@@ -47,9 +47,9 @@
   (diminish-major-mode 'python-mode "py")
   (add-hook 'python-mode-hook
             (lambda()
-              (elpy-enable)
+;;              (elpy-enable)
               (setq-default indent-tabs-mode nil
-                            tab-width 4
+                            tab-width 2
                             ;;tab-stop-list (number-sequence 2 120 2)
                             ;;py-indent-offset 4
                             ;;python-indent-offset 2
