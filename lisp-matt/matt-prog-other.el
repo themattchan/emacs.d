@@ -47,7 +47,9 @@
   (diminish-major-mode 'python-mode "py")
   (add-hook 'python-mode-hook
             (lambda()
-;;              (elpy-enable)
+              (elpy-enable)
+              (defun py-describe-symbol nil)
+              (defun py-help-at-point nil)
               (setq-default indent-tabs-mode nil
                             tab-width 2
                             ;;tab-stop-list (number-sequence 2 120 2)
