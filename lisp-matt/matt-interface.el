@@ -407,10 +407,11 @@
 ;; home monitor: 1920
 ;; samsung ultrabook: 2560
 (defun get-display-type ()
-  (let ((w (get-display-size)))
+  (let ((w (get-display-size))
+        (p (display-mm-height)))
     (cond
-     ((>= w 2560)  'hdpi)
-     ((>= w 1680) 'macbookpro)
+     ((and (>= w 2560) (>= p 350))  'hdpi)
+     ((and (>= w 1680) (>= p 390)) 'macbookpro)
      ((>= w 1366) 'normal)
      ((>= w 1280) 'old-macbook)
      (t 'normal))))
