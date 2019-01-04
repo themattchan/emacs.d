@@ -31,6 +31,8 @@
 (use-package fixmee
   :diminish
   :defer t
+  :config
+  (setq fixmee-notice-regexp "\\(@@@+\\|\\_<\\(?:[Tt][Oo][Dd][Oo]+\\|[Ff][Ii][Xx][Mm][Ee]+\\|[Ii][Mm][Pp][Rr][Oo][Vv][Ee]+\\|XXX+\\)\\)\\(?:[/:?!. \t\r\n\f\v]+\\|-+\\(?:\\s-\\|[\r\n\f\v]\\)\\|\\_>\\)")
   :init
   (add-hook 'prog-mode-hook #'fixmee-mode))
 

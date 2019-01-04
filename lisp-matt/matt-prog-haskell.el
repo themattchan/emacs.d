@@ -94,6 +94,9 @@
   (defun haskell-mode-p ()
     (memq major-mode haskell-modes-list))
 
+  (defun wrap-nix-shell (command)
+    `("nix-shell" "--command" ,(string-join command " ")))
+
   ;; (defun nixify-flycheck-haskell-runghc-command (f &rest args)
   ;;   (let ((res (apply f args))
   ;;         (is-nix (locate-dominating-file default-directory "shell.nix")))
@@ -108,6 +111,26 @@
   ) ;; eval-and-compile
 
 (eval-after-load 'company-mode '(add-to-list company-backends 'company-ghc))
+
+(use-package lsp-mode
+  :commands lsp
+  :ensure t
+  :config
+  (use-package lsp-ui
+    :ensure t
+    :commands lsp-ui-mode)
+  (use-package company-lsp
+    :ensure t
+    :commands company-lsp)
+  (use-package lsp-haskell
+    :ensure t
+    :init
+    (setq lsp-haskell-process-path-hie "hie-wrapper")
+    (advice-add 'lsp--haskell-hie-command
+                :around
+                #'(lambda (fun &rest args)
+                    (wrap-nix-shell (apply fun args))))
+    (add-hook 'haskell-mode-hook #'lsp)))
 
 (use-package haskell-mode
   :ensure t
@@ -151,6 +174,9 @@
 
   (use-package flycheck-haskell
     :config (flycheck-haskell-setup))
+
+  ;; (require 'lsp-mode)
+  ;; (require 'lsp-haskell)
 
   (haskell-indentation-mode)
 

@@ -54,7 +54,7 @@
                             tab-width 2
                             ;;tab-stop-list (number-sequence 2 120 2)
                             ;;py-indent-offset 4
-                            ;;python-indent-offset 2
+                            python-indent-offset 2
                             ))))
 
 ;; Ampl mode
