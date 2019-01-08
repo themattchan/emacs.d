@@ -153,8 +153,10 @@
         ("C-c g"   . matt/haskell-cabal-typecheck)
         ("C-c i e" . haskell-insert-language-extension)
         ("C-c i o" . haskell-insert-compiler-extension)
-        ("C-c i s" . haskell-format-language-extensions))
-
+        ("C-c i s" . haskell-format-language-extensions)
+        ("C-c y" . hasky-extensions)
+        ("<next> h x" . hasky-extensions-browse-docs)
+        )
 
   :config
   (diminish-major-mode 'haskell-mode "λ")
