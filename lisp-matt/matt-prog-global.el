@@ -134,7 +134,7 @@
   :bind (("C-x t w" . 'toggle-whitespace-mode))
   ;; :hook (prog-mode )
   :init
-  (defvar only-trailing-whitespace-style '(face lines-tail))
+  (defvar only-trailing-whitespace-style '(face lines-tail trailing))
   (defvar whitespace-show-all-mode nil)
 
   (defun* toggle-whitespace-mode ()
@@ -173,7 +173,8 @@
   (setq
    ;; highlight 80 char overflows
    whitespace-line-column fill-column
-   whitespace-style only-trailing-whitespace-style)
+   whitespace-style only-trailing-whitespace-style
+   show-trailing-whitespace t)
 
 
   (setq whitespace-display-mappings

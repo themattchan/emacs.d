@@ -174,42 +174,44 @@
     :diminish
     :init (flycheck-mode 1))
 
-  (use-package flycheck-haskell
-    :config (flycheck-haskell-setup))
+  ;; (use-package flycheck-haskell
+  ;;   :config (flycheck-haskell-setup))
 
   ;; (require 'lsp-mode)
   ;; (require 'lsp-haskell)
 
   (haskell-indentation-mode)
 
-  (flycheck-add-next-checker 'haskell-ghc '(t . haskell-hlint))
+  ;; (flycheck-add-next-checker 'haskell-ghc '(t . haskell-hlint))
 
   (setq haskell-process-args-cabal-repl '("--ghc-options=-ferror-spans -fshow-loaded-modules -fno-code"))
 
-  (add-hook 'haskell-mode-hook
-            (lambda ()
-              (let ((go (haskell-use-nix-p)))
-                (when go
-                  (flycheck-haskell-setup)
-                  (setq flycheck-haskell-ghc-executable (expand-file-name "nix-ghc" user-emacs-directory))
-                  (flycheck-select-checker 'haskell-ghc)
-                  (setq-local flycheck-ghc-search-path (list (expand-file-name go)))
-                  ;; (setq flycheck-command-wrapper-function
-                  ;;       (lambda (command)
-                  ;;         ;; (message (format "FUCKKKKKKK %s" (list "bash" "-c" (format "(cd %s; nix-shell --command \"%s\")" go (s-join " " command)))))
-                  ;;         ;; (list "bash" "-c" (format "(cd %s; nix-shell --command \"%s\")" go (s-join " " command)))
-                  ;;         ;; (message (format "FUCKKKKKKK %s" (list "bash" "-c" (format "(cd %s; nix-shell --command \"%s\")" go (s-join " " command)))))
-                  ;;         ;; (list "" "-c" (format "(cd %s; nix-shell --command \"%s\")" go (s-join " " command)))
-                  ;;         ;;(message (format "%s" command))
-                  ;;         command
-                  ;;         ))
+  ;; (add-hook 'haskell-mode-hook
+  ;;           (lambda ()
+  ;;             (let ((go (haskell-use-nix-p)))
+  ;;               (when go
+  ;;                 (flycheck-haskell-setup)
+  ;;                 (setq flycheck-haskell-ghc-executable (expand-file-name "nix-ghc" user-emacs-directory))
+  ;;                 (flycheck-select-checker 'haskell-ghc)
+  ;;                 (setq-local flycheck-ghc-search-path (list (expand-file-name go)))
+  ;;                 ;; (setq flycheck-command-wrapper-function
+  ;;                 ;;       (lambda (command)
+  ;;                 ;;         ;; (message (format "FUCKKKKKKK %s" (list "bash" "-c" (format "(cd %s; nix-shell --command \"%s\")" go (s-join " " command)))))
+  ;;                 ;;         ;; (list "bash" "-c" (format "(cd %s; nix-shell --command \"%s\")" go (s-join " " command)))
+  ;;                 ;;         ;; (message (format "FUCKKKKKKK %s" (list "bash" "-c" (format "(cd %s; nix-shell --command \"%s\")" go (s-join " " command)))))
+  ;;                 ;;         ;; (list "" "-c" (format "(cd %s; nix-shell --command \"%s\")" go (s-join " " command)))
+  ;;                 ;;         ;;(message (format "%s" command))
+  ;;                 ;;         command
+  ;;                 ;;         ))
 
-                  ;; (setq flycheck-command-wrapper-function
-                  ;;       (lambda (command)
-                  ;;         (message (format "%s" command))
-                  ;;         command))
+  ;;                 ;; (setq flycheck-command-wrapper-function
+  ;;                 ;;       (lambda (command)
+  ;;                 ;;         (message (format "%s" command))
+  ;;                 ;;         command))
 
-                  ))))
+  ;;                 ))))
+
+;; nix-shell --command "ghcid --command \"cabal repl lib:eaql\""
 
   ;; ;; so we can actually see our writings
   (setq haskell-literate-comment-face 'default)

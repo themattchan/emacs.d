@@ -55,6 +55,9 @@
  ;; show-paren-style 'expression
  show-paren-delay 0
 
+ show-trailing-whitespace t
+ whitespace-style '(face lines-tail trailing)
+
  next-line-add-newlines nil             ; No newlines at end of buffer unless I hit return
  sentence-end-double-space nil          ; sentences end with one space only.
 
@@ -78,8 +81,7 @@
  )
 
 ;;------------------------------------------------------------------------------
-;;(add-hook 'before-save-hook 'whitespace-cleanup)
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(add-hook 'before-save-hook 'whitespace-cleanup)
 
 ;;------------------------------------------------------------------------------
 ;; File formatting. yuck crlf
